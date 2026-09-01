@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración | Banco de Sangre HLEV</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Módulo de Autenticación -->
+    <div id="loginView" class="login-container">
+        <div class="login-card">
+            <h2>Acceso Institucional</h2>
+            <p>Hospital de Lima Este Vitarte</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Código de Usuario (A-Admin / O-Operario)</label>
+                    <input type="text" id="username" placeholder="Ej: A-001 u O-102" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn-primary btn-block">Ingresar al Sistema</button>
+            </form>
+            <div id="loginError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Panel Principal (Oculto por defecto) -->
+    <div id="dashboardView" class="admin-layout" style="display: none;">
+        
+        <!-- Barra Lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>HLEV Sistema</h2>
+                <span id="roleBadge" class="badge">Rol</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#" id="navInventory">Inventario ISBT 128</a></li>
+                    <li><a href="#" id="navNetwork">Red Interhospitalaria</a></li>
+                    <!-- Elemento exclusivo del Administrador -->
+                    <li id="navUserManagement" style="display: none;"><a href="#">Gestión de Médicos</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-secondary">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="page-title">
+                    <h1 id="viewTitle">Control de Inventario de Hemocomponentes</h1>
+                </div>
+                <div class="user-profile">
+                    <span id="userNameDisplay">Usuario</span>
+                </div>
+            </header>
+
+            <section class="dashboard-content" id="mainContentArea">
+                
+                <!-- Vista de Inventario (Operarios y Admins) -->
+                <div id="inventorySection">
+                    <div class="data-section">
+                        <div class="section-header">
+                            <h2>Inventario Activo (Algoritmo FEFO)</h2>
+                        </div>
+                        <table id="inventoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Código ISBT 128</th>
+                                    <th>Tipo</th>
+                                    <th>Grupo Sanguíneo</th>
+                                    <th>Vencimiento</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryBody">
+                                <!-- Inyección dinámica -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Vista de Creación de Médicos (Solo Admins) -->
+                <div id="userManagementSection" style="display: none;">
+                    <div class="data-section">
+                        <h2>Registrar Nuevo Médico / Operario</h2>
+                        <form id="createUserForm" class="form-layout">
+                            <div class="form-group">
+                                <label>Nombres Completos</label>
+                                <input type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Especialidad</label>
+                                <select required>
+                                    <option value="Hemoterapia">Hemoterapia</option>
+                                    <option value="Cirugía">Cirugía</option>
+                                    <option value="Emergencia">Emergencia</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Código Asignado (Debe iniciar con 'O')</label>
+                                <input type="text" value="O-" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Generar Credenciales</button>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
