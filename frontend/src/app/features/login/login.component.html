@@ -1,0 +1,51 @@
+<div class="d-flex align-items-center justify-content-center vh-100"
+     style="background-image:
+       radial-gradient(circle at 12% 18%, rgba(198,40,40,0.45), transparent 42%),
+       radial-gradient(circle at 88% 82%, rgba(21,101,192,0.45), transparent 42%),
+       linear-gradient(rgba(11,18,32,0.8), rgba(11,18,32,0.85)),
+       url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpvTvxIY3oGL7LnPeDdXhII6n46nMa5UTftY5S5pj-qQ&amp;s=10');
+     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+     background-size: cover, cover, cover, cover;
+     background-position: center, center, center, center;">
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 420px;">
+    <div class="card-body p-4 p-md-5">
+      <div class="text-center mb-3">
+        <svg viewBox="0 0 100 100" width="72" height="72">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#5AB0EA"/>
+              <stop offset="100%" stop-color="#0D47A1"/>
+            </linearGradient>
+            <linearGradient id="dropGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%" stop-color="#E64545"/>
+              <stop offset="100%" stop-color="#B71C1C"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="55" r="40" fill="none" stroke="url(#ringGrad)" stroke-width="9"/>
+          <path d="M50 18 C66 40 78 56 78 68 A28 28 0 1 1 22 68 C22 56 34 40 50 18 Z" fill="url(#dropGrad)"/>
+          <rect x="43" y="52" width="14" height="30" rx="4" fill="#ffffff"/>
+          <rect x="35" y="60" width="30" height="14" rx="4" fill="#ffffff"/>
+        </svg>
+      </div>
+      <h2 class="text-center text-primary fw-bold mb-1">Acceso Institucional</h2>
+      <p class="text-center text-secondary mb-4">Hospital de Lima Este Vitarte</p>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">DNI o Correo Institucional</label>
+          <input type="text" class="form-control" name="identificador" [(ngModel)]="identificador"
+                 required autocomplete="off">
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Contraseña</label>
+          <input type="password" class="form-control" name="password" [(ngModel)]="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold" [disabled]="cargando">
+          {{ cargando ? 'Validando credenciales...' : 'Ingresar al Sistema' }}
+        </button>
+      </form>
+
+      <div class="alert alert-danger mt-3 mb-0 text-center py-2" *ngIf="mensajeError">{{ mensajeError }}</div>
+    </div>
+  </div>
+</div>

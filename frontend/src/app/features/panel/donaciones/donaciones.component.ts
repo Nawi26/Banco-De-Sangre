@@ -1,0 +1,75 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ClinicoService } from '../../../core/services/clinico.service';
+import { Donacion, Donante } from '../../../core/models/clinico.model';
+
+@Component({
+  selector: 'app-donaciones',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './donaciones.component.html'
+})
+export class DonacionesComponent implements OnInit {
+  pestanaActiva: 'donantes' | 'donaciones' = 'donantes';
+
+  donantes: Donante[] = [];
+  donaciones: Donacion[] = [];
+
+  nuevoDonante = { tipoDoc: 'DNI', numDoc: '', nombres: '', apellidos: '', fechaNacimiento: null as string | null, sexo: '', grupoAbo: 'O', factorRh: 'POSITIVO' };
+  mensajeDonante = '';
+  exitoDonante = false;
+
+  nuevaDonacion = { donanteId: null as number | null, volumenMl: 450, tipoDonacion: 'VOLUNTARIA' };
+  mensajeDonacion = '';
+  exitoDonacion = false;
+
+  constructor(private clinicoService: ClinicoService) {}
+
+  ngOnInit(): void {
+    this.cargarDonantes();
+    this.cargarDonaciones();
+  }
+
+  cargarDonantes(): void {
+    this.clinicoService.listarDonantes().subscribe(datos => this.donantes = datos);
+  }
+
+  cargarDonaciones(): void {
+    this.clinicoService.listarDonaciones().subscribe(datos => this.donaciones = datos);
+  }
+
+  registrarDonante(): void {
+    this.mensajeDonante = '';
+    this.clinicoService.crearDonante(this.nuevoDonante).subscribe({
+      next: () => {
+        this.exitoDonante = true;
+        this.mensajeDonante = 'Donante registrado correctamente.';
+        this.nuevoDonante = { tipoDoc: 'DNI', numDoc: '', nombres: '', apellidos: '', fechaNacimiento: null, sexo: '', grupoAbo: 'O', factorRh: 'POSITIVO' };
+        this.cargarDonantes();
+      },
+      error: (err) => {
+        this.exitoDonante = false;
+        this.mensajeDonante = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
+      }
+    });
+  }
+
+  registrarDonacion(): void {
+    this.mensajeDonacion = '';
+    if (!this.nuevaDonacion.donanteId) return;
+
+    this.clinicoService.crearDonacion(this.nuevaDonacion as any).subscribe({
+      next: () => {
+        this.exitoDonacion = true;
+        this.mensajeDonacion = 'Donación registrada correctamente.';
+        this.nuevaDonacion = { donanteId: null, volumenMl: 450, tipoDonacion: 'VOLUNTARIA' };
+        this.cargarDonaciones();
+      },
+      error: (err) => {
+        this.exitoDonacion = false;
+        this.mensajeDonacion = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
+      }
+    });
+  }
+}

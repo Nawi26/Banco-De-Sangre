@@ -1,0 +1,32 @@
+/* Paleta de marca HLEV, basada en el logo (gota roja + anillo azul) */
+:root {
+  --bs-primary: #c62828;
+  --bs-primary-rgb: 198, 40, 40;
+  --bs-primary-text-emphasis: #7a1414;
+  --bs-primary-bg-subtle: #f8d7da;
+  --bs-primary-border-subtle: #e39499;
+
+  --bs-info: #1565c0;
+  --bs-info-rgb: 21, 101, 192;
+  --bs-info-text-emphasis: #0d3d75;
+  --bs-info-bg-subtle: #d3e3f7;
+  --bs-info-border-subtle: #7fa8dd;
+}
+
+.btn-primary {
+  --bs-btn-hover-bg: #a82121;
+  --bs-btn-hover-border-color: #9c1f1f;
+  --bs-btn-active-bg: #9c1f1f;
+  --bs-btn-active-border-color: #901d1d;
+}
+
+.btn-outline-primary {
+  --bs-btn-hover-bg: #c62828;
+  --bs-btn-hover-border-color: #c62828;
+  --bs-btn-active-bg: #c62828;
+  --bs-btn-active-border-color: #c62828;
+}
+
+a {
+  color: #1565c0;
+}

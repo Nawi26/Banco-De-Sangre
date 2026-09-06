@@ -1,0 +1,72 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Registrar Nuevo Médico</h2>
+    <form class="row g-3" style="max-width: 640px;" (ngSubmit)="registrar()">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">DNI</label>
+        <input type="text" class="form-control" name="dni" [(ngModel)]="nuevoMedico.dni" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Correo Institucional</label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="nuevoMedico.email" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Nombres</label>
+        <input type="text" class="form-control" name="nombres" [(ngModel)]="nuevoMedico.nombres" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Apellidos</label>
+        <input type="text" class="form-control" name="apellidos" [(ngModel)]="nuevoMedico.apellidos" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Contraseña Temporal</label>
+        <input type="password" class="form-control" name="password" [(ngModel)]="nuevoMedico.password" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">N° Colegiatura (Opcional)</label>
+        <input type="text" class="form-control" name="colegiatura" [(ngModel)]="nuevoMedico.colegiatura">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Rol</label>
+        <select class="form-select" name="rolId" [(ngModel)]="nuevoMedico.rolId" required>
+          <option [ngValue]="3">Médico Tratante</option>
+          <option [ngValue]="2">Tecnólogo Médico</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Generar Credenciales</button>
+      </div>
+    </form>
+    <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exito" [class.alert-danger]="!exito" *ngIf="mensaje">
+      {{ mensaje }}
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Médicos Registrados</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead>
+          <tr>
+            <th>DNI</th>
+            <th>Nombre Completo</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of medicos">
+            <td>{{ m.dni }}</td>
+            <td>{{ m.nombres }} {{ m.apellidos }}</td>
+            <td>{{ m.email }}</td>
+            <td>{{ m.rolNombre }}</td>
+            <td><span class="badge" [ngClass]="m.estado ? 'bg-success' : 'bg-secondary'">{{ m.estado ? 'Activo' : 'Inactivo' }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

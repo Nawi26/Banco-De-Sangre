@@ -1,0 +1,111 @@
+<div *ngIf="datos">
+
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold text-primary">{{ datos.unidadesDisponibles }}</div>
+          <div class="small text-secondary">Unidades Disponibles</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold text-primary">{{ datos.totalDonantes }}</div>
+          <div class="small text-secondary">Donantes Registrados</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold text-primary">{{ datos.donacionesUltimos30Dias }}</div>
+          <div class="small text-secondary">Donaciones (30 días)</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold text-warning">{{ datos.solicitudesPendientes }}</div>
+          <div class="small text-secondary">Solicitudes Pendientes</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold text-primary">{{ datos.transfusionesRealizadas }}</div>
+          <div class="small text-secondary">Transfusiones Realizadas</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold" [ngClass]="datos.transfusionesConReaccionAdversa > 0 ? 'text-danger' : 'text-success'">
+            {{ datos.transfusionesConReaccionAdversa }}
+          </div>
+          <div class="small text-secondary">Con Reacción Adversa</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold" [ngClass]="datos.unidadesPorVencerEn7Dias > 0 ? 'text-danger' : 'text-success'">
+            {{ datos.unidadesPorVencerEn7Dias }}
+          </div>
+          <div class="small text-secondary">Por Vencer (7 días)</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <div class="fs-3 fw-bold text-info">{{ datos.intercambiosActivos }}</div>
+          <div class="small text-secondary">Intercambios Activos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 mb-3">Existencias por Grupo Sanguíneo</h2>
+          <div class="mb-2" *ngFor="let item of datos.resumenPorGrupo">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>{{ item.grupoAbo }}{{ signoRh(item.factorRh) }}</span>
+              <span class="fw-semibold">{{ item.unidades }}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-primary" [style.width.%]="porcentaje(item.unidades, maxUnidades())"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 mb-3">Solicitudes por Prioridad</h2>
+          <div class="mb-2" *ngFor="let entry of prioridadEntries()">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>{{ entry[0] }}</span>
+              <span class="fw-semibold">{{ entry[1] }}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-warning" [style.width.%]="porcentaje(entry[1], maxPrioridad())"></div>
+            </div>
+          </div>
+          <p class="text-secondary small mb-0" *ngIf="prioridadEntries().length === 0">Sin solicitudes registradas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

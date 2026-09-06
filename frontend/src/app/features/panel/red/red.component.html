@@ -1,0 +1,94 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Búsqueda en Red Interhospitalaria</h2>
+    <form class="row g-2 align-items-end mb-3" style="max-width: 480px;" (ngSubmit)="buscar()">
+      <div class="col-8">
+        <label class="form-label fw-semibold">Código ISBT 128</label>
+        <input type="text" class="form-control" name="codigoBusqueda" [(ngModel)]="codigoBusqueda"
+               placeholder="Ej: E001" required>
+      </div>
+      <div class="col-4">
+        <button type="submit" class="btn btn-primary w-100" [disabled]="buscando">Buscar</button>
+      </div>
+    </form>
+
+    <div class="alert alert-danger py-2 mb-0" *ngIf="errorBusqueda">{{ errorBusqueda }}</div>
+    <table class="table table-sm w-auto" *ngIf="resultadoBusqueda">
+      <tbody>
+        <tr><th>Código ISBT</th><td>{{ resultadoBusqueda.codigoProductoIsbt }}</td></tr>
+        <tr><th>Grupo Sanguíneo</th><td>{{ resultadoBusqueda.grupoAbo }} {{ resultadoBusqueda.factorRh }}</td></tr>
+        <tr><th>Estado</th><td>{{ resultadoBusqueda.estado }}</td></tr>
+        <tr><th>Ubicación</th><td>{{ resultadoBusqueda.ubicacionFisica }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Solicitar Intercambio / Transporte</h2>
+    <form class="row g-3" (ngSubmit)="solicitarIntercambio()">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Hospital Solicitante</label>
+        <select class="form-select" name="ipressSolicitanteId" [(ngModel)]="nuevoIntercambio.ipressSolicitanteId" required>
+          <option [ngValue]="null" disabled>Seleccione...</option>
+          <option *ngFor="let h of hospitales" [ngValue]="h.id">{{ h.nombreEstablecimiento }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Hospital Proveedor</label>
+        <select class="form-select" name="ipressProveedoraId" [(ngModel)]="nuevoIntercambio.ipressProveedoraId" required>
+          <option [ngValue]="null" disabled>Seleccione...</option>
+          <option *ngFor="let h of hospitales" [ngValue]="h.id">{{ h.nombreEstablecimiento }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Código ISBT de la Unidad</label>
+        <input type="text" class="form-control" name="codigoProductoIsbt" [(ngModel)]="nuevoIntercambio.codigoProductoIsbt"
+               placeholder="Ej: E001" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Responsable de Transporte (Opcional)</label>
+        <input type="text" class="form-control" name="responsableTransporte" [(ngModel)]="nuevoIntercambio.responsableTransporte">
+      </div>
+      <div class="col-md-6 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary">Registrar Solicitud</button>
+      </div>
+    </form>
+    <div class="alert mt-3 mb-0 py-2" [class.alert-success]="intercambioExitoso" [class.alert-danger]="!intercambioExitoso" *ngIf="mensajeIntercambio">
+      {{ mensajeIntercambio }}
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Tablero de Transporte Interhospitalario</h2>
+    <div class="row g-3">
+      <div class="col-md" *ngFor="let e of estados">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between align-items-center"
+               [ngClass]="'bg-' + e.color + ' ' + (e.color === 'warning' ? '' : 'text-white')">
+            <span class="fw-semibold">{{ e.etiqueta }}</span>
+            <span class="badge bg-white text-dark">{{ itemsPorEstado(e.clave).length }}</span>
+          </div>
+          <div class="card-body p-2" style="max-height: 420px; overflow-y: auto;">
+            <p class="text-secondary small text-center mb-0" *ngIf="itemsPorEstado(e.clave).length === 0">Sin solicitudes</p>
+            <div class="card mb-2" *ngFor="let i of itemsPorEstado(e.clave)">
+              <div class="card-body p-2">
+                <div class="small fw-semibold">{{ i.codigoProductoIsbt }} · {{ i.grupoAbo }} {{ i.factorRh }}</div>
+                <div class="small text-secondary">{{ i.hospitalSolicitante }} ← {{ i.hospitalProveedor }}</div>
+                <div class="small" *ngIf="i.responsableTransporte">Transporta: {{ i.responsableTransporte }}</div>
+                <div class="small" *ngIf="i.temperaturaCadenaFrio != null">Cadena de frío: {{ i.temperaturaCadenaFrio }} °C</div>
+                <button class="btn btn-sm btn-outline-primary me-1 mt-1" *ngFor="let accion of siguientesEstados[i.estado]"
+                        (click)="avanzarEstado(i.id, accion.estado)">
+                  {{ accion.etiqueta }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

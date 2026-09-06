@@ -1,0 +1,239 @@
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'solicitudes'" href="javascript:void(0)" (click)="pestanaActiva = 'solicitudes'">Solicitudes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'transfusiones'" href="javascript:void(0)" (click)="pestanaActiva = 'transfusiones'">Transfusiones</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'pacientes'" href="javascript:void(0)" (click)="pestanaActiva = 'pacientes'">Pacientes</a>
+  </li>
+</ul>
+
+<!-- PACIENTES -->
+<div *ngIf="pestanaActiva === 'pacientes'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Paciente</h2>
+      <form class="row g-3" (ngSubmit)="registrarPaciente()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">N° Documento</label>
+          <input type="text" class="form-control" name="numDoc" [(ngModel)]="nuevoPaciente.numDoc" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Nombres</label>
+          <input type="text" class="form-control" name="nombres" [(ngModel)]="nuevoPaciente.nombres" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Apellidos</label>
+          <input type="text" class="form-control" name="apellidos" [(ngModel)]="nuevoPaciente.apellidos" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Fecha de Nacimiento</label>
+          <input type="date" class="form-control" name="fechaNacimiento" [(ngModel)]="nuevoPaciente.fechaNacimiento">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Sexo</label>
+          <select class="form-select" name="sexo" [(ngModel)]="nuevoPaciente.sexo">
+            <option value="">Sin especificar</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Grupo ABO</label>
+          <select class="form-select" name="grupoAbo" [(ngModel)]="nuevoPaciente.grupoAbo" required>
+            <option>O</option><option>A</option><option>B</option><option>AB</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Factor Rh</label>
+          <select class="form-select" name="factorRh" [(ngModel)]="nuevoPaciente.factorRh" required>
+            <option value="POSITIVO">Positivo</option>
+            <option value="NEGATIVO">Negativo</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Registrar Paciente</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoPaciente" [class.alert-danger]="!exitoPaciente" *ngIf="mensajePaciente">
+        {{ mensajePaciente }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Pacientes Registrados</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead><tr><th>Documento</th><th>Nombre Completo</th><th>Grupo</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let p of pacientes">
+              <td>{{ p.tipoDoc }} {{ p.numDoc }}</td>
+              <td>{{ p.nombres }} {{ p.apellidos }}</td>
+              <td>{{ p.grupoAbo }} {{ p.factorRh }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLICITUDES -->
+<div *ngIf="pestanaActiva === 'solicitudes'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Nueva Solicitud de Sangre</h2>
+      <form class="row g-3" (ngSubmit)="registrarSolicitud()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Paciente</label>
+          <select class="form-select" name="pacienteId" [(ngModel)]="nuevaSolicitud.pacienteId" required>
+            <option [ngValue]="null" disabled>Seleccione...</option>
+            <option *ngFor="let p of pacientes" [ngValue]="p.id">{{ p.nombres }} {{ p.apellidos }} ({{ p.numDoc }})</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Tipo de Hemocomponente</label>
+          <select class="form-select" name="tipoHemocomponente" [(ngModel)]="nuevaSolicitud.tipoHemocomponente">
+            <option value="PAQUETE GLOBULAR">Paquete Globular</option>
+            <option value="PLASMA FRESCO CONGELADO">Plasma Fresco Congelado</option>
+            <option value="PLAQUETAS">Plaquetas</option>
+            <option value="CRIOPRECIPITADO">Crioprecipitado</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Unidades</label>
+          <input type="number" min="1" class="form-control" name="unidadesSolicitadas" [(ngModel)]="nuevaSolicitud.unidadesSolicitadas" required>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Prioridad</label>
+          <select class="form-select" name="prioridad" [(ngModel)]="nuevaSolicitud.prioridad">
+            <option value="RUTINA">Rutina</option>
+            <option value="URGENTE">Urgente</option>
+            <option value="EMERGENCIA">Emergencia</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label fw-semibold">Indicación Clínica</label>
+          <textarea class="form-control" rows="2" name="indicacionClinica" [(ngModel)]="nuevaSolicitud.indicacionClinica"></textarea>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Registrar Solicitud</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoSolicitud" [class.alert-danger]="!exitoSolicitud" *ngIf="mensajeSolicitud">
+        {{ mensajeSolicitud }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Solicitudes Registradas</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Código</th><th>Paciente</th><th>Médico</th><th>Tipo</th><th>Unid.</th><th>Prioridad</th><th>Estado</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of solicitudes">
+              <td>{{ s.codigoSolicitud }}</td>
+              <td>{{ s.pacienteNombreCompleto }}</td>
+              <td>{{ s.medicoNombreCompleto }}</td>
+              <td>{{ s.tipoHemocomponente }}</td>
+              <td>{{ s.unidadesSolicitadas }}</td>
+              <td>{{ s.prioridad }}</td>
+              <td><span class="badge" [ngClass]="'bg-' + colorEstado(s.estado)">{{ s.estado }}</span></td>
+              <td>
+                <ng-container *ngIf="s.estado === 'PENDIENTE'">
+                  <button class="btn btn-sm btn-outline-success me-1" (click)="cambiarEstadoSolicitud(s.id, 'APROBADA')">Aprobar</button>
+                  <button class="btn btn-sm btn-outline-danger me-1" (click)="cambiarEstadoSolicitud(s.id, 'RECHAZADA')">Rechazar</button>
+                </ng-container>
+                <button class="btn btn-sm btn-outline-secondary" *ngIf="authService.esAdministrador()" (click)="eliminarSolicitud(s.id, s.codigoSolicitud)" title="Eliminar solicitud">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSFUSIONES -->
+<div *ngIf="pestanaActiva === 'transfusiones'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Transfusión</h2>
+      <form class="row g-3" (ngSubmit)="registrarTransfusion()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Solicitud Aprobada</label>
+          <select class="form-select" name="solicitudId" [(ngModel)]="nuevaTransfusion.solicitudId" required>
+            <option [ngValue]="null" disabled>Seleccione...</option>
+            <option *ngFor="let s of solicitudesAprobadas()" [ngValue]="s.id">{{ s.codigoSolicitud }} - {{ s.pacienteNombreCompleto }}</option>
+          </select>
+          <div class="form-text" *ngIf="solicitudesAprobadas().length === 0">No hay solicitudes aprobadas pendientes de transfusión.</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Código ISBT de la Unidad</label>
+          <input type="text" class="form-control" name="codigoProductoIsbt" [(ngModel)]="nuevaTransfusion.codigoProductoIsbt" placeholder="Ej: E001" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Resultado Prueba Cruzada</label>
+          <select class="form-select" name="resultadoPruebaCruzada" [(ngModel)]="nuevaTransfusion.resultadoPruebaCruzada">
+            <option value="COMPATIBLE">Compatible</option>
+            <option value="INCOMPATIBLE">Incompatible</option>
+          </select>
+        </div>
+        <div class="col-md-4 form-check ms-2 mt-4">
+          <input type="checkbox" class="form-check-input" id="reaccionAdversa" name="reaccionAdversa" [(ngModel)]="nuevaTransfusion.reaccionAdversa">
+          <label class="form-check-label" for="reaccionAdversa">¿Hubo reacción adversa?</label>
+        </div>
+        <div class="col-md-8" *ngIf="nuevaTransfusion.reaccionAdversa">
+          <label class="form-label fw-semibold">Detalles de la Reacción</label>
+          <input type="text" class="form-control" name="detallesReaccion" [(ngModel)]="nuevaTransfusion.detallesReaccion">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Registrar Transfusión</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoTransfusion" [class.alert-danger]="!exitoTransfusion" *ngIf="mensajeTransfusion">
+        {{ mensajeTransfusion }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Transfusiones Registradas</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Solicitud</th><th>Paciente</th><th>Unidad</th><th>Resultado</th><th>Reacción Adversa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of transfusiones">
+              <td>{{ t.codigoSolicitud }}</td>
+              <td>{{ t.pacienteNombreCompleto }}</td>
+              <td>{{ t.codigoProductoIsbt }} ({{ t.grupoAbo }} {{ t.factorRh }})</td>
+              <td>{{ t.resultadoPruebaCruzada }}</td>
+              <td>
+                <span class="badge" [ngClass]="t.reaccionAdversa ? 'bg-danger' : 'bg-success'">
+                  {{ t.reaccionAdversa ? 'Sí' : 'No' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

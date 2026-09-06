@@ -1,0 +1,40 @@
+<h2 class="h5 mb-3">Existencias por Grupo Sanguíneo</h2>
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3" *ngFor="let item of resumen">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body">
+        <div class="fs-3 fw-bold text-primary">{{ item.unidades }}</div>
+        <div class="small text-secondary">{{ item.grupoAbo }}{{ signoRh(item.factorRh) }} · {{ item.tipoHemocomponente }}</div>
+      </div>
+    </div>
+  </div>
+  <p class="text-secondary" *ngIf="resumen.length === 0">No hay unidades disponibles en este momento.</p>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Inventario Activo (Algoritmo FEFO)</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Código ISBT 128</th>
+            <th>Tipo</th>
+            <th>Grupo Sanguíneo</th>
+            <th>Vencimiento</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of inventario">
+            <td><strong>{{ item.codigoProductoIsbt }}</strong></td>
+            <td>{{ item.tipoHemocomponente }}</td>
+            <td>{{ item.grupoAbo }} {{ item.factorRh }}</td>
+            <td>{{ item.fechaVencimiento ? (item.fechaVencimiento | date:'dd/MM/yyyy') : 'Sin fecha' }}</td>
+            <td><span class="badge bg-success">{{ item.estado }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

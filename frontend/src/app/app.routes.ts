@@ -1,0 +1,45 @@
+import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
+
+export const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'panel',
+    loadComponent: () => import('./features/panel/panel-layout.component').then(m => m.PanelLayoutComponent),
+    canActivate: [authGuard],
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/panel/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
+      {
+        path: 'inventario',
+        loadComponent: () => import('./features/panel/inventario/inventario.component').then(m => m.InventarioComponent)
+      },
+      {
+        path: 'red',
+        loadComponent: () => import('./features/panel/red/red.component').then(m => m.RedComponent)
+      },
+      {
+        path: 'donaciones',
+        loadComponent: () => import('./features/panel/donaciones/donaciones.component').then(m => m.DonacionesComponent)
+      },
+      {
+        path: 'clinica',
+        loadComponent: () => import('./features/panel/clinica/clinica.component').then(m => m.ClinicaComponent)
+      },
+      {
+        path: 'medicos',
+        loadComponent: () => import('./features/panel/medicos/medicos.component').then(m => m.MedicosComponent),
+        canActivate: [adminGuard]
+      }
+    ]
+  },
+  { path: '**', redirectTo: 'login' }
+];

@@ -1,0 +1,151 @@
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'donantes'" href="javascript:void(0)" (click)="pestanaActiva = 'donantes'">Donantes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'donaciones'" href="javascript:void(0)" (click)="pestanaActiva = 'donaciones'">Donaciones</a>
+  </li>
+</ul>
+
+<div *ngIf="pestanaActiva === 'donantes'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Donante</h2>
+      <form class="row g-3" (ngSubmit)="registrarDonante()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">N° Documento</label>
+          <input type="text" class="form-control" name="numDoc" [(ngModel)]="nuevoDonante.numDoc" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Nombres</label>
+          <input type="text" class="form-control" name="nombres" [(ngModel)]="nuevoDonante.nombres" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Apellidos</label>
+          <input type="text" class="form-control" name="apellidos" [(ngModel)]="nuevoDonante.apellidos" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Fecha de Nacimiento</label>
+          <input type="date" class="form-control" name="fechaNacimiento" [(ngModel)]="nuevoDonante.fechaNacimiento">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Sexo</label>
+          <select class="form-select" name="sexo" [(ngModel)]="nuevoDonante.sexo">
+            <option value="">Sin especificar</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Grupo ABO</label>
+          <select class="form-select" name="grupoAbo" [(ngModel)]="nuevoDonante.grupoAbo" required>
+            <option>O</option><option>A</option><option>B</option><option>AB</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Factor Rh</label>
+          <select class="form-select" name="factorRh" [(ngModel)]="nuevoDonante.factorRh" required>
+            <option value="POSITIVO">Positivo</option>
+            <option value="NEGATIVO">Negativo</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Registrar Donante</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoDonante" [class.alert-danger]="!exitoDonante" *ngIf="mensajeDonante">
+        {{ mensajeDonante }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Donantes Registrados</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Documento</th><th>Nombre Completo</th><th>Grupo</th><th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of donantes">
+              <td>{{ d.tipoDoc }} {{ d.numDoc }}</td>
+              <td>{{ d.nombres }} {{ d.apellidos }}</td>
+              <td>{{ d.grupoAbo }} {{ d.factorRh }}</td>
+              <td>
+                <span class="badge" [ngClass]="d.estadoDiferido ? 'bg-danger' : 'bg-success'">
+                  {{ d.estadoDiferido ? 'Diferido' : 'Apto' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="pestanaActiva === 'donaciones'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Donación</h2>
+      <form class="row g-3" (ngSubmit)="registrarDonacion()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Donante</label>
+          <select class="form-select" name="donanteId" [(ngModel)]="nuevaDonacion.donanteId" required>
+            <option [ngValue]="null" disabled>Seleccione...</option>
+            <option *ngFor="let d of donantes" [ngValue]="d.id">{{ d.nombres }} {{ d.apellidos }} ({{ d.numDoc }})</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Volumen (ml)</label>
+          <input type="number" class="form-control" name="volumenMl" [(ngModel)]="nuevaDonacion.volumenMl">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Tipo de Donación</label>
+          <select class="form-select" name="tipoDonacion" [(ngModel)]="nuevaDonacion.tipoDonacion">
+            <option value="VOLUNTARIA">Voluntaria</option>
+            <option value="REPOSICION">Reposición</option>
+            <option value="AUTOLOGA">Autóloga</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Registrar Donación</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoDonacion" [class.alert-danger]="!exitoDonacion" *ngIf="mensajeDonacion">
+        {{ mensajeDonacion }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Donaciones Registradas</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Código DIN</th><th>Donante</th><th>Volumen</th><th>Tipo</th><th>Tamizaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of donaciones">
+              <td>{{ d.dinIsbt128 }}</td>
+              <td>{{ d.donanteNombreCompleto }}</td>
+              <td>{{ d.volumenMl }} ml</td>
+              <td>{{ d.tipoDonacion }}</td>
+              <td>
+                <span class="badge" [ngClass]="d.tamizajeAprobado ? 'bg-success' : 'bg-secondary'">
+                  {{ d.tamizajeAprobado ? 'Aprobado' : 'Pendiente' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
