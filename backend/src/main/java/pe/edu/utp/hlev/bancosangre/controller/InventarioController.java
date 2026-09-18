@@ -3,13 +3,16 @@ package pe.edu.utp.hlev.bancosangre.controller;
 import pe.edu.utp.hlev.bancosangre.dto.InventarioItemDTO;
 import pe.edu.utp.hlev.bancosangre.dto.RedBusquedaDTO;
 import pe.edu.utp.hlev.bancosangre.dto.ResumenExistenciasDTO;
+import pe.edu.utp.hlev.bancosangre.security.AccesoClinico;
 import pe.edu.utp.hlev.bancosangre.service.InventarioService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// RBAC (RF-02): visibilidad de inventario/red (RF-19) abierta a todo el personal clínico.
 @RestController
 @RequestMapping("/api")
+@AccesoClinico
 public class InventarioController {
 
     private final InventarioService inventarioService;

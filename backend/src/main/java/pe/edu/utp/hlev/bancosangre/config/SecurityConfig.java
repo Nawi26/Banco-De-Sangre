@@ -2,6 +2,7 @@ package pe.edu.utp.hlev.bancosangre.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pe.edu.utp.hlev.bancosangre.dto.ErrorResponse;
+import pe.edu.utp.hlev.bancosangre.security.AuditoriaFilter;
 import pe.edu.utp.hlev.bancosangre.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,13 +28,16 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuditoriaFilter auditoriaFilter;
     private final ObjectMapper objectMapper;
 
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigins;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, ObjectMapper objectMapper) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuditoriaFilter auditoriaFilter,
+                           ObjectMapper objectMapper) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.auditoriaFilter = auditoriaFilter;
         this.objectMapper = objectMapper;
     }
 
@@ -66,7 +70,8 @@ public class SecurityConfig {
                                     ErrorResponse.of("No tiene permisos para acceder a este recurso.")));
                         })
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(auditoriaFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }
