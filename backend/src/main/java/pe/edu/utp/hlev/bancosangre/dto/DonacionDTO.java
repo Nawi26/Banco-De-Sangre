@@ -10,7 +10,8 @@ public record DonacionDTO(
         LocalDateTime fechaExtraccion,
         Integer volumenMl,
         String tipoDonacion,
-        Boolean tamizajeAprobado
+        Boolean tamizajeAprobado,
+        Long campanaId
 ) {
     public static DonacionDTO from(pe.edu.utp.hlev.bancosangre.model.Donacion d) {
         return new DonacionDTO(
@@ -21,7 +22,8 @@ public record DonacionDTO(
                 d.getFechaExtraccion(),
                 d.getVolumenMl(),
                 d.getTipoDonacion(),
-                d.getTamizajeAprobado()
+                d.getTamizajeAprobado(),
+                d.getCampana() != null ? d.getCampana().getId() : null
         );
     }
 }

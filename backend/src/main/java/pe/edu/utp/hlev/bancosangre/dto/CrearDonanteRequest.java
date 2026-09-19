@@ -12,6 +12,8 @@ public record CrearDonanteRequest(
         LocalDate fechaNacimiento,
         String sexo,
         @NotBlank String grupoAbo,
-        @NotBlank String factorRh
+        @NotBlank String factorRh,
+        String telefono,
+        String direccion
 ) {
 }

@@ -38,8 +38,11 @@ public class DonanteService {
         donante.setSexo(request.sexo());
         donante.setGrupoAbo(request.grupoAbo());
         donante.setFactorRh(request.factorRh());
+        donante.setTelefono(request.telefono());
+        donante.setDireccion(request.direccion());
         donante.setEstadoDiferido(false);
         donante.setEsOcupacionRiesgo(false);
+        donante.setApto(true);
 
         return DonanteDTO.from(donanteRepository.save(donante));
     }

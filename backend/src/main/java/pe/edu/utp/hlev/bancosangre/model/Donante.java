@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -44,4 +45,41 @@ public class Donante {
 
     @Column(name = "es_ocupacion_riesgo")
     private Boolean esOcupacionRiesgo;
+
+    private String telefono;
+
+    private String direccion;
+
+    // RF-03: ficha clínica integral (datos biométricos del último triaje registrado).
+    @Column(name = "peso_kg")
+    private BigDecimal pesoKg;
+
+    @Column(name = "talla_cm")
+    private BigDecimal tallaCm;
+
+    @Column(name = "presion_sistolica")
+    private Integer presionSistolica;
+
+    @Column(name = "presion_diastolica")
+    private Integer presionDiastolica;
+
+    private Integer pulso;
+
+    private BigDecimal hemoglobina;
+
+    // RF-03/RF-04: aptitud vigente y diferimiento calculados automáticamente por TriajeService.
+    @Column(nullable = false)
+    private Boolean apto = true;
+
+    @Column(name = "tipo_diferimiento")
+    private String tipoDiferimiento;
+
+    @Column(name = "motivo_diferimiento")
+    private String motivoDiferimiento;
+
+    @Column(name = "diferido_hasta")
+    private LocalDate diferidoHasta;
+
+    @Column(name = "fecha_ultima_donacion")
+    private LocalDate fechaUltimaDonacion;
 }

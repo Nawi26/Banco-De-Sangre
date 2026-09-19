@@ -36,4 +36,9 @@ public class Donacion {
 
     @Column(name = "tamizaje_aprobado")
     private Boolean tamizajeAprobado;
+
+    // RF-23: vincula la donación a la campaña de captación, cuando aplica.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "campana_id")
+    private CampanaDonacion campana;
 }
