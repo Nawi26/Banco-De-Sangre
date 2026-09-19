@@ -40,4 +40,9 @@ public class Hemocomponente {
     private String ubicacionFisica;
 
     private String estado;
+
+    // RF-06: DIN matriz — la donación (bolsa de sangre total) de la que se fraccionó esta unidad.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "donacion_id")
+    private Donacion donacion;
 }

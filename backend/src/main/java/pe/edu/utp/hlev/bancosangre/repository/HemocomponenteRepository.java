@@ -18,6 +18,18 @@ public interface HemocomponenteRepository extends JpaRepository<Hemocomponente, 
 
     long countByEstadoInAndFechaVencimientoBetween(List<String> estados, LocalDateTime desde, LocalDateTime hasta);
 
+    long countByDonacionIdAndTipoHemocomponente(Long donacionId, String tipoHemocomponente);
+
+    // RF-06: trazabilidad de los hemocomponentes obtenidos de una misma donación (DIN matriz).
+    @Query("SELECT h FROM Hemocomponente h JOIN FETCH h.donacion d JOIN FETCH d.donante WHERE h.donacion.id = :donacionId ORDER BY h.id")
+    List<Hemocomponente> findByDonacionIdConDonacion(@Param("donacionId") Long donacionId);
+
+    @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion WHERE h.id = :id")
+    Optional<Hemocomponente> buscarPorIdConDonacion(@Param("id") Long id);
+
+    @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion WHERE h.codigoProductoIsbt = :codigo")
+    Optional<Hemocomponente> buscarPorCodigoConDonacion(@Param("codigo") String codigo);
+
     @Query("""
             SELECT new pe.edu.utp.hlev.bancosangre.dto.ResumenExistenciasDTO(
                 h.tipoHemocomponente, h.grupoAbo, h.factorRh, COUNT(h), COALESCE(SUM(h.volumenMl), 0L)
