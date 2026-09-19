@@ -20,6 +20,9 @@
     <properties>
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- El Lombok que trae spring-boot-starter-parent 3.3.4 (1.18.34) no reconoce el compilador
+             de Java 25; se fuerza una versión más reciente con soporte para JDK 25. -->
+        <lombok.version>1.18.48</lombok.version>
     </properties>
 
     <dependencies>
@@ -94,6 +97,22 @@
     <build>
         <finalName>banco-sangre-backend</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Declaración explícita del annotation processor: con JDK 25 la detección
+                         implícita de Lombok en el classpath resultó poco confiable (no generaba
+                         getters/setters en compilaciones sucesivas). -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
