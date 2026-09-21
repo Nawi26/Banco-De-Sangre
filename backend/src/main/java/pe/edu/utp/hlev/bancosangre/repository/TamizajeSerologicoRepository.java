@@ -11,6 +11,8 @@ public interface TamizajeSerologicoRepository extends JpaRepository<TamizajeSero
 
     boolean existsByDonacionId(Long donacionId);
 
+    Optional<TamizajeSerologico> findByDonacionId(Long donacionId);
+
     @Query("SELECT t FROM TamizajeSerologico t JOIN FETCH t.donacion LEFT JOIN FETCH t.resultados WHERE t.donacion.id = :donacionId")
     Optional<TamizajeSerologico> buscarPorDonacionConResultados(@Param("donacionId") Long donacionId);
 }

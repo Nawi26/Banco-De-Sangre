@@ -43,16 +43,19 @@ public class TamizajeSerologicoService {
     private final DonanteRepository donanteRepository;
     private final HemocomponenteRepository hemocomponenteRepository;
     private final FirmaElectronicaService firmaElectronicaService;
+    private final HemocomponenteEventoService hemocomponenteEventoService;
 
     public TamizajeSerologicoService(TamizajeSerologicoRepository tamizajeSerologicoRepository,
                                       DonacionRepository donacionRepository, DonanteRepository donanteRepository,
                                       HemocomponenteRepository hemocomponenteRepository,
-                                      FirmaElectronicaService firmaElectronicaService) {
+                                      FirmaElectronicaService firmaElectronicaService,
+                                      HemocomponenteEventoService hemocomponenteEventoService) {
         this.tamizajeSerologicoRepository = tamizajeSerologicoRepository;
         this.donacionRepository = donacionRepository;
         this.donanteRepository = donanteRepository;
         this.hemocomponenteRepository = hemocomponenteRepository;
         this.firmaElectronicaService = firmaElectronicaService;
+        this.hemocomponenteEventoService = hemocomponenteEventoService;
     }
 
     public TamizajeSerologicoDTO obtenerPorDonacion(Long donacionId) {
@@ -207,11 +210,15 @@ public class TamizajeSerologicoService {
         // Toda unidad fraccionada de esta donación pasa de CUARENTENA a DISPONIBLE o BLOQUEADO.
         // El bloqueo es irreversible: ningún otro flujo del sistema revierte el estado BLOQUEADO.
         List<Hemocomponente> hemocomponentes = hemocomponenteRepository.findByDonacionId(donacion.getId());
+        Long usuarioResponsable = tamizaje.getUsuario2() != null ? tamizaje.getUsuario2().getId()
+                : tamizaje.getUsuario1() != null ? tamizaje.getUsuario1().getId() : null;
         for (Hemocomponente h : hemocomponentes) {
             if (!EstadoHemocomponente.CUARENTENA.equals(h.getEstado())) {
                 continue; // no se toca una unidad que ya fue movida por otro proceso (ej. ya bloqueada antes)
             }
             h.setEstado(apto ? EstadoHemocomponente.DISPONIBLE : EstadoHemocomponente.BLOQUEADO);
+            hemocomponenteEventoService.registrar(h, apto ? "LIBERACION" : "BLOQUEO",
+                    "Tamizaje serológico con resultado " + tamizaje.getResultadoGeneral() + ".", usuarioResponsable);
         }
         hemocomponenteRepository.saveAll(hemocomponentes);
 

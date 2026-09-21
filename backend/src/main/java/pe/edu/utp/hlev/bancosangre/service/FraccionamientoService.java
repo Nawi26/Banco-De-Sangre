@@ -23,19 +23,22 @@ public class FraccionamientoService {
 
     private final DonacionRepository donacionRepository;
     private final HemocomponenteRepository hemocomponenteRepository;
+    private final HemocomponenteEventoService hemocomponenteEventoService;
 
-    public FraccionamientoService(DonacionRepository donacionRepository, HemocomponenteRepository hemocomponenteRepository) {
+    public FraccionamientoService(DonacionRepository donacionRepository, HemocomponenteRepository hemocomponenteRepository,
+                                   HemocomponenteEventoService hemocomponenteEventoService) {
         this.donacionRepository = donacionRepository;
         this.hemocomponenteRepository = hemocomponenteRepository;
+        this.hemocomponenteEventoService = hemocomponenteEventoService;
     }
 
     @Transactional
-    public List<HemocomponenteDTO> fraccionar(Long donacionId, FraccionarDonacionRequest request) {
+    public List<HemocomponenteDTO> fraccionar(Long donacionId, FraccionarDonacionRequest request, Long usuarioId) {
         Donacion donacion = donacionRepository.findById(donacionId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Donación no encontrada."));
 
         return request.tiposHemocomponente().stream()
-                .map(tipo -> crearHemocomponente(donacion, parsearTipo(tipo)))
+                .map(tipo -> crearHemocomponente(donacion, parsearTipo(tipo), usuarioId))
                 .map(HemocomponenteDTO::from)
                 .toList();
     }
@@ -45,7 +48,7 @@ public class FraccionamientoService {
                 .map(HemocomponenteDTO::from).toList();
     }
 
-    private Hemocomponente crearHemocomponente(Donacion donacion, TipoHemocomponente tipo) {
+    private Hemocomponente crearHemocomponente(Donacion donacion, TipoHemocomponente tipo, Long usuarioId) {
         Hemocomponente hemocomponente = new Hemocomponente();
         hemocomponente.setDonacion(donacion);
         hemocomponente.setTipoHemocomponente(tipo.getNombre());
@@ -59,7 +62,11 @@ public class FraccionamientoService {
         hemocomponente.setEstado(EstadoHemocomponente.CUARENTENA);
         hemocomponente.setCodigoProductoIsbt(generarCodigoProductoIsbt(donacion, tipo));
 
-        return hemocomponenteRepository.save(hemocomponente);
+        Hemocomponente guardado = hemocomponenteRepository.save(hemocomponente);
+        hemocomponenteEventoService.registrar(guardado, "FRACCIONAMIENTO",
+                "Obtenido de la donación " + donacion.getDinIsbt128() + ".", usuarioId);
+
+        return guardado;
     }
 
     private TipoHemocomponente parsearTipo(String tipo) {

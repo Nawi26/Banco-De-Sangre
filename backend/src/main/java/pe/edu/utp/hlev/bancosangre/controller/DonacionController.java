@@ -9,6 +9,7 @@ import pe.edu.utp.hlev.bancosangre.service.DonacionService;
 import pe.edu.utp.hlev.bancosangre.service.FraccionamientoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +42,10 @@ public class DonacionController {
     // RF-06: fracciona la bolsa de sangre total en los hemocomponentes indicados.
     @PostMapping("/{id}/fraccionamiento")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<HemocomponenteDTO> fraccionar(@PathVariable Long id, @Valid @RequestBody FraccionarDonacionRequest request) {
-        return fraccionamientoService.fraccionar(id, request);
+    public List<HemocomponenteDTO> fraccionar(@PathVariable Long id, @Valid @RequestBody FraccionarDonacionRequest request,
+                                               Authentication authentication) {
+        Long usuarioId = (Long) authentication.getPrincipal();
+        return fraccionamientoService.fraccionar(id, request, usuarioId);
     }
 
     @GetMapping("/{id}/hemocomponentes")

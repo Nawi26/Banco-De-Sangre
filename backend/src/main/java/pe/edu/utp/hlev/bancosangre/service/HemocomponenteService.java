@@ -4,12 +4,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.utp.hlev.bancosangre.dto.AsignarUbicacionRequest;
+import pe.edu.utp.hlev.bancosangre.dto.DescarteHemocomponenteDTO;
 import pe.edu.utp.hlev.bancosangre.dto.HemocomponenteDTO;
+import pe.edu.utp.hlev.bancosangre.dto.HemocomponenteEventoDTO;
+import pe.edu.utp.hlev.bancosangre.dto.HistorialHemocomponenteDTO;
 import pe.edu.utp.hlev.bancosangre.dto.IsbtEtiquetaDTO;
 import pe.edu.utp.hlev.bancosangre.model.CamaraAlmacenamiento;
 import pe.edu.utp.hlev.bancosangre.model.Hemocomponente;
+import pe.edu.utp.hlev.bancosangre.model.TamizajeSerologico;
 import pe.edu.utp.hlev.bancosangre.repository.CamaraAlmacenamientoRepository;
+import pe.edu.utp.hlev.bancosangre.repository.DescarteHemocomponenteRepository;
+import pe.edu.utp.hlev.bancosangre.repository.HemocomponenteEventoRepository;
 import pe.edu.utp.hlev.bancosangre.repository.HemocomponenteRepository;
+import pe.edu.utp.hlev.bancosangre.repository.TamizajeSerologicoRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 // RF-05: consulta de hemocomponentes y generación/lectura de la información de sus etiquetas ISBT 128.
 @Service
@@ -17,11 +27,20 @@ public class HemocomponenteService {
 
     private final HemocomponenteRepository hemocomponenteRepository;
     private final CamaraAlmacenamientoRepository camaraAlmacenamientoRepository;
+    private final HemocomponenteEventoRepository hemocomponenteEventoRepository;
+    private final DescarteHemocomponenteRepository descarteHemocomponenteRepository;
+    private final TamizajeSerologicoRepository tamizajeSerologicoRepository;
 
     public HemocomponenteService(HemocomponenteRepository hemocomponenteRepository,
-                                  CamaraAlmacenamientoRepository camaraAlmacenamientoRepository) {
+                                  CamaraAlmacenamientoRepository camaraAlmacenamientoRepository,
+                                  HemocomponenteEventoRepository hemocomponenteEventoRepository,
+                                  DescarteHemocomponenteRepository descarteHemocomponenteRepository,
+                                  TamizajeSerologicoRepository tamizajeSerologicoRepository) {
         this.hemocomponenteRepository = hemocomponenteRepository;
         this.camaraAlmacenamientoRepository = camaraAlmacenamientoRepository;
+        this.hemocomponenteEventoRepository = hemocomponenteEventoRepository;
+        this.descarteHemocomponenteRepository = descarteHemocomponenteRepository;
+        this.tamizajeSerologicoRepository = tamizajeSerologicoRepository;
     }
 
     public HemocomponenteDTO obtener(Long id) {
@@ -43,6 +62,33 @@ public class HemocomponenteService {
 
     public IsbtEtiquetaDTO obtenerEtiqueta(Long id) {
         return construirEtiqueta(buscarPorId(id));
+    }
+
+    // RF-30: historial completo del ciclo de vida, desde la donación hasta su destino final.
+    public HistorialHemocomponenteDTO obtenerHistorial(Long id) {
+        Hemocomponente h = hemocomponenteRepository.buscarPorIdParaHistorial(id)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Hemocomponente no encontrado."));
+
+        String donanteNombreCompleto = h.getDonacion() != null && h.getDonacion().getDonante() != null
+                ? h.getDonacion().getDonante().getNombres() + " " + h.getDonacion().getDonante().getApellidos()
+                : null;
+        LocalDateTime fechaExtraccion = h.getDonacion() != null ? h.getDonacion().getFechaExtraccion() : null;
+
+        String resultadoTamizaje = h.getDonacion() != null
+                ? tamizajeSerologicoRepository.findByDonacionId(h.getDonacion().getId())
+                        .map(TamizajeSerologico::getResultadoGeneral)
+                        .orElse(null)
+                : null;
+
+        DescarteHemocomponenteDTO descarte = descarteHemocomponenteRepository.findByHemocomponenteId(id)
+                .map(DescarteHemocomponenteDTO::from)
+                .orElse(null);
+
+        List<HemocomponenteEventoDTO> eventos = hemocomponenteEventoRepository.findByHemocomponenteIdOrderByFechaAsc(id)
+                .stream().map(HemocomponenteEventoDTO::from).toList();
+
+        return new HistorialHemocomponenteDTO(HemocomponenteDTO.from(h), donanteNombreCompleto, fechaExtraccion,
+                resultadoTamizaje, descarte, eventos);
     }
 
     /** RF-05: "lectura" de la unidad a partir del código escaneado (lineal o extraído del payload 2D). */

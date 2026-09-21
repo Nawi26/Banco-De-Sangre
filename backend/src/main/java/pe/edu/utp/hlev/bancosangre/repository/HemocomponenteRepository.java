@@ -29,6 +29,10 @@ public interface HemocomponenteRepository extends JpaRepository<Hemocomponente, 
     @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion LEFT JOIN FETCH h.camara WHERE h.id = :id")
     Optional<Hemocomponente> buscarPorIdConDonacion(@Param("id") Long id);
 
+    // RF-30: historial completo — incluye el donante de la donación de origen.
+    @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion d LEFT JOIN FETCH d.donante LEFT JOIN FETCH h.camara WHERE h.id = :id")
+    Optional<Hemocomponente> buscarPorIdParaHistorial(@Param("id") Long id);
+
     @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion LEFT JOIN FETCH h.camara WHERE h.codigoProductoIsbt = :codigo")
     Optional<Hemocomponente> buscarPorCodigoConDonacion(@Param("codigo") String codigo);
 
