@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClinicoService } from '../../../core/services/clinico.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { Despacho, Paciente, PruebaCompatibilidad, ReservaQuirurgica, Solicitud, Transfusion } from '../../../core/models/clinico.model';
+import { Despacho, EventoAdversoTransfusional, Paciente, PruebaCompatibilidad, ReservaQuirurgica, Solicitud, Transfusion } from '../../../core/models/clinico.model';
 
 @Component({
   selector: 'app-clinica',
@@ -12,7 +12,7 @@ import { Despacho, Paciente, PruebaCompatibilidad, ReservaQuirurgica, Solicitud,
   templateUrl: './clinica.component.html'
 })
 export class ClinicaComponent implements OnInit {
-  pestanaActiva: 'pacientes' | 'solicitudes' | 'pruebasCruzadas' | 'despachos' | 'transfusiones' | 'reservas' = 'solicitudes';
+  pestanaActiva: 'pacientes' | 'solicitudes' | 'pruebasCruzadas' | 'despachos' | 'transfusiones' | 'reservas' | 'hemovigilancia' = 'solicitudes';
 
   pacientes: Paciente[] = [];
   solicitudes: Solicitud[] = [];
@@ -20,6 +20,7 @@ export class ClinicaComponent implements OnInit {
   pruebasCruzadas: PruebaCompatibilidad[] = [];
   despachosPendientes: Despacho[] = [];
   reservasQuirurgicas: ReservaQuirurgica[] = [];
+  eventosAdversosTransfusionales: EventoAdversoTransfusional[] = [];
 
   nuevoPaciente = { tipoDoc: 'DNI', numDoc: '', nombres: '', apellidos: '', fechaNacimiento: null as string | null, sexo: '', grupoAbo: 'O', factorRh: 'POSITIVO' };
   mensajePaciente = '';
@@ -49,6 +50,10 @@ export class ClinicaComponent implements OnInit {
   mensajeReserva = '';
   exitoReserva = false;
 
+  nuevoEventoAdverso = { transfusionId: null as number | null, tipoReaccion: 'FEBRIL', esInmediata: true, gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
+  mensajeEventoAdverso = '';
+  exitoEventoAdverso = false;
+
   constructor(private clinicoService: ClinicoService, public authService: AuthService) {}
 
   ngOnInit(): void {
@@ -57,6 +62,7 @@ export class ClinicaComponent implements OnInit {
     this.cargarTransfusiones();
     this.cargarDespachosPendientes();
     this.cargarReservasQuirurgicas();
+    this.cargarEventosAdversosTransfusionales();
   }
 
   cargarPacientes(): void {
@@ -260,6 +266,37 @@ export class ClinicaComponent implements OnInit {
       error: (err) => {
         this.exitoReserva = false;
         this.mensajeReserva = err.error?.mensaje ?? 'No se pudo actualizar la reserva.';
+      }
+    });
+  }
+
+  // RF-15: hemovigilancia de reacciones transfusionales
+  cargarEventosAdversosTransfusionales(): void {
+    this.clinicoService.listarEventosAdversosTransfusionales().subscribe(datos => this.eventosAdversosTransfusionales = datos);
+  }
+
+  registrarEventoAdverso(): void {
+    this.mensajeEventoAdverso = '';
+    if (!this.nuevoEventoAdverso.transfusionId) return;
+
+    const transfusionId = this.nuevoEventoAdverso.transfusionId;
+    this.clinicoService.registrarEventoAdversoTransfusional(transfusionId, {
+      tipoReaccion: this.nuevoEventoAdverso.tipoReaccion,
+      esInmediata: this.nuevoEventoAdverso.esInmediata,
+      gravedad: this.nuevoEventoAdverso.gravedad,
+      descripcion: this.nuevoEventoAdverso.descripcion,
+      accionesTomadas: this.nuevoEventoAdverso.accionesTomadas
+    }).subscribe({
+      next: () => {
+        this.exitoEventoAdverso = true;
+        this.mensajeEventoAdverso = 'Evento adverso registrado correctamente.';
+        this.nuevoEventoAdverso = { transfusionId: null, tipoReaccion: 'FEBRIL', esInmediata: true, gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
+        this.cargarEventosAdversosTransfusionales();
+        this.cargarTransfusiones();
+      },
+      error: (err) => {
+        this.exitoEventoAdverso = false;
+        this.mensajeEventoAdverso = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
       }
     });
   }

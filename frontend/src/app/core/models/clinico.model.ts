@@ -177,3 +177,46 @@ export interface CrearReservaQuirurgicaRequest {
   fechaCirugiaProgramada: string;
   horasValidezPostCirugia: number | null;
 }
+
+// RF-15: hemovigilancia de reacciones transfusionales.
+export interface EventoAdversoTransfusional {
+  id: number;
+  transfusionId: number;
+  pacienteNombreCompleto: string | null;
+  codigoProductoIsbt: string | null;
+  tipoReaccion: string;
+  esInmediata: boolean;
+  gravedad: string;
+  descripcion: string;
+  accionesTomadas: string | null;
+  usuarioNombreCompleto: string | null;
+  fechaDeteccion: string;
+}
+
+export interface RegistrarEventoAdversoTransfusionalRequest {
+  tipoReaccion: string;
+  esInmediata: boolean;
+  gravedad: string;
+  descripcion: string;
+  accionesTomadas: string;
+}
+
+// RF-43: hemovigilancia de eventos adversos de la donación.
+export interface EventoAdversoDonacion {
+  id: number;
+  donacionId: number;
+  donanteNombreCompleto: string | null;
+  tipoEvento: string;
+  gravedad: string;
+  descripcion: string;
+  accionesTomadas: string | null;
+  usuarioNombreCompleto: string | null;
+  fechaDeteccion: string;
+}
+
+export interface RegistrarEventoAdversoDonacionRequest {
+  tipoEvento: string;
+  gravedad: string;
+  descripcion: string;
+  accionesTomadas: string;
+}

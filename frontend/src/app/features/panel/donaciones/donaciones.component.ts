@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClinicoService } from '../../../core/services/clinico.service';
-import { Donacion, Donante } from '../../../core/models/clinico.model';
+import { Donacion, Donante, EventoAdversoDonacion } from '../../../core/models/clinico.model';
 
 @Component({
   selector: 'app-donaciones',
@@ -11,10 +11,11 @@ import { Donacion, Donante } from '../../../core/models/clinico.model';
   templateUrl: './donaciones.component.html'
 })
 export class DonacionesComponent implements OnInit {
-  pestanaActiva: 'donantes' | 'donaciones' = 'donantes';
+  pestanaActiva: 'donantes' | 'donaciones' | 'eventosAdversos' = 'donantes';
 
   donantes: Donante[] = [];
   donaciones: Donacion[] = [];
+  eventosAdversosDonacion: EventoAdversoDonacion[] = [];
 
   nuevoDonante = { tipoDoc: 'DNI', numDoc: '', nombres: '', apellidos: '', fechaNacimiento: null as string | null, sexo: '', grupoAbo: 'O', factorRh: 'POSITIVO' };
   mensajeDonante = '';
@@ -24,11 +25,16 @@ export class DonacionesComponent implements OnInit {
   mensajeDonacion = '';
   exitoDonacion = false;
 
+  nuevoEventoAdverso = { donacionId: null as number | null, tipoEvento: 'MAREO', gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
+  mensajeEventoAdverso = '';
+  exitoEventoAdverso = false;
+
   constructor(private clinicoService: ClinicoService) {}
 
   ngOnInit(): void {
     this.cargarDonantes();
     this.cargarDonaciones();
+    this.cargarEventosAdversosDonacion();
   }
 
   cargarDonantes(): void {
@@ -69,6 +75,35 @@ export class DonacionesComponent implements OnInit {
       error: (err) => {
         this.exitoDonacion = false;
         this.mensajeDonacion = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
+      }
+    });
+  }
+
+  // RF-43: eventos adversos ocurridos durante o después de la donación
+  cargarEventosAdversosDonacion(): void {
+    this.clinicoService.listarEventosAdversosDonacion().subscribe(datos => this.eventosAdversosDonacion = datos);
+  }
+
+  registrarEventoAdverso(): void {
+    this.mensajeEventoAdverso = '';
+    if (!this.nuevoEventoAdverso.donacionId) return;
+
+    const donacionId = this.nuevoEventoAdverso.donacionId;
+    this.clinicoService.registrarEventoAdversoDonacion(donacionId, {
+      tipoEvento: this.nuevoEventoAdverso.tipoEvento,
+      gravedad: this.nuevoEventoAdverso.gravedad,
+      descripcion: this.nuevoEventoAdverso.descripcion,
+      accionesTomadas: this.nuevoEventoAdverso.accionesTomadas
+    }).subscribe({
+      next: () => {
+        this.exitoEventoAdverso = true;
+        this.mensajeEventoAdverso = 'Evento adverso registrado correctamente.';
+        this.nuevoEventoAdverso = { donacionId: null, tipoEvento: 'MAREO', gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
+        this.cargarEventosAdversosDonacion();
+      },
+      error: (err) => {
+        this.exitoEventoAdverso = false;
+        this.mensajeEventoAdverso = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
       }
     });
   }

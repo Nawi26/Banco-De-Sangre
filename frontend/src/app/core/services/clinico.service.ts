@@ -5,8 +5,9 @@ import { API_BASE } from '../config';
 import {
   CrearDonacionRequest, CrearDonanteRequest, CrearPacienteRequest, CrearReservaQuirurgicaRequest,
   CrearSolicitudRequest, CrearTransfusionRequest, ConfirmarDespachoRequest, Despacho, Donacion,
-  Donante, IniciarDespachoRequest, Paciente, PruebaCompatibilidad, RegistrarPruebaCompatibilidadRequest,
-  ReservaQuirurgica, Solicitud, Transfusion
+  Donante, EventoAdversoDonacion, EventoAdversoTransfusional, IniciarDespachoRequest, Paciente,
+  PruebaCompatibilidad, RegistrarEventoAdversoDonacionRequest, RegistrarEventoAdversoTransfusionalRequest,
+  RegistrarPruebaCompatibilidadRequest, ReservaQuirurgica, Solicitud, Transfusion
 } from '../models/clinico.model';
 
 @Injectable({ providedIn: 'root' })
@@ -104,5 +105,23 @@ export class ClinicoService {
 
   marcarReservaQuirurgicaUtilizada(id: number): Observable<{ exito: boolean }> {
     return this.http.patch<{ exito: boolean }>(`${API_BASE}/reservas-quirurgicas/${id}/utilizada`, {});
+  }
+
+  // Hemovigilancia: reacciones transfusionales (RF-15)
+  listarEventosAdversosTransfusionales(): Observable<EventoAdversoTransfusional[]> {
+    return this.http.get<EventoAdversoTransfusional[]>(`${API_BASE}/hemovigilancia/transfusiones`);
+  }
+
+  registrarEventoAdversoTransfusional(transfusionId: number, request: RegistrarEventoAdversoTransfusionalRequest): Observable<EventoAdversoTransfusional> {
+    return this.http.post<EventoAdversoTransfusional>(`${API_BASE}/transfusiones/${transfusionId}/eventos-adversos`, request);
+  }
+
+  // Hemovigilancia: eventos adversos de la donación (RF-43)
+  listarEventosAdversosDonacion(): Observable<EventoAdversoDonacion[]> {
+    return this.http.get<EventoAdversoDonacion[]>(`${API_BASE}/hemovigilancia/donaciones`);
+  }
+
+  registrarEventoAdversoDonacion(donacionId: number, request: RegistrarEventoAdversoDonacionRequest): Observable<EventoAdversoDonacion> {
+    return this.http.post<EventoAdversoDonacion>(`${API_BASE}/donaciones/${donacionId}/eventos-adversos`, request);
   }
 }

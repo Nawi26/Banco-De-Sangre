@@ -5,6 +5,9 @@
   <li class="nav-item">
     <a class="nav-link" [class.active]="pestanaActiva === 'donaciones'" href="javascript:void(0)" (click)="pestanaActiva = 'donaciones'">Donaciones</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'eventosAdversos'" href="javascript:void(0)" (click)="pestanaActiva = 'eventosAdversos'">Eventos Adversos</a>
+  </li>
 </ul>
 
 <div *ngIf="pestanaActiva === 'donantes'">
@@ -143,6 +146,78 @@
                 </span>
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENTOS ADVERSOS DE LA DONACIÓN (RF-43) -->
+<div *ngIf="pestanaActiva === 'eventosAdversos'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Reportar Evento Adverso de la Donación</h2>
+      <form class="row g-3" (ngSubmit)="registrarEventoAdverso()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Donación</label>
+          <select class="form-select" name="eaDonacionId" [(ngModel)]="nuevoEventoAdverso.donacionId" required>
+            <option [ngValue]="null" disabled>Seleccione...</option>
+            <option *ngFor="let d of donaciones" [ngValue]="d.id">{{ d.dinIsbt128 }} - {{ d.donanteNombreCompleto }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Tipo de Evento</label>
+          <select class="form-select" name="eaTipo" [(ngModel)]="nuevoEventoAdverso.tipoEvento">
+            <option value="SINCOPE">Síncope</option>
+            <option value="HEMATOMA">Hematoma</option>
+            <option value="MAREO">Mareo</option>
+            <option value="OTRO">Otro</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Gravedad</label>
+          <select class="form-select" name="eaGravedad" [(ngModel)]="nuevoEventoAdverso.gravedad">
+            <option value="LEVE">Leve</option>
+            <option value="MODERADA">Moderada</option>
+            <option value="GRAVE">Grave</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Descripción</label>
+          <textarea class="form-control" rows="2" name="eaDescripcion" [(ngModel)]="nuevoEventoAdverso.descripcion" required></textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Acciones Tomadas</label>
+          <textarea class="form-control" rows="2" name="eaAcciones" [(ngModel)]="nuevoEventoAdverso.accionesTomadas"></textarea>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Reportar Evento</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoEventoAdverso" [class.alert-danger]="!exitoEventoAdverso" *ngIf="mensajeEventoAdverso">
+        {{ mensajeEventoAdverso }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Eventos Adversos de Donación Registrados</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr><th>Donante</th><th>Tipo</th><th>Gravedad</th><th>Descripción</th><th>Reportado por</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of eventosAdversosDonacion">
+              <td>{{ e.donanteNombreCompleto }}</td>
+              <td>{{ e.tipoEvento }}</td>
+              <td><span class="badge" [ngClass]="e.gravedad === 'GRAVE' ? 'bg-danger' : (e.gravedad === 'MODERADA' ? 'bg-warning text-dark' : 'bg-secondary')">{{ e.gravedad }}</span></td>
+              <td>{{ e.descripcion }}</td>
+              <td>{{ e.usuarioNombreCompleto }}</td>
+            </tr>
+            <tr *ngIf="eventosAdversosDonacion.length === 0"><td colspan="5" class="text-muted">No hay eventos adversos registrados.</td></tr>
           </tbody>
         </table>
       </div>
