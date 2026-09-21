@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
+import { supervisionGuard } from './core/guards/supervision.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -33,6 +34,11 @@ export const routes: Routes = [
       {
         path: 'clinica',
         loadComponent: () => import('./features/panel/clinica/clinica.component').then(m => m.ClinicaComponent)
+      },
+      {
+        path: 'reportes',
+        loadComponent: () => import('./features/panel/reportes/reportes.component').then(m => m.ReportesComponent),
+        canActivate: [supervisionGuard]
       },
       {
         path: 'medicos',

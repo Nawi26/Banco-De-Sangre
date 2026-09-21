@@ -1,0 +1,160 @@
+<h1 class="h4 mb-4 d-none d-print-block">Reporte HLEV - Banco de Sangre</h1>
+
+<div class="card shadow-sm mb-4 d-print-none">
+  <div class="card-body">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Desde</label>
+        <input type="datetime-local" class="form-control" [(ngModel)]="desde">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Hasta</label>
+        <input type="datetime-local" class="form-control" [(ngModel)]="hasta">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100" (click)="actualizar()">Aplicar</button>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <button class="btn btn-outline-secondary me-2" (click)="exportarCsv()">Exportar CSV (Excel)</button>
+        <button class="btn btn-outline-secondary" (click)="exportarPdf()">Exportar PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RF-26: KPIs gerenciales -->
+<div class="row g-3 mb-4" *ngIf="kpis">
+  <div class="col-6 col-md-3">
+    <div class="card shadow-sm text-center h-100">
+      <div class="card-body">
+        <div class="fs-4 fw-bold text-primary">{{ kpis.rotacionInventario | number:'1.2-2' }}</div>
+        <div class="small text-secondary">Rotación de Inventario</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card shadow-sm text-center h-100">
+      <div class="card-body">
+        <div class="fs-4 fw-bold" [ngClass]="kpis.tasaMermaCaducidadPorcentaje > 5 ? 'text-danger' : 'text-success'">
+          {{ kpis.tasaMermaCaducidadPorcentaje | number:'1.1-1' }}%
+        </div>
+        <div class="small text-secondary">Merma por Caducidad</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card shadow-sm text-center h-100">
+      <div class="card-body">
+        <div class="fs-4 fw-bold text-info">
+          {{ kpis.tiempoRespuestaPromedioMinutos !== null ? (kpis.tiempoRespuestaPromedioMinutos | number:'1.0-0') + ' min' : 'N/D' }}
+        </div>
+        <div class="small text-secondary">Tiempo de Respuesta Promedio</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card shadow-sm text-center h-100">
+      <div class="card-body">
+        <div class="fs-4 fw-bold text-primary">{{ kpis.inventarioActivoActual }}</div>
+        <div class="small text-secondary">Inventario Activo Actual</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <!-- RF-44: cumplimiento normativo -->
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h6 mb-3">Cumplimiento Normativo PRONAHEBAS</h2>
+        <div class="mb-3" *ngFor="let i of cumplimiento">
+          <div class="d-flex justify-content-between small mb-1">
+            <span>{{ i.nombre }}</span>
+            <span class="fw-semibold">{{ i.valorPorcentual | number:'1.0-1' }}{{ i.codigo === 'AUDITORIA_ACTIVA' || i.codigo === 'CERTIFICACION_CALIDAD' ? '' : '%' }}</span>
+          </div>
+          <div class="progress" style="height: 8px;" *ngIf="i.codigo !== 'AUDITORIA_ACTIVA' && i.codigo !== 'CERTIFICACION_CALIDAD'">
+            <div class="progress-bar" [ngClass]="i.valorPorcentual >= 90 ? 'bg-success' : (i.valorPorcentual >= 70 ? 'bg-warning' : 'bg-danger')" [style.width.%]="i.valorPorcentual"></div>
+          </div>
+          <div class="form-text">{{ i.descripcion }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RF-16/RF-36: reporte operacional del período -->
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body" *ngIf="operacional">
+        <h2 class="h6 mb-3">Reporte Operacional del Período</h2>
+        <table class="table table-sm mb-3">
+          <tbody>
+            <tr><td>Donaciones registradas</td><td class="text-end fw-semibold">{{ operacional.donacionesRegistradas }}</td></tr>
+            <tr><td>Transfusiones realizadas</td><td class="text-end fw-semibold">{{ operacional.transfusionesRealizadas }}</td></tr>
+            <tr><td>Eventos adversos (transfusión)</td><td class="text-end fw-semibold">{{ operacional.eventosAdversosTransfusionales }}</td></tr>
+            <tr><td>Eventos adversos (donación)</td><td class="text-end fw-semibold">{{ operacional.eventosAdversosDonacion }}</td></tr>
+            <tr><td>Certificados de calidad emitidos</td><td class="text-end fw-semibold">{{ operacional.certificadosEmitidos }}</td></tr>
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col-6">
+            <h3 class="h6 small text-secondary">Descartes por Motivo</h3>
+            <ul class="list-unstyled small">
+              <li *ngFor="let e of descartesPorMotivoEntries()">{{ e[0] }}: <strong>{{ e[1] }}</strong></li>
+              <li *ngIf="descartesPorMotivoEntries().length === 0" class="text-muted">Sin descartes en el período.</li>
+            </ul>
+          </div>
+          <div class="col-6">
+            <h3 class="h6 small text-secondary">Solicitudes por Estado</h3>
+            <ul class="list-unstyled small">
+              <li *ngFor="let e of solicitudesPorEstadoEntries()">{{ e[0] }}: <strong>{{ e[1] }}</strong></li>
+              <li *ngIf="solicitudesPorEstadoEntries().length === 0" class="text-muted">Sin solicitudes en el período.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RF-36: historial de reportes normativos generados automáticamente -->
+<div class="card shadow-sm mb-4 d-print-none">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h6 mb-0">Reportes Normativos PRONAHEBAS (generación automática mensual)</h2>
+      <button class="btn btn-sm btn-outline-primary" (click)="generarNormativoManual()">Generar del período seleccionado</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-sm align-middle">
+        <thead>
+          <tr><th>Período</th><th>Generado</th><th>Donaciones</th><th>Transfusiones</th><th>Descartes</th><th>Eventos Adversos</th><th>Certificados</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of historialNormativo">
+            <td>{{ r.periodoDesde | date:'dd/MM/yyyy' }} - {{ r.periodoHasta | date:'dd/MM/yyyy' }}</td>
+            <td>{{ r.fechaGeneracion | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ r.donacionesRegistradas }}</td>
+            <td>{{ r.transfusionesRealizadas }}</td>
+            <td>{{ r.descartesTotal }}</td>
+            <td>{{ r.eventosAdversosTotal }}</td>
+            <td>{{ r.certificadosEmitidos }}</td>
+          </tr>
+          <tr *ngIf="historialNormativo.length === 0"><td colspan="7" class="text-muted">Aún no se ha generado ningún reporte normativo.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exito" [class.alert-danger]="!exito" *ngIf="mensaje">{{ mensaje }}</div>
+  </div>
+</div>
+
+<!-- RF-50: dataset anonimizado -->
+<div class="card shadow-sm d-print-none">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <div>
+      <h2 class="h6 mb-1">Dataset Anonimizado para Investigación Epidemiológica</h2>
+      <p class="text-muted small mb-0">Sin nombres, documento, teléfono ni dirección — solo edad, sexo, grupo ABO/Rh, ocupación de riesgo y aptitud.</p>
+    </div>
+    <button class="btn btn-outline-secondary" (click)="exportarDatasetAnonimizado()">Descargar CSV</button>
+  </div>
+</div>

@@ -58,6 +58,10 @@ export class AuthService {
     return this.tieneRol('Tecnólogo Médico', 'Jefe de Banco de Sangre', 'Administrador');
   }
 
+  esSupervisionBancoSangre(): boolean {
+    return this.tieneRol('Jefe de Banco de Sangre', 'Administrador');
+  }
+
   rutaPanel(): string {
     return '/panel/dashboard';
   }
