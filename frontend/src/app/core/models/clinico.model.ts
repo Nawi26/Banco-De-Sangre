@@ -220,3 +220,17 @@ export interface RegistrarEventoAdversoDonacionRequest {
   descripcion: string;
   accionesTomadas: string;
 }
+
+// RF-48: mensajería interna banco de sangre <-> servicio asistencial, por solicitud.
+export interface Mensaje {
+  id: number;
+  solicitudId: number;
+  remitenteNombreCompleto: string;
+  remitenteRol: string;
+  contenido: string;
+  fechaEnvio: string;
+}
+
+export interface EnviarMensajeRequest {
+  contenido: string;
+}

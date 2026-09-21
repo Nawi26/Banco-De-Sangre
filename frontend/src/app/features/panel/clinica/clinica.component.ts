@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClinicoService } from '../../../core/services/clinico.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { Despacho, EventoAdversoTransfusional, Paciente, PruebaCompatibilidad, ReservaQuirurgica, Solicitud, Transfusion } from '../../../core/models/clinico.model';
+import { Despacho, EventoAdversoTransfusional, Mensaje, Paciente, PruebaCompatibilidad, ReservaQuirurgica, Solicitud, Transfusion } from '../../../core/models/clinico.model';
 
 @Component({
   selector: 'app-clinica',
@@ -12,7 +12,7 @@ import { Despacho, EventoAdversoTransfusional, Paciente, PruebaCompatibilidad, R
   templateUrl: './clinica.component.html'
 })
 export class ClinicaComponent implements OnInit {
-  pestanaActiva: 'pacientes' | 'solicitudes' | 'pruebasCruzadas' | 'despachos' | 'transfusiones' | 'reservas' | 'hemovigilancia' = 'solicitudes';
+  pestanaActiva: 'pacientes' | 'solicitudes' | 'pruebasCruzadas' | 'despachos' | 'transfusiones' | 'reservas' | 'hemovigilancia' | 'mensajes' = 'solicitudes';
 
   pacientes: Paciente[] = [];
   solicitudes: Solicitud[] = [];
@@ -53,6 +53,11 @@ export class ClinicaComponent implements OnInit {
   nuevoEventoAdverso = { transfusionId: null as number | null, tipoReaccion: 'FEBRIL', esInmediata: true, gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
   mensajeEventoAdverso = '';
   exitoEventoAdverso = false;
+
+  solicitudIdMensajes: number | null = null;
+  mensajes: Mensaje[] = [];
+  nuevoMensaje = '';
+  errorMensajes = '';
 
   constructor(private clinicoService: ClinicoService, public authService: AuthService) {}
 
@@ -298,6 +303,31 @@ export class ClinicaComponent implements OnInit {
         this.exitoEventoAdverso = false;
         this.mensajeEventoAdverso = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
       }
+    });
+  }
+
+  // RF-48: mensajería interna banco de sangre <-> servicio asistencial, por solicitud
+  cargarMensajes(): void {
+    this.errorMensajes = '';
+    if (!this.solicitudIdMensajes) {
+      this.mensajes = [];
+      return;
+    }
+    this.clinicoService.listarMensajes(this.solicitudIdMensajes).subscribe({
+      next: datos => this.mensajes = datos,
+      error: (err) => this.errorMensajes = err.error?.mensaje ?? 'No se pudo contactar con el servidor.'
+    });
+  }
+
+  enviarMensaje(): void {
+    if (!this.solicitudIdMensajes || !this.nuevoMensaje.trim()) return;
+    const solicitudId = this.solicitudIdMensajes;
+    this.clinicoService.enviarMensaje(solicitudId, { contenido: this.nuevoMensaje }).subscribe({
+      next: () => {
+        this.nuevoMensaje = '';
+        this.cargarMensajes();
+      },
+      error: (err) => this.errorMensajes = err.error?.mensaje ?? 'No se pudo contactar con el servidor.'
     });
   }
 

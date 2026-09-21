@@ -5,9 +5,10 @@ import { API_BASE } from '../config';
 import {
   CrearDonacionRequest, CrearDonanteRequest, CrearPacienteRequest, CrearReservaQuirurgicaRequest,
   CrearSolicitudRequest, CrearTransfusionRequest, ConfirmarDespachoRequest, Despacho, Donacion,
-  Donante, EventoAdversoDonacion, EventoAdversoTransfusional, IniciarDespachoRequest, Paciente,
-  PruebaCompatibilidad, RegistrarEventoAdversoDonacionRequest, RegistrarEventoAdversoTransfusionalRequest,
-  RegistrarPruebaCompatibilidadRequest, ReservaQuirurgica, Solicitud, Transfusion
+  Donante, EnviarMensajeRequest, EventoAdversoDonacion, EventoAdversoTransfusional, IniciarDespachoRequest,
+  Mensaje, Paciente, PruebaCompatibilidad, RegistrarEventoAdversoDonacionRequest,
+  RegistrarEventoAdversoTransfusionalRequest, RegistrarPruebaCompatibilidadRequest, ReservaQuirurgica,
+  Solicitud, Transfusion
 } from '../models/clinico.model';
 
 @Injectable({ providedIn: 'root' })
@@ -123,5 +124,14 @@ export class ClinicoService {
 
   registrarEventoAdversoDonacion(donacionId: number, request: RegistrarEventoAdversoDonacionRequest): Observable<EventoAdversoDonacion> {
     return this.http.post<EventoAdversoDonacion>(`${API_BASE}/donaciones/${donacionId}/eventos-adversos`, request);
+  }
+
+  // Mensajería interna por solicitud (RF-48)
+  listarMensajes(solicitudId: number): Observable<Mensaje[]> {
+    return this.http.get<Mensaje[]>(`${API_BASE}/solicitudes/${solicitudId}/mensajes`);
+  }
+
+  enviarMensaje(solicitudId: number, request: EnviarMensajeRequest): Observable<Mensaje> {
+    return this.http.post<Mensaje>(`${API_BASE}/solicitudes/${solicitudId}/mensajes`, request);
   }
 }

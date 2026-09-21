@@ -18,6 +18,9 @@
     <a class="nav-link" [class.active]="pestanaActiva === 'hemovigilancia'" href="javascript:void(0)" (click)="pestanaActiva = 'hemovigilancia'">Hemovigilancia</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'mensajes'" href="javascript:void(0)" (click)="pestanaActiva = 'mensajes'">Mensajes</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link" [class.active]="pestanaActiva === 'pacientes'" href="javascript:void(0)" (click)="pestanaActiva = 'pacientes'">Pacientes</a>
   </li>
 </ul>
@@ -539,6 +542,38 @@
             <tr *ngIf="eventosAdversosTransfusionales.length === 0"><td colspan="7" class="text-muted">No hay eventos adversos registrados.</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MENSAJERÍA INTERNA (RF-48) -->
+<div *ngIf="pestanaActiva === 'mensajes'">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Mensajería con el Banco de Sangre</h2>
+      <div class="mb-3" style="max-width: 420px;">
+        <label class="form-label fw-semibold">Solicitud</label>
+        <select class="form-select" name="mSolicitudId" [(ngModel)]="solicitudIdMensajes" (ngModelChange)="cargarMensajes()">
+          <option [ngValue]="null" disabled>Seleccione...</option>
+          <option *ngFor="let s of solicitudes" [ngValue]="s.id">{{ s.codigoSolicitud }} - {{ s.pacienteNombreCompleto }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="solicitudIdMensajes">
+        <div class="border rounded p-3 mb-3" style="max-height: 320px; overflow-y: auto; background-color: #f8f9fa;">
+          <div class="mb-2" *ngFor="let m of mensajes">
+            <div class="small text-secondary">{{ m.remitenteNombreCompleto }} ({{ m.remitenteRol }}) — {{ m.fechaEnvio | date:'dd/MM/yyyy HH:mm' }}</div>
+            <div>{{ m.contenido }}</div>
+          </div>
+          <p class="text-muted small mb-0" *ngIf="mensajes.length === 0">Aún no hay mensajes en esta solicitud.</p>
+        </div>
+
+        <form class="input-group" (ngSubmit)="enviarMensaje()">
+          <input type="text" class="form-control" name="nuevoMensaje" [(ngModel)]="nuevoMensaje" placeholder="Escribe un mensaje..." required>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+        <div class="alert alert-danger mt-3 mb-0 py-2" *ngIf="errorMensajes">{{ errorMensajes }}</div>
       </div>
     </div>
   </div>
