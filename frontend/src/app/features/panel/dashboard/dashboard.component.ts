@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardService } from '../../../core/services/dashboard.service';
+import { AlertaService } from '../../../core/services/alerta.service';
 import { Dashboard } from '../../../core/models/dashboard.model';
+import { AlertaStockCritico, AlertaVencimiento } from '../../../core/models/alerta.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,11 +13,15 @@ import { Dashboard } from '../../../core/models/dashboard.model';
 })
 export class DashboardComponent implements OnInit {
   datos: Dashboard | null = null;
+  alertasVencimiento: AlertaVencimiento[] = [];
+  alertasStockCritico: AlertaStockCritico[] = [];
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService, private alertaService: AlertaService) {}
 
   ngOnInit(): void {
     this.dashboardService.obtenerResumen().subscribe(datos => this.datos = datos);
+    this.alertaService.unidadesPorVencer().subscribe(datos => this.alertasVencimiento = datos);
+    this.alertaService.stockCritico().subscribe(datos => this.alertasStockCritico = datos);
   }
 
   signoRh(factorRh: string): string {
