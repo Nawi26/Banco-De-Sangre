@@ -17,11 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service
 public class SolicitudService {
 
-    private static final Set<String> ESTADOS_VALIDOS = Set.of("PENDIENTE", "APROBADA", "ATENDIDA", "RECHAZADA");
+    // RF-11: DESPACHADA la fija DespachoService al completarse la doble verificación (RF-13).
+    private static final Set<String> ESTADOS_VALIDOS = Set.of("PENDIENTE", "APROBADA", "DESPACHADA", "ATENDIDA", "RECHAZADA");
+
+    // Formato estándar de un código CIE-10: letra + 2 dígitos, con subcategoría decimal opcional (ej. "D50", "O99.0").
+    private static final Pattern PATRON_CIE10 = Pattern.compile("^[A-TV-Z][0-9]{2}(\\.[0-9A-Z]{1,4})?$");
 
     private final SolicitudRepository solicitudRepository;
     private final PacienteRepository pacienteRepository;
@@ -51,6 +56,11 @@ public class SolicitudService {
         Usuario medico = usuarioRepository.findById(medicoId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Médico no encontrado."));
 
+        if (!PATRON_CIE10.matcher(request.diagnosticoCie10().trim().toUpperCase()).matches()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST,
+                    "El diagnóstico debe tener un formato CIE-10 válido (ej. \"D50\" o \"O99.0\").");
+        }
+
         Solicitud solicitud = new Solicitud();
         solicitud.setCodigoSolicitud(generarCodigo());
         solicitud.setPaciente(paciente);
@@ -60,6 +70,7 @@ public class SolicitudService {
         solicitud.setPrioridad(request.prioridad());
         solicitud.setEstado("PENDIENTE");
         solicitud.setIndicacionClinica(request.indicacionClinica());
+        solicitud.setDiagnosticoCie10(request.diagnosticoCie10().trim().toUpperCase());
         solicitud.setFechaSolicitud(LocalDateTime.now());
 
         return SolicitudDTO.from(solicitudRepository.save(solicitud));

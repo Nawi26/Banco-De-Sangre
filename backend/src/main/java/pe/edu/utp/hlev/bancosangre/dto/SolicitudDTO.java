@@ -13,6 +13,7 @@ public record SolicitudDTO(
         String prioridad,
         String estado,
         String indicacionClinica,
+        String diagnosticoCie10,
         LocalDateTime fechaSolicitud
 ) {
     public static SolicitudDTO from(pe.edu.utp.hlev.bancosangre.model.Solicitud s) {
@@ -27,6 +28,7 @@ public record SolicitudDTO(
                 s.getPrioridad(),
                 s.getEstado(),
                 s.getIndicacionClinica(),
+                s.getDiagnosticoCie10(),
                 s.getFechaSolicitud()
         );
     }

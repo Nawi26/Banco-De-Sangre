@@ -42,6 +42,10 @@ public class Solicitud {
     @Column(name = "indicacion_clinica")
     private String indicacionClinica;
 
+    // RF-11: código CIE-10 del diagnóstico que sustenta la solicitud transfusional.
+    @Column(name = "diagnostico_cie10")
+    private String diagnosticoCie10;
+
     @Column(name = "fecha_solicitud")
     private LocalDateTime fechaSolicitud;
 }

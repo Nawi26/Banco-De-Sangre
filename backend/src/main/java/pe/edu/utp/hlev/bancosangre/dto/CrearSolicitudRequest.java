@@ -9,6 +9,8 @@ public record CrearSolicitudRequest(
         @NotBlank String tipoHemocomponente,
         @NotNull @Min(1) Integer unidadesSolicitadas,
         @NotBlank String prioridad,
-        String indicacionClinica
+        String indicacionClinica,
+        // RF-11: diagnóstico que sustenta la solicitud, codificado en CIE-10 (ej. "D50", "O99.0").
+        @NotBlank String diagnosticoCie10
 ) {
 }
