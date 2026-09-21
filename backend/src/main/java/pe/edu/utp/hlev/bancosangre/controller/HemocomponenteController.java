@@ -1,6 +1,7 @@
 package pe.edu.utp.hlev.bancosangre.controller;
 
 import pe.edu.utp.hlev.bancosangre.dto.AsignarUbicacionRequest;
+import pe.edu.utp.hlev.bancosangre.dto.CertificadoCalidadDTO;
 import pe.edu.utp.hlev.bancosangre.dto.DescartarHemocomponenteRequest;
 import pe.edu.utp.hlev.bancosangre.dto.DescarteHemocomponenteDTO;
 import pe.edu.utp.hlev.bancosangre.dto.HemocomponenteDTO;
@@ -9,6 +10,7 @@ import pe.edu.utp.hlev.bancosangre.dto.IsbtEtiquetaDTO;
 import pe.edu.utp.hlev.bancosangre.dto.LeerCodigoRequest;
 import pe.edu.utp.hlev.bancosangre.security.AccesoClinico;
 import pe.edu.utp.hlev.bancosangre.security.SoloPersonalBancoSangre;
+import pe.edu.utp.hlev.bancosangre.service.CertificadoCalidadService;
 import pe.edu.utp.hlev.bancosangre.service.DescarteService;
 import pe.edu.utp.hlev.bancosangre.service.HemocomponenteService;
 import jakarta.validation.Valid;
@@ -24,10 +26,13 @@ public class HemocomponenteController {
 
     private final HemocomponenteService hemocomponenteService;
     private final DescarteService descarteService;
+    private final CertificadoCalidadService certificadoCalidadService;
 
-    public HemocomponenteController(HemocomponenteService hemocomponenteService, DescarteService descarteService) {
+    public HemocomponenteController(HemocomponenteService hemocomponenteService, DescarteService descarteService,
+                                     CertificadoCalidadService certificadoCalidadService) {
         this.hemocomponenteService = hemocomponenteService;
         this.descarteService = descarteService;
+        this.certificadoCalidadService = certificadoCalidadService;
     }
 
     @GetMapping("/{id}")
@@ -44,6 +49,13 @@ public class HemocomponenteController {
     @GetMapping("/{id}/historial")
     public HistorialHemocomponenteDTO obtenerHistorial(@PathVariable Long id) {
         return hemocomponenteService.obtenerHistorial(id);
+    }
+
+    // RF-41: certificado de calidad con código de verificación (QR); idempotente.
+    @GetMapping("/{id}/certificado")
+    @SoloPersonalBancoSangre
+    public CertificadoCalidadDTO obtenerCertificado(@PathVariable Long id) {
+        return certificadoCalidadService.obtenerOemitir(id);
     }
 
     // RF-29: descarte de la unidad con motivo y evidencia fotográfica.
