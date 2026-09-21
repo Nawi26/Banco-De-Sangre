@@ -3,6 +3,7 @@ package pe.edu.utp.hlev.bancosangre.service;
 import pe.edu.utp.hlev.bancosangre.dto.InventarioItemDTO;
 import pe.edu.utp.hlev.bancosangre.dto.RedBusquedaDTO;
 import pe.edu.utp.hlev.bancosangre.dto.ResumenExistenciasDTO;
+import pe.edu.utp.hlev.bancosangre.model.EstadoHemocomponente;
 import pe.edu.utp.hlev.bancosangre.model.Hemocomponente;
 import pe.edu.utp.hlev.bancosangre.repository.HemocomponenteRepository;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import java.util.List;
 @Service
 public class InventarioService {
 
-    private static final List<String> ESTADOS_ACTIVOS = List.of("DISPONIBLE", "FRACCIONADO");
+    private static final List<String> ESTADOS_ACTIVOS = EstadoHemocomponente.ESTADOS_INVENTARIO_ACTIVO;
 
     private final HemocomponenteRepository hemocomponenteRepository;
 

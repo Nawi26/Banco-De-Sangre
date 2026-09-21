@@ -23,13 +23,13 @@ public interface HemocomponenteRepository extends JpaRepository<Hemocomponente, 
     List<Hemocomponente> findByDonacionId(Long donacionId);
 
     // RF-06: trazabilidad de los hemocomponentes obtenidos de una misma donación (DIN matriz).
-    @Query("SELECT h FROM Hemocomponente h JOIN FETCH h.donacion d JOIN FETCH d.donante WHERE h.donacion.id = :donacionId ORDER BY h.id")
+    @Query("SELECT h FROM Hemocomponente h JOIN FETCH h.donacion d JOIN FETCH d.donante LEFT JOIN FETCH h.camara WHERE h.donacion.id = :donacionId ORDER BY h.id")
     List<Hemocomponente> findByDonacionIdConDonacion(@Param("donacionId") Long donacionId);
 
-    @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion WHERE h.id = :id")
+    @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion LEFT JOIN FETCH h.camara WHERE h.id = :id")
     Optional<Hemocomponente> buscarPorIdConDonacion(@Param("id") Long id);
 
-    @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion WHERE h.codigoProductoIsbt = :codigo")
+    @Query("SELECT h FROM Hemocomponente h LEFT JOIN FETCH h.donacion LEFT JOIN FETCH h.camara WHERE h.codigoProductoIsbt = :codigo")
     Optional<Hemocomponente> buscarPorCodigoConDonacion(@Param("codigo") String codigo);
 
     @Query("""

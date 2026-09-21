@@ -14,7 +14,9 @@ public record HemocomponenteDTO(
         Integer volumenMl,
         LocalDateTime fechaVencimiento,
         String ubicacionFisica,
-        String estado
+        String estado,
+        Long camaraId,
+        String camaraNombre
 ) {
     public static HemocomponenteDTO from(Hemocomponente h) {
         return new HemocomponenteDTO(
@@ -27,7 +29,9 @@ public record HemocomponenteDTO(
                 h.getVolumenMl(),
                 h.getFechaVencimiento(),
                 h.getUbicacionFisica(),
-                h.getEstado()
+                h.getEstado(),
+                h.getCamara() != null ? h.getCamara().getId() : null,
+                h.getCamara() != null ? h.getCamara().getNombre() : null
         );
     }
 }

@@ -45,4 +45,9 @@ public class Hemocomponente {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donacion_id")
     private Donacion donacion;
+
+    // RF-09/RF-24: cámara de refrigeración/congelación donde está físicamente almacenada.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "camara_id")
+    private CamaraAlmacenamiento camara;
 }

@@ -1,6 +1,7 @@
 package pe.edu.utp.hlev.bancosangre.service;
 
 import pe.edu.utp.hlev.bancosangre.dto.DashboardDTO;
+import pe.edu.utp.hlev.bancosangre.model.EstadoHemocomponente;
 import pe.edu.utp.hlev.bancosangre.repository.DonacionRepository;
 import pe.edu.utp.hlev.bancosangre.repository.DonanteRepository;
 import pe.edu.utp.hlev.bancosangre.repository.HemocomponenteRepository;
@@ -17,7 +18,7 @@ import java.util.Map;
 @Service
 public class DashboardService {
 
-    private static final List<String> ESTADOS_ACTIVOS = List.of("DISPONIBLE", "FRACCIONADO");
+    private static final List<String> ESTADOS_ACTIVOS = EstadoHemocomponente.ESTADOS_INVENTARIO_ACTIVO;
     private static final List<String> ESTADOS_INTERCAMBIO_ACTIVOS = List.of("PENDIENTE", "ACEPTADO", "EN_TRANSITO");
 
     private final HemocomponenteRepository hemocomponenteRepository;

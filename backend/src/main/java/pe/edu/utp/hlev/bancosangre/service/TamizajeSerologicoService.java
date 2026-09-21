@@ -208,10 +208,10 @@ public class TamizajeSerologicoService {
         // El bloqueo es irreversible: ningún otro flujo del sistema revierte el estado BLOQUEADO.
         List<Hemocomponente> hemocomponentes = hemocomponenteRepository.findByDonacionId(donacion.getId());
         for (Hemocomponente h : hemocomponentes) {
-            if (!"CUARENTENA".equals(h.getEstado())) {
+            if (!EstadoHemocomponente.CUARENTENA.equals(h.getEstado())) {
                 continue; // no se toca una unidad que ya fue movida por otro proceso (ej. ya bloqueada antes)
             }
-            h.setEstado(apto ? "DISPONIBLE" : "BLOQUEADO");
+            h.setEstado(apto ? EstadoHemocomponente.DISPONIBLE : EstadoHemocomponente.BLOQUEADO);
         }
         hemocomponenteRepository.saveAll(hemocomponentes);
 

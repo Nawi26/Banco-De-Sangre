@@ -1,5 +1,6 @@
 package pe.edu.utp.hlev.bancosangre.controller;
 
+import pe.edu.utp.hlev.bancosangre.dto.AsignarUbicacionRequest;
 import pe.edu.utp.hlev.bancosangre.dto.HemocomponenteDTO;
 import pe.edu.utp.hlev.bancosangre.dto.IsbtEtiquetaDTO;
 import pe.edu.utp.hlev.bancosangre.dto.LeerCodigoRequest;
@@ -29,6 +30,13 @@ public class HemocomponenteController {
     @GetMapping("/{id}/etiqueta")
     public IsbtEtiquetaDTO obtenerEtiqueta(@PathVariable Long id) {
         return hemocomponenteService.obtenerEtiqueta(id);
+    }
+
+    // RF-09: asigna la unidad a una cámara de refrigeración/congelación.
+    @PatchMapping("/{id}/ubicacion")
+    @SoloPersonalBancoSangre
+    public HemocomponenteDTO asignarUbicacion(@PathVariable Long id, @Valid @RequestBody AsignarUbicacionRequest request) {
+        return hemocomponenteService.asignarUbicacion(id, request);
     }
 
     // Lectura óptica: el escaneo ocurre en el cliente; aquí se valida y resuelve el código leído.

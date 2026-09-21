@@ -2,9 +2,13 @@ package pe.edu.utp.hlev.bancosangre.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pe.edu.utp.hlev.bancosangre.dto.AsignarUbicacionRequest;
 import pe.edu.utp.hlev.bancosangre.dto.HemocomponenteDTO;
 import pe.edu.utp.hlev.bancosangre.dto.IsbtEtiquetaDTO;
+import pe.edu.utp.hlev.bancosangre.model.CamaraAlmacenamiento;
 import pe.edu.utp.hlev.bancosangre.model.Hemocomponente;
+import pe.edu.utp.hlev.bancosangre.repository.CamaraAlmacenamientoRepository;
 import pe.edu.utp.hlev.bancosangre.repository.HemocomponenteRepository;
 
 // RF-05: consulta de hemocomponentes y generación/lectura de la información de sus etiquetas ISBT 128.
@@ -12,13 +16,29 @@ import pe.edu.utp.hlev.bancosangre.repository.HemocomponenteRepository;
 public class HemocomponenteService {
 
     private final HemocomponenteRepository hemocomponenteRepository;
+    private final CamaraAlmacenamientoRepository camaraAlmacenamientoRepository;
 
-    public HemocomponenteService(HemocomponenteRepository hemocomponenteRepository) {
+    public HemocomponenteService(HemocomponenteRepository hemocomponenteRepository,
+                                  CamaraAlmacenamientoRepository camaraAlmacenamientoRepository) {
         this.hemocomponenteRepository = hemocomponenteRepository;
+        this.camaraAlmacenamientoRepository = camaraAlmacenamientoRepository;
     }
 
     public HemocomponenteDTO obtener(Long id) {
         return HemocomponenteDTO.from(buscarPorId(id));
+    }
+
+    // RF-09: asigna físicamente la unidad a una cámara de refrigeración/congelación.
+    @Transactional
+    public HemocomponenteDTO asignarUbicacion(Long id, AsignarUbicacionRequest request) {
+        Hemocomponente hemocomponente = buscarPorId(id);
+        CamaraAlmacenamiento camara = camaraAlmacenamientoRepository.findById(request.camaraId())
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Cámara no encontrada."));
+
+        hemocomponente.setCamara(camara);
+        hemocomponente.setUbicacionFisica(camara.getNombre());
+
+        return HemocomponenteDTO.from(hemocomponenteRepository.save(hemocomponente));
     }
 
     public IsbtEtiquetaDTO obtenerEtiqueta(Long id) {

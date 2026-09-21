@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.edu.utp.hlev.bancosangre.dto.FraccionarDonacionRequest;
 import pe.edu.utp.hlev.bancosangre.dto.HemocomponenteDTO;
 import pe.edu.utp.hlev.bancosangre.model.Donacion;
+import pe.edu.utp.hlev.bancosangre.model.EstadoHemocomponente;
 import pe.edu.utp.hlev.bancosangre.model.Hemocomponente;
 import pe.edu.utp.hlev.bancosangre.model.TipoHemocomponente;
 import pe.edu.utp.hlev.bancosangre.repository.DonacionRepository;
@@ -55,7 +56,7 @@ public class FraccionamientoService {
         hemocomponente.setUbicacionFisica("PENDIENTE_ASIGNACION");
         // RF-10: toda unidad recién fraccionada queda en cuarentena hasta que el
         // tamizaje serológico (RF-07/RF-08) determine si puede liberarse o debe bloquearse.
-        hemocomponente.setEstado("CUARENTENA");
+        hemocomponente.setEstado(EstadoHemocomponente.CUARENTENA);
         hemocomponente.setCodigoProductoIsbt(generarCodigoProductoIsbt(donacion, tipo));
 
         return hemocomponenteRepository.save(hemocomponente);
