@@ -74,6 +74,7 @@ export interface Solicitud {
   prioridad: string;
   estado: string;
   indicacionClinica: string | null;
+  diagnosticoCie10: string | null;
   fechaSolicitud: string | null;
 }
 
@@ -83,6 +84,8 @@ export interface CrearSolicitudRequest {
   unidadesSolicitadas: number;
   prioridad: string;
   indicacionClinica: string;
+  // RF-11: diagnóstico que sustenta la solicitud, codificado en CIE-10 (ej. "D50", "O99.0").
+  diagnosticoCie10: string;
 }
 
 export interface Transfusion {
@@ -100,10 +103,77 @@ export interface Transfusion {
   detallesReaccion: string | null;
 }
 
+// RF-13: el resultado de compatibilidad ya no se declara aquí, se toma de la prueba
+// cruzada (RF-12) ya registrada para la unidad despachada.
 export interface CrearTransfusionRequest {
   solicitudId: number;
   codigoProductoIsbt: string;
-  resultadoPruebaCruzada: string;
   reaccionAdversa: boolean;
   detallesReaccion: string;
+}
+
+// RF-12: prueba cruzada y RAI de una unidad candidata frente a una solicitud.
+export interface PruebaCompatibilidad {
+  id: number;
+  solicitudId: number;
+  codigoProductoIsbt: string;
+  resultadoRai: string;
+  resultadoPruebaCruzada: string;
+  tecnologoNombreCompleto: string | null;
+  fecha: string;
+}
+
+export interface RegistrarPruebaCompatibilidadRequest {
+  codigoProductoIsbt: string;
+  resultadoRai: string;
+  resultadoPruebaCruzada: string;
+}
+
+// RF-13: doble verificación electrónica del despacho.
+export interface Despacho {
+  id: number;
+  codigoSolicitud: string;
+  codigoProductoIsbt: string;
+  primeraVerificacionNombreCompleto: string;
+  primeraVerificacionEn: string;
+  segundaVerificacionNombreCompleto: string | null;
+  segundaVerificacionEn: string | null;
+  estado: string;
+  fechaDespacho: string | null;
+}
+
+export interface IniciarDespachoRequest {
+  solicitudId: number;
+  codigoProductoIsbt: string;
+  claveConfirmacion: string;
+}
+
+export interface ConfirmarDespachoRequest {
+  claveConfirmacion: string;
+}
+
+// RF-25: reserva quirúrgica con liberación automática.
+export interface ReservaQuirurgica {
+  id: number;
+  pacienteId: number;
+  pacienteNombreCompleto: string;
+  medicoSolicitanteNombreCompleto: string;
+  tipoHemocomponente: string;
+  grupoAbo: string;
+  factorRh: string;
+  unidadesSolicitadas: number;
+  fechaCirugiaProgramada: string;
+  horasValidezPostCirugia: number;
+  estado: string;
+  creadoEn: string;
+}
+
+export interface CrearReservaQuirurgicaRequest {
+  pacienteId: number;
+  tipoHemocomponente: string;
+  grupoAbo: string;
+  factorRh: string;
+  unidadesSolicitadas: number;
+  fechaCirugiaProgramada: string;
+  horasValidezPostCirugia: number | null;
 }

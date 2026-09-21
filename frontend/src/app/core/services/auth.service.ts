@@ -45,6 +45,19 @@ export class AuthService {
     return this.usuario()?.rol === 'Administrador';
   }
 
+  tieneRol(...roles: string[]): boolean {
+    const rolActual = this.usuario()?.rol;
+    return !!rolActual && roles.includes(rolActual);
+  }
+
+  esMedicoSolicitante(): boolean {
+    return this.tieneRol('Médico Solicitante');
+  }
+
+  esPersonalBancoSangre(): boolean {
+    return this.tieneRol('Tecnólogo Médico', 'Jefe de Banco de Sangre', 'Administrador');
+  }
+
   rutaPanel(): string {
     return '/panel/dashboard';
   }
