@@ -13,6 +13,8 @@ public final class EstadoHemocomponente {
     public static final String DISPONIBLE = "DISPONIBLE";
     // RF-12: reservada tras una prueba cruzada compatible, pendiente de despacho hacia una solicitud.
     public static final String RESERVADO = "RESERVADO";
+    // RF-25: apartada para una cirugía programada; no elegible para pruebas cruzadas de otra solicitud.
+    public static final String RESERVADO_QUIRURGICO = "RESERVADO_QUIRURGICO";
     public static final String BLOQUEADO = "BLOQUEADO";
     public static final String VENCIDO = "VENCIDO";
     public static final String DESPACHADO = "DESPACHADO";
@@ -20,7 +22,8 @@ public final class EstadoHemocomponente {
 
     // Estados en los que la unidad cuenta como existencia en el inventario activo (FEFO).
     // Incluye "FRACCIONADO" por compatibilidad con datos ya existentes de la versión anterior.
-    public static final List<String> ESTADOS_INVENTARIO_ACTIVO = List.of(DISPONIBLE, RESERVADO, "FRACCIONADO");
+    public static final List<String> ESTADOS_INVENTARIO_ACTIVO =
+            List.of(DISPONIBLE, RESERVADO, RESERVADO_QUIRURGICO, "FRACCIONADO");
 
     private EstadoHemocomponente() {
     }

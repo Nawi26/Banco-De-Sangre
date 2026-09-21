@@ -50,4 +50,9 @@ public class Hemocomponente {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "camara_id")
     private CamaraAlmacenamiento camara;
+
+    // RF-25: cirugía programada para la que esta unidad está apartada (si aplica).
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reserva_quirurgica_id")
+    private ReservaQuirurgica reservaQuirurgica;
 }

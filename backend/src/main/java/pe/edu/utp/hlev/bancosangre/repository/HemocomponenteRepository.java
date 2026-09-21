@@ -22,6 +22,12 @@ public interface HemocomponenteRepository extends JpaRepository<Hemocomponente, 
 
     List<Hemocomponente> findByDonacionId(Long donacionId);
 
+    // RF-25: candidatas disponibles para una reserva quirúrgica, priorizando la de vencimiento más próximo (FEFO).
+    List<Hemocomponente> findByEstadoAndTipoHemocomponenteAndGrupoAboAndFactorRhOrderByFechaVencimientoAsc(
+            String estado, String tipoHemocomponente, String grupoAbo, String factorRh);
+
+    List<Hemocomponente> findByReservaQuirurgicaId(Long reservaQuirurgicaId);
+
     // RF-06: trazabilidad de los hemocomponentes obtenidos de una misma donación (DIN matriz).
     @Query("SELECT h FROM Hemocomponente h JOIN FETCH h.donacion d JOIN FETCH d.donante LEFT JOIN FETCH h.camara WHERE h.donacion.id = :donacionId ORDER BY h.id")
     List<Hemocomponente> findByDonacionIdConDonacion(@Param("donacionId") Long donacionId);
