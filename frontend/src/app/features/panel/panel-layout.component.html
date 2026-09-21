@@ -31,6 +31,9 @@
         <li class="nav-item" *ngIf="authService.esSupervisionBancoSangre()">
           <a routerLink="/panel/reportes" routerLinkActive="active" class="nav-link text-white">Reportes</a>
         </li>
+        <li class="nav-item">
+          <a routerLink="/panel/soporte" routerLinkActive="active" class="nav-link text-white">Soporte</a>
+        </li>
         <li class="nav-item" *ngIf="authService.esAdministrador()">
           <a routerLink="/panel/medicos" routerLinkActive="active" class="nav-link text-white">Gestión de Médicos</a>
         </li>

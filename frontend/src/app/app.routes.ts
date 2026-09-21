@@ -36,6 +36,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/panel/clinica/clinica.component').then(m => m.ClinicaComponent)
       },
       {
+        path: 'soporte',
+        loadComponent: () => import('./features/panel/soporte/soporte.component').then(m => m.SoporteComponent)
+      },
+      {
         path: 'reportes',
         loadComponent: () => import('./features/panel/reportes/reportes.component').then(m => m.ReportesComponent),
         canActivate: [supervisionGuard]
