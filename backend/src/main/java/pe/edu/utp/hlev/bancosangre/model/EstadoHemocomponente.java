@@ -11,6 +11,7 @@ public final class EstadoHemocomponente {
 
     public static final String CUARENTENA = "CUARENTENA";
     public static final String DISPONIBLE = "DISPONIBLE";
+    // RF-12: reservada tras una prueba cruzada compatible, pendiente de despacho hacia una solicitud.
     public static final String RESERVADO = "RESERVADO";
     public static final String BLOQUEADO = "BLOQUEADO";
     public static final String VENCIDO = "VENCIDO";
