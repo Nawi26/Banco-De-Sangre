@@ -30,4 +30,8 @@ public interface TransfusionRepository extends JpaRepository<Transfusion, Long> 
     // RF-26: tiempo de respuesta = fechaTransfusion - fechaSolicitud, calculado en memoria.
     @Query("SELECT t FROM Transfusion t JOIN FETCH t.solicitud WHERE t.fechaTransfusion BETWEEN :desde AND :hasta")
     List<Transfusion> listarEnRangoConSolicitud(@Param("desde") LocalDateTime desde, @Param("hasta") LocalDateTime hasta);
+
+    // RF-46: demanda histórica por tipo/grupo/Rh, para proyectar riesgo de desabastecimiento.
+    @Query("SELECT t FROM Transfusion t JOIN FETCH t.hemocomponente WHERE t.fechaTransfusion BETWEEN :desde AND :hasta")
+    List<Transfusion> listarEnRangoConHemocomponente(@Param("desde") LocalDateTime desde, @Param("hasta") LocalDateTime hasta);
 }

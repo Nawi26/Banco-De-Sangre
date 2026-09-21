@@ -46,6 +46,10 @@ public class Solicitud {
     @Column(name = "diagnostico_cie10")
     private String diagnosticoCie10;
 
+    // RF-32: código de la orden médica de origen cuando la solicitud se importó desde el HIS/SIS.
+    @Column(name = "codigo_orden_externa")
+    private String codigoOrdenExterna;
+
     @Column(name = "fecha_solicitud")
     private LocalDateTime fechaSolicitud;
 }

@@ -1,10 +1,13 @@
 package pe.edu.utp.hlev.bancosangre.controller;
 
 import pe.edu.utp.hlev.bancosangre.dto.InventarioItemDTO;
+import pe.edu.utp.hlev.bancosangre.dto.ProyeccionDesabastecimientoDTO;
 import pe.edu.utp.hlev.bancosangre.dto.RedBusquedaDTO;
 import pe.edu.utp.hlev.bancosangre.dto.ResumenExistenciasDTO;
 import pe.edu.utp.hlev.bancosangre.security.AccesoClinico;
+import pe.edu.utp.hlev.bancosangre.security.SoloSupervisionBancoSangre;
 import pe.edu.utp.hlev.bancosangre.service.InventarioService;
+import pe.edu.utp.hlev.bancosangre.service.ProyeccionDesabastecimientoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +19,12 @@ import java.util.List;
 public class InventarioController {
 
     private final InventarioService inventarioService;
+    private final ProyeccionDesabastecimientoService proyeccionDesabastecimientoService;
 
-    public InventarioController(InventarioService inventarioService) {
+    public InventarioController(InventarioService inventarioService,
+                                 ProyeccionDesabastecimientoService proyeccionDesabastecimientoService) {
         this.inventarioService = inventarioService;
+        this.proyeccionDesabastecimientoService = proyeccionDesabastecimientoService;
     }
 
     // Algoritmo FEFO (First Expired, First Out)
@@ -35,5 +41,12 @@ public class InventarioController {
     @GetMapping("/red-interhospitalaria/{codigo}")
     public RedBusquedaDTO buscarEnRed(@PathVariable String codigo) {
         return inventarioService.buscarPorCodigo(codigo);
+    }
+
+    // RF-46: proyección de desabastecimiento (demanda histórica vs. stock disponible).
+    @GetMapping("/inventario/proyeccion")
+    @SoloSupervisionBancoSangre
+    public List<ProyeccionDesabastecimientoDTO> proyeccionDesabastecimiento() {
+        return proyeccionDesabastecimientoService.proyectar();
     }
 }

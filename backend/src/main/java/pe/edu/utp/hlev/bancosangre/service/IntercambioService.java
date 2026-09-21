@@ -22,7 +22,7 @@ import java.util.Set;
 public class IntercambioService {
 
     private static final Set<String> ESTADOS_VALIDOS = Set.of(
-            "PENDIENTE", "ACEPTADO", "EN_TRANSITO", "ENTREGADO", "RECHAZADO"
+            "PENDIENTE", "ACEPTADO", "EN_TRANSITO", "ENTREGADO", "RECHAZADO", "DEVUELTO"
     );
 
     private final SolicitudIntercambioRepository intercambioRepository;
@@ -90,5 +90,28 @@ public class IntercambioService {
         solicitud.setFechaRespuesta(LocalDateTime.now());
 
         intercambioRepository.save(solicitud);
+    }
+
+    /**
+     * RF-40: registra la devolución de una unidad prestada a la red interhospitalaria,
+     * actualizando automáticamente el inventario de origen (la unidad vuelve a estar
+     * DISPONIBLE en el banco de sangre que la prestó).
+     */
+    @Transactional
+    public void registrarDevolucion(Long id) {
+        SolicitudIntercambio solicitud = intercambioRepository.findById(id)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Intercambio no encontrado."));
+
+        if (!"ENTREGADO".equals(solicitud.getEstado())) {
+            throw new ApiException(HttpStatus.CONFLICT, "Sólo se puede devolver una unidad que ya fue entregada.");
+        }
+
+        solicitud.setEstado("DEVUELTO");
+        solicitud.setFechaRespuesta(LocalDateTime.now());
+        intercambioRepository.save(solicitud);
+
+        Hemocomponente hemocomponente = solicitud.getHemocomponente();
+        hemocomponente.setEstado(pe.edu.utp.hlev.bancosangre.model.EstadoHemocomponente.DISPONIBLE);
+        hemocomponenteRepository.save(hemocomponente);
     }
 }
