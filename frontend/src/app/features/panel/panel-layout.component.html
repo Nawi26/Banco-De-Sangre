@@ -37,6 +37,9 @@
         <li class="nav-item" *ngIf="authService.esAdministrador()">
           <a routerLink="/panel/medicos" routerLinkActive="active" class="nav-link text-white">Gestión de Médicos</a>
         </li>
+        <li class="nav-item" *ngIf="authService.esAdministrador()">
+          <a routerLink="/panel/administracion" routerLinkActive="active" class="nav-link text-white">Administración</a>
+        </li>
       </ul>
     </nav>
     <div class="p-3">

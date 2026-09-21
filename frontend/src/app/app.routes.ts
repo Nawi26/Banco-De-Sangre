@@ -48,6 +48,11 @@ export const routes: Routes = [
         path: 'medicos',
         loadComponent: () => import('./features/panel/medicos/medicos.component').then(m => m.MedicosComponent),
         canActivate: [adminGuard]
+      },
+      {
+        path: 'administracion',
+        loadComponent: () => import('./features/panel/administracion/administracion.component').then(m => m.AdministracionComponent),
+        canActivate: [adminGuard]
       }
     ]
   },
