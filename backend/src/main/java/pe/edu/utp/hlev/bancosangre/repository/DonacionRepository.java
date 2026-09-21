@@ -13,4 +13,8 @@ public interface DonacionRepository extends JpaRepository<Donacion, Long> {
     List<Donacion> listarTodasConDonante();
 
     long countByFechaExtraccionAfter(LocalDateTime desde);
+
+    long countByFechaExtraccionBetween(LocalDateTime desde, LocalDateTime hasta);
+
+    long countByTamizajeAprobadoIsNotNull();
 }

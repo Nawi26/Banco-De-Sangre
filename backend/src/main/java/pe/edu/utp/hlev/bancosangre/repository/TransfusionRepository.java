@@ -3,7 +3,9 @@ package pe.edu.utp.hlev.bancosangre.repository;
 import pe.edu.utp.hlev.bancosangre.model.Transfusion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TransfusionRepository extends JpaRepository<Transfusion, Long> {
@@ -22,4 +24,10 @@ public interface TransfusionRepository extends JpaRepository<Transfusion, Long> 
     long countByReaccionAdversaTrue();
 
     boolean existsBySolicitudId(Long solicitudId);
+
+    long countByFechaTransfusionBetween(LocalDateTime desde, LocalDateTime hasta);
+
+    // RF-26: tiempo de respuesta = fechaTransfusion - fechaSolicitud, calculado en memoria.
+    @Query("SELECT t FROM Transfusion t JOIN FETCH t.solicitud WHERE t.fechaTransfusion BETWEEN :desde AND :hasta")
+    List<Transfusion> listarEnRangoConSolicitud(@Param("desde") LocalDateTime desde, @Param("hasta") LocalDateTime hasta);
 }

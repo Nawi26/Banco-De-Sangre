@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventoAdversoDonacionRepository extends JpaRepository<EventoAdversoDonacion, Long> {
+
+    long countByFechaDeteccionBetween(LocalDateTime desde, LocalDateTime hasta);
 
     @Query("SELECT e FROM EventoAdversoDonacion e LEFT JOIN FETCH e.usuario " +
             "WHERE e.donacion.id = :donacionId ORDER BY e.fechaDeteccion DESC")

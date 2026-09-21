@@ -5,11 +5,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pe.edu.utp.hlev.bancosangre.model.CertificadoCalidad;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface CertificadoCalidadRepository extends JpaRepository<CertificadoCalidad, Long> {
 
     Optional<CertificadoCalidad> findByHemocomponenteId(Long hemocomponenteId);
+
+    long countByEmitidoEnBetween(LocalDateTime desde, LocalDateTime hasta);
 
     @Query("SELECT c FROM CertificadoCalidad c JOIN FETCH c.hemocomponente h LEFT JOIN FETCH h.donacion WHERE c.codigoVerificacion = :codigo")
     Optional<CertificadoCalidad> buscarPorCodigoVerificacion(@Param("codigo") String codigo);

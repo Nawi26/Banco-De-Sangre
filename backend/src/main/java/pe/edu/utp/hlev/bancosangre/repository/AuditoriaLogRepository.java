@@ -2,6 +2,7 @@ package pe.edu.utp.hlev.bancosangre.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import pe.edu.utp.hlev.bancosangre.model.AuditoriaLog;
 
@@ -17,4 +18,8 @@ public interface AuditoriaLogRepository extends Repository<AuditoriaLog, Long> {
     Page<AuditoriaLog> findAllByOrderByCreadoEnDesc(Pageable pageable);
 
     Page<AuditoriaLog> findByUsuarioIdOrderByCreadoEnDesc(Long usuarioId, Pageable pageable);
+
+    // RF-44: cantidad total de acciones críticas auditadas, como señal de cumplimiento (RNF-04).
+    @Query("SELECT COUNT(a) FROM AuditoriaLog a")
+    long contarTodos();
 }

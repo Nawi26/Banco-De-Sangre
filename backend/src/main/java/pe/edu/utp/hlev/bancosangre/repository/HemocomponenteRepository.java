@@ -14,6 +14,8 @@ public interface HemocomponenteRepository extends JpaRepository<Hemocomponente, 
 
     List<Hemocomponente> findByEstadoInOrderByFechaVencimientoAsc(List<String> estados);
 
+    long countByEstadoIn(List<String> estados);
+
     Optional<Hemocomponente> findByCodigoProductoIsbt(String codigoProductoIsbt);
 
     long countByEstadoInAndFechaVencimientoBetween(List<String> estados, LocalDateTime desde, LocalDateTime hasta);
