@@ -3,24 +3,21 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClinicoService } from '../../../core/services/clinico.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { Despacho, EventoAdversoTransfusional, Mensaje, Paciente, PruebaCompatibilidad, ReservaQuirurgica, Solicitud, Transfusion } from '../../../core/models/clinico.model';
+import { Paciente, PruebaCompatibilidad, ReservaQuirurgica, Solicitud } from '../../../core/models/clinico.model';
 
 @Component({
-  selector: 'app-clinica',
+  selector: 'app-solicitudes-clinicas',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './clinica.component.html'
+  templateUrl: './solicitudes-clinicas.component.html'
 })
-export class ClinicaComponent implements OnInit {
-  pestanaActiva: 'pacientes' | 'solicitudes' | 'pruebasCruzadas' | 'despachos' | 'transfusiones' | 'reservas' | 'hemovigilancia' | 'mensajes' = 'solicitudes';
+export class SolicitudesClinicasComponent implements OnInit {
+  pestanaActiva: 'nueva' | 'compatibilidad' | 'reservas' | 'pacientes' = 'nueva';
 
   pacientes: Paciente[] = [];
   solicitudes: Solicitud[] = [];
-  transfusiones: Transfusion[] = [];
   pruebasCruzadas: PruebaCompatibilidad[] = [];
-  despachosPendientes: Despacho[] = [];
   reservasQuirurgicas: ReservaQuirurgica[] = [];
-  eventosAdversosTransfusionales: EventoAdversoTransfusional[] = [];
 
   nuevoPaciente = { tipoDoc: 'DNI', numDoc: '', nombres: '', apellidos: '', fechaNacimiento: null as string | null, sexo: '', grupoAbo: 'O', factorRh: 'POSITIVO' };
   mensajePaciente = '';
@@ -34,15 +31,6 @@ export class ClinicaComponent implements OnInit {
   mensajePruebaCruzada = '';
   exitoPruebaCruzada = false;
 
-  nuevoDespacho = { solicitudId: null as number | null, codigoProductoIsbt: '', claveConfirmacion: '' };
-  mensajeDespacho = '';
-  exitoDespacho = false;
-  clavesConfirmacion: Record<number, string> = {};
-
-  nuevaTransfusion = { solicitudId: null as number | null, codigoProductoIsbt: '', reaccionAdversa: false, detallesReaccion: '' };
-  mensajeTransfusion = '';
-  exitoTransfusion = false;
-
   nuevaReserva = {
     pacienteId: null as number | null, tipoHemocomponente: 'PAQUETE GLOBULAR', grupoAbo: 'O', factorRh: 'POSITIVO',
     unidadesSolicitadas: 1, fechaCirugiaProgramada: '', horasValidezPostCirugia: null as number | null
@@ -50,24 +38,22 @@ export class ClinicaComponent implements OnInit {
   mensajeReserva = '';
   exitoReserva = false;
 
-  nuevoEventoAdverso = { transfusionId: null as number | null, tipoReaccion: 'FEBRIL', esInmediata: true, gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
-  mensajeEventoAdverso = '';
-  exitoEventoAdverso = false;
-
-  solicitudIdMensajes: number | null = null;
-  mensajes: Mensaje[] = [];
-  nuevoMensaje = '';
-  errorMensajes = '';
+  // RF-32: importación automática de órdenes transfusionales desde el HIS/SIS hospitalario.
+  mostrarImportarHisSis = false;
+  nuevaOrdenHisSis = {
+    codigoOrdenExterna: '', pacienteNumDoc: '', pacienteNombres: '', pacienteApellidos: '',
+    medicoDni: '', tipoHemocomponente: 'PAQUETE GLOBULAR', unidadesSolicitadas: 1,
+    prioridad: 'RUTINA', indicacionClinica: '', diagnosticoCie10: ''
+  };
+  mensajeHisSis = '';
+  exitoHisSis = false;
 
   constructor(private clinicoService: ClinicoService, public authService: AuthService) {}
 
   ngOnInit(): void {
     this.cargarPacientes();
     this.cargarSolicitudes();
-    this.cargarTransfusiones();
-    this.cargarDespachosPendientes();
     this.cargarReservasQuirurgicas();
-    this.cargarEventosAdversosTransfusionales();
   }
 
   cargarPacientes(): void {
@@ -76,10 +62,6 @@ export class ClinicaComponent implements OnInit {
 
   cargarSolicitudes(): void {
     this.clinicoService.listarSolicitudes().subscribe(datos => this.solicitudes = datos);
-  }
-
-  cargarTransfusiones(): void {
-    this.clinicoService.listarTransfusiones().subscribe(datos => this.transfusiones = datos);
   }
 
   solicitudesAprobadas(): Solicitud[] {
@@ -123,16 +105,6 @@ export class ClinicaComponent implements OnInit {
   cambiarEstadoSolicitud(id: number, estado: string): void {
     this.clinicoService.actualizarEstadoSolicitud(id, estado).subscribe(() => this.cargarSolicitudes());
   }
-
-  // RF-32: importación automática de órdenes transfusionales desde el HIS/SIS hospitalario.
-  mostrarImportarHisSis = false;
-  nuevaOrdenHisSis = {
-    codigoOrdenExterna: '', pacienteNumDoc: '', pacienteNombres: '', pacienteApellidos: '',
-    medicoDni: '', tipoHemocomponente: 'PAQUETE GLOBULAR', unidadesSolicitadas: 1,
-    prioridad: 'RUTINA', indicacionClinica: '', diagnosticoCie10: ''
-  };
-  mensajeHisSis = '';
-  exitoHisSis = false;
 
   importarOrdenHisSis(): void {
     this.mensajeHisSis = '';
@@ -199,65 +171,6 @@ export class ClinicaComponent implements OnInit {
     });
   }
 
-  // RF-13: despacho con doble verificación electrónica
-  cargarDespachosPendientes(): void {
-    this.clinicoService.listarDespachosPendientes().subscribe(datos => this.despachosPendientes = datos);
-  }
-
-  iniciarDespacho(): void {
-    this.mensajeDespacho = '';
-    if (!this.nuevoDespacho.solicitudId) return;
-
-    this.clinicoService.iniciarDespacho(this.nuevoDespacho as any).subscribe({
-      next: () => {
-        this.exitoDespacho = true;
-        this.mensajeDespacho = 'Primera verificación registrada. Falta la segunda verificación de un responsable distinto.';
-        this.nuevoDespacho = { solicitudId: null, codigoProductoIsbt: '', claveConfirmacion: '' };
-        this.cargarDespachosPendientes();
-      },
-      error: (err) => {
-        this.exitoDespacho = false;
-        this.mensajeDespacho = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
-      }
-    });
-  }
-
-  confirmarDespacho(id: number): void {
-    this.mensajeDespacho = '';
-    const clave = this.clavesConfirmacion[id];
-    this.clinicoService.confirmarDespacho(id, { claveConfirmacion: clave }).subscribe({
-      next: () => {
-        this.exitoDespacho = true;
-        this.mensajeDespacho = 'Despacho confirmado con doble verificación electrónica.';
-        delete this.clavesConfirmacion[id];
-        this.cargarDespachosPendientes();
-      },
-      error: (err) => {
-        this.exitoDespacho = false;
-        this.mensajeDespacho = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
-      }
-    });
-  }
-
-  registrarTransfusion(): void {
-    this.mensajeTransfusion = '';
-    if (!this.nuevaTransfusion.solicitudId) return;
-
-    this.clinicoService.crearTransfusion(this.nuevaTransfusion as any).subscribe({
-      next: () => {
-        this.exitoTransfusion = true;
-        this.mensajeTransfusion = 'Transfusión registrada correctamente.';
-        this.nuevaTransfusion = { solicitudId: null, codigoProductoIsbt: '', reaccionAdversa: false, detallesReaccion: '' };
-        this.cargarTransfusiones();
-        this.cargarSolicitudes();
-      },
-      error: (err) => {
-        this.exitoTransfusion = false;
-        this.mensajeTransfusion = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
-      }
-    });
-  }
-
   // RF-25: reserva quirúrgica con liberación automática
   cargarReservasQuirurgicas(): void {
     this.clinicoService.listarReservasQuirurgicas().subscribe(datos => this.reservasQuirurgicas = datos);
@@ -302,62 +215,6 @@ export class ClinicaComponent implements OnInit {
         this.exitoReserva = false;
         this.mensajeReserva = err.error?.mensaje ?? 'No se pudo actualizar la reserva.';
       }
-    });
-  }
-
-  // RF-15: hemovigilancia de reacciones transfusionales
-  cargarEventosAdversosTransfusionales(): void {
-    this.clinicoService.listarEventosAdversosTransfusionales().subscribe(datos => this.eventosAdversosTransfusionales = datos);
-  }
-
-  registrarEventoAdverso(): void {
-    this.mensajeEventoAdverso = '';
-    if (!this.nuevoEventoAdverso.transfusionId) return;
-
-    const transfusionId = this.nuevoEventoAdverso.transfusionId;
-    this.clinicoService.registrarEventoAdversoTransfusional(transfusionId, {
-      tipoReaccion: this.nuevoEventoAdverso.tipoReaccion,
-      esInmediata: this.nuevoEventoAdverso.esInmediata,
-      gravedad: this.nuevoEventoAdverso.gravedad,
-      descripcion: this.nuevoEventoAdverso.descripcion,
-      accionesTomadas: this.nuevoEventoAdverso.accionesTomadas
-    }).subscribe({
-      next: () => {
-        this.exitoEventoAdverso = true;
-        this.mensajeEventoAdverso = 'Evento adverso registrado correctamente.';
-        this.nuevoEventoAdverso = { transfusionId: null, tipoReaccion: 'FEBRIL', esInmediata: true, gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
-        this.cargarEventosAdversosTransfusionales();
-        this.cargarTransfusiones();
-      },
-      error: (err) => {
-        this.exitoEventoAdverso = false;
-        this.mensajeEventoAdverso = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
-      }
-    });
-  }
-
-  // RF-48: mensajería interna banco de sangre <-> servicio asistencial, por solicitud
-  cargarMensajes(): void {
-    this.errorMensajes = '';
-    if (!this.solicitudIdMensajes) {
-      this.mensajes = [];
-      return;
-    }
-    this.clinicoService.listarMensajes(this.solicitudIdMensajes).subscribe({
-      next: datos => this.mensajes = datos,
-      error: (err) => this.errorMensajes = err.error?.mensaje ?? 'No se pudo contactar con el servidor.'
-    });
-  }
-
-  enviarMensaje(): void {
-    if (!this.solicitudIdMensajes || !this.nuevoMensaje.trim()) return;
-    const solicitudId = this.solicitudIdMensajes;
-    this.clinicoService.enviarMensaje(solicitudId, { contenido: this.nuevoMensaje }).subscribe({
-      next: () => {
-        this.nuevoMensaje = '';
-        this.cargarMensajes();
-      },
-      error: (err) => this.errorMensajes = err.error?.mensaje ?? 'No se pudo contactar con el servidor.'
     });
   }
 

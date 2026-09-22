@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReporteService } from '../../../core/services/reporte.service';
-import { AuditoriaService } from '../../../core/services/auditoria.service';
 import { IndicadorCumplimiento, IndicadoresKpi, ProyeccionDesabastecimiento, ReporteNormativo, ReporteOperacional } from '../../../core/models/reporte.model';
-import { AuditoriaLog } from '../../../core/models/auditoria.model';
 
 function haceDias(dias: number): string {
   const fecha = new Date();
@@ -31,33 +29,13 @@ export class ReportesComponent implements OnInit {
   mensaje = '';
   exito = false;
 
-  // RF-16/RF-17/RF-30: bitácora de auditoría inmutable.
-  auditoria: AuditoriaLog[] = [];
-  paginaAuditoria = 0;
-  totalPaginasAuditoria = 0;
-
-  constructor(private reporteService: ReporteService, private auditoriaService: AuditoriaService) {}
+  constructor(private reporteService: ReporteService) {}
 
   ngOnInit(): void {
     this.actualizar();
     this.cargarCumplimiento();
     this.cargarHistorialNormativo();
     this.cargarProyecciones();
-    this.cargarAuditoria();
-  }
-
-  cargarAuditoria(): void {
-    this.auditoriaService.listar(this.paginaAuditoria, 25).subscribe(pagina => {
-      this.auditoria = pagina.content;
-      this.totalPaginasAuditoria = pagina.totalPages;
-    });
-  }
-
-  irAPaginaAuditoria(delta: number): void {
-    const nueva = this.paginaAuditoria + delta;
-    if (nueva < 0 || nueva >= this.totalPaginasAuditoria) return;
-    this.paginaAuditoria = nueva;
-    this.cargarAuditoria();
   }
 
   cargarProyecciones(): void {

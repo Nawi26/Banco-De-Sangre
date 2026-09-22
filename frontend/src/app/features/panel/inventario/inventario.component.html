@@ -54,41 +54,8 @@
 </div>
 
 <div class="row g-3 mb-4">
-  <!-- RF-05: Etiquetado ISBT 128 -->
-  <div class="col-md-6">
-    <div class="card shadow-sm h-100 d-print-none">
-      <div class="card-body">
-        <h2 class="h5 mb-1">Etiquetado ISBT 128 <span class="badge-rf mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-05</span></h2>
-        <p class="text-secondary small mb-3">Consulta el contenido normalizado de la etiqueta a partir del código de producto de la unidad.</p>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control mono" placeholder="Ej: E001" [(ngModel)]="codigoEtiqueta" (keyup.enter)="consultarEtiqueta()">
-          <button class="btn btn-primary" (click)="consultarEtiqueta()">Consultar</button>
-        </div>
-        <div class="alert alert-danger py-2" *ngIf="errorEtiqueta">{{ errorEtiqueta }}</div>
-
-        <div *ngIf="etiqueta" style="width:100%; max-width:320px; border:1.5px solid var(--ink-900); border-radius:4px; padding:14px; font-family:var(--font-mono); margin: 0 auto;" id="label-preview">
-          <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid var(--ink-900); padding-bottom:6px; margin-bottom:6px;">
-            <span>HLEV · BANCO DE SANGRE</span><span>ISBT 128</span>
-          </div>
-          <div style="height:34px; background:repeating-linear-gradient(90deg,#12161F 0 2px, transparent 2px 4px, #12161F 4px 6px, transparent 6px 9px); margin-bottom:6px;"></div>
-          <div style="font-size:11px; letter-spacing:.03em; margin-bottom:8px;">{{ etiqueta.dinMatriz || '—' }}</div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; font-size:10.5px;">
-            <div><div style="color:var(--ink-400);">PRODUCTO</div><div style="font-weight:700;">{{ etiqueta.codigoProducto }}</div></div>
-            <div><div style="color:var(--ink-400);">GRUPO</div><div style="font-weight:700; color:var(--red-700);">{{ etiqueta.grupoAboRh }}</div></div>
-            <div><div style="color:var(--ink-400);">VENCE</div><div style="font-weight:700;">{{ etiqueta.fechaVencimiento ? (etiqueta.fechaVencimiento | date:'dd/MM/yy') : '—' }}</div></div>
-            <div><div style="color:var(--ink-400);">PAYLOAD 2D</div><div style="font-weight:700; font-size:9px; word-break:break-all;">{{ etiqueta.payload2D }}</div></div>
-          </div>
-          <div style="margin-top:10px; height:22px; background:repeating-linear-gradient(90deg,#12161F 0 1px, transparent 1px 3px);"></div>
-        </div>
-        <div class="text-center mt-3" *ngIf="etiqueta">
-          <button class="btn btn-ghost btn-outline-secondary btn-sm" (click)="imprimirEtiqueta()">Imprimir etiqueta</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- RF-09/RF-24: Monitoreo de temperatura de cámaras -->
-  <div class="col-md-6">
+  <div class="col-12">
     <div class="card shadow-sm h-100">
       <div class="card-body">
         <h2 class="h5 mb-1">Cámaras y Monitoreo de Temperatura <span class="badge-rf mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-24</span></h2>

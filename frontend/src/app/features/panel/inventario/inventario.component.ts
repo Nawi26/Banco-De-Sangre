@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { InventarioService } from '../../../core/services/inventario.service';
 import { ClinicoService } from '../../../core/services/clinico.service';
 import {
-  CamaraAlmacenamiento, CertificadoCalidad, InventarioItem, IsbtEtiqueta, RegistroTemperatura, ResumenExistencias
+  CamaraAlmacenamiento, CertificadoCalidad, InventarioItem, RegistroTemperatura, ResumenExistencias
 } from '../../../core/models/inventario.model';
 import { Donacion, Hemocomponente } from '../../../core/models/clinico.model';
 
@@ -28,11 +28,6 @@ export class InventarioComponent implements OnInit {
   inventario: InventarioItem[] = [];
   filtroEstado = '';
   filtroBusqueda = '';
-
-  // RF-05: etiquetado ISBT 128
-  codigoEtiqueta = '';
-  etiqueta: IsbtEtiqueta | null = null;
-  errorEtiqueta = '';
 
   // RF-09/RF-24: cámaras y temperatura
   camaras: CamaraAlmacenamiento[] = [];
@@ -84,22 +79,6 @@ export class InventarioComponent implements OnInit {
         || item.grupoAbo.toLowerCase().includes(busqueda);
       return coincideEstado && coincideBusqueda;
     });
-  }
-
-  // ---------- RF-05: Etiquetado ISBT 128 ----------
-  consultarEtiqueta(): void {
-    this.errorEtiqueta = '';
-    this.etiqueta = null;
-    if (!this.codigoEtiqueta.trim()) return;
-
-    this.inventarioService.leerEtiqueta(this.codigoEtiqueta.trim()).subscribe({
-      next: (datos) => this.etiqueta = datos,
-      error: (err) => this.errorEtiqueta = err.error?.mensaje ?? 'No se encontró una unidad con ese código ISBT 128.'
-    });
-  }
-
-  imprimirEtiqueta(): void {
-    window.print();
   }
 
   // ---------- RF-09/RF-24: Cámaras y temperatura ----------

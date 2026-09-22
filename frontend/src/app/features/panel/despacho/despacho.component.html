@@ -1,0 +1,126 @@
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'despachos'" href="javascript:void(0)" (click)="pestanaActiva = 'despachos'">Doble Verificación</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'transfusiones'" href="javascript:void(0)" (click)="pestanaActiva = 'transfusiones'">Transfusiones</a>
+  </li>
+</ul>
+
+<!-- DESPACHOS (RF-13) -->
+<div *ngIf="pestanaActiva === 'despachos'">
+  <div class="two-col" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-1">Doble Verificación Electrónica <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-13</span></h2>
+        <p class="text-secondary small mb-3">La unidad debe tener una prueba cruzada compatible. La confirmación (segunda verificación) debe hacerla un responsable distinto.</p>
+        <form class="row g-3" (ngSubmit)="iniciarDespacho()">
+          <div class="col-md-12">
+            <label class="form-label fw-semibold">Solicitud</label>
+            <select class="form-select" name="dSolicitudId" [(ngModel)]="nuevoDespacho.solicitudId" required>
+              <option [ngValue]="null" disabled>Seleccione...</option>
+              <option *ngFor="let s of solicitudesAprobadas()" [ngValue]="s.id">{{ s.codigoSolicitud }} - {{ s.pacienteNombreCompleto }}</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Código ISBT de la Unidad (escaneada/digitada)</label>
+            <input type="text" class="form-control mono" name="dCodigoIsbt" [(ngModel)]="nuevoDespacho.codigoProductoIsbt" placeholder="Ej: W00000000001E01" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Firma Electrónica (tu clave) <span class="mono" style="font-size:10.5px;">RF-31</span></label>
+            <input type="password" class="form-control" name="dClave" [(ngModel)]="nuevoDespacho.claveConfirmacion" required>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">Registrar Primera Verificación</button>
+          </div>
+        </form>
+        <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoDespacho" [class.alert-danger]="!exitoDespacho" *ngIf="mensajeDespacho">
+          {{ mensajeDespacho }}
+        </div>
+        <div class="text-center small text-secondary mt-3">Toda entrega queda registrada en el log de auditoría (RF-17)</div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Pendientes de Segunda Verificación</h2>
+        <div class="mb-3" *ngFor="let d of despachosPendientes" style="border: 1px solid var(--line); border-radius: 10px; padding: 12px;">
+          <div class="fw-semibold small">{{ d.codigoSolicitud }} · <span class="mono">{{ d.codigoProductoIsbt }}</span></div>
+          <div class="small text-secondary mb-2">Primera verificación: {{ d.primeraVerificacionNombreCompleto }}</div>
+          <div class="input-group input-group-sm">
+            <input type="password" class="form-control" placeholder="Clave del segundo responsable" [(ngModel)]="clavesConfirmacion[d.id]" [ngModelOptions]="{standalone: true}">
+            <button class="btn btn-outline-success" (click)="confirmarDespacho(d.id)">Confirmar</button>
+          </div>
+        </div>
+        <p class="text-muted small" *ngIf="despachosPendientes.length === 0">No hay despachos pendientes de segunda verificación.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSFUSIONES -->
+<div *ngIf="pestanaActiva === 'transfusiones'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Transfusión</h2>
+      <p class="text-muted small">La unidad debe haber completado la prueba cruzada y el despacho con doble verificación.</p>
+      <form class="row g-3" (ngSubmit)="registrarTransfusion()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Solicitud Aprobada</label>
+          <select class="form-select" name="solicitudId" [(ngModel)]="nuevaTransfusion.solicitudId" required>
+            <option [ngValue]="null" disabled>Seleccione...</option>
+            <option *ngFor="let s of solicitudesAprobadas()" [ngValue]="s.id">{{ s.codigoSolicitud }} - {{ s.pacienteNombreCompleto }}</option>
+          </select>
+          <div class="form-text" *ngIf="solicitudesAprobadas().length === 0">No hay solicitudes aprobadas pendientes de transfusión.</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Código ISBT de la Unidad Despachada</label>
+          <input type="text" class="form-control mono" name="codigoProductoIsbt" [(ngModel)]="nuevaTransfusion.codigoProductoIsbt" placeholder="Ej: W00000000001E01" required>
+        </div>
+        <div class="col-md-4 form-check ms-2 mt-4">
+          <input type="checkbox" class="form-check-input" id="reaccionAdversa" name="reaccionAdversa" [(ngModel)]="nuevaTransfusion.reaccionAdversa">
+          <label class="form-check-label" for="reaccionAdversa">¿Hubo reacción adversa?</label>
+        </div>
+        <div class="col-md-8" *ngIf="nuevaTransfusion.reaccionAdversa">
+          <label class="form-label fw-semibold">Detalles de la Reacción</label>
+          <input type="text" class="form-control" name="detallesReaccion" [(ngModel)]="nuevaTransfusion.detallesReaccion">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Registrar Transfusión</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoTransfusion" [class.alert-danger]="!exitoTransfusion" *ngIf="mensajeTransfusion">
+        {{ mensajeTransfusion }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Transfusiones Registradas</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Solicitud</th><th>Paciente</th><th>Unidad</th><th>Resultado</th><th>Reacción Adversa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of transfusiones">
+              <td>{{ t.codigoSolicitud }}</td>
+              <td>{{ t.pacienteNombreCompleto }}</td>
+              <td class="mono">{{ t.codigoProductoIsbt }} ({{ t.grupoAbo }} {{ t.factorRh }})</td>
+              <td>{{ t.resultadoPruebaCruzada }}</td>
+              <td>
+                <span class="badge" [ngClass]="t.reaccionAdversa ? 'bg-danger' : 'bg-success'">
+                  {{ t.reaccionAdversa ? 'Sí' : 'No' }}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="transfusiones.length === 0"><td colspan="5" class="text-muted">No hay transfusiones registradas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

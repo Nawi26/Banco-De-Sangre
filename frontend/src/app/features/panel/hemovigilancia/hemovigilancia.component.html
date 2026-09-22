@@ -1,0 +1,80 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5 mb-1">Reportar Reacción Transfusional <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-15</span></h2>
+    <p class="text-secondary small mb-3">Eventos e incidentes adversos transfusionales, inmediatos o tardíos — con trazabilidad completa hacia la donación origen.</p>
+    <form class="row g-3" (ngSubmit)="registrarEventoAdverso()">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Transfusión</label>
+        <select class="form-select" name="eaTransfusionId" [(ngModel)]="nuevoEventoAdverso.transfusionId" required>
+          <option [ngValue]="null" disabled>Seleccione...</option>
+          <option *ngFor="let t of transfusiones" [ngValue]="t.id">{{ t.codigoSolicitud }} - {{ t.pacienteNombreCompleto }} ({{ t.codigoProductoIsbt }})</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Tipo de Reacción</label>
+        <select class="form-select" name="eaTipo" [(ngModel)]="nuevoEventoAdverso.tipoReaccion">
+          <option value="FEBRIL">Febril</option>
+          <option value="ALERGICA">Alérgica</option>
+          <option value="HEMOLITICA">Hemolítica</option>
+          <option value="OTRA">Otra</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label fw-semibold">Gravedad</label>
+        <select class="form-select" name="eaGravedad" [(ngModel)]="nuevoEventoAdverso.gravedad">
+          <option value="LEVE">Leve</option>
+          <option value="MODERADA">Moderada</option>
+          <option value="GRAVE">Grave</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">¿Cuándo se presentó?</label>
+        <select class="form-select" name="eaInmediata" [(ngModel)]="nuevoEventoAdverso.esInmediata">
+          <option [ngValue]="true">Inmediata (durante o poco después)</option>
+          <option [ngValue]="false">Tardía</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Descripción</label>
+        <textarea class="form-control" rows="2" name="eaDescripcion" [(ngModel)]="nuevoEventoAdverso.descripcion" required></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Acciones Tomadas</label>
+        <textarea class="form-control" rows="2" name="eaAcciones" [(ngModel)]="nuevoEventoAdverso.accionesTomadas"></textarea>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Registrar Evento</button>
+      </div>
+    </form>
+    <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoEventoAdverso" [class.alert-danger]="!exitoEventoAdverso" *ngIf="mensajeEventoAdverso">
+      {{ mensajeEventoAdverso }}
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-3">Eventos e Incidentes Adversos Transfusionales</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Paciente</th><th>DIN Origen</th><th>Reacción</th><th>Gravedad</th><th>Momento</th><th>Descripción</th><th>Reportado por</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of eventosAdversosTransfusionales">
+            <td>{{ e.pacienteNombreCompleto }}</td>
+            <td class="mono">{{ e.codigoProductoIsbt }}</td>
+            <td>{{ e.tipoReaccion }}</td>
+            <td><span class="badge" [ngClass]="e.gravedad === 'GRAVE' ? 'bg-danger' : (e.gravedad === 'MODERADA' ? 'bg-warning text-dark' : 'bg-secondary')">{{ e.gravedad }}</span></td>
+            <td>{{ e.esInmediata ? 'Inmediata' : 'Tardía' }}</td>
+            <td>{{ e.descripcion }}</td>
+            <td>{{ e.usuarioNombreCompleto }}</td>
+          </tr>
+          <tr *ngIf="eventosAdversosTransfusionales.length === 0"><td colspan="7" class="text-muted">No hay eventos adversos registrados.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

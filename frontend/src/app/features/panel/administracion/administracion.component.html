@@ -1,10 +1,82 @@
 <ul class="nav nav-tabs mb-4">
-  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'turnos'" href="javascript:void(0)" (click)="pestanaActiva = 'turnos'">Turnos</a></li>
-  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'mantenimientos'" href="javascript:void(0)" (click)="pestanaActiva = 'mantenimientos'">Calibraciones y Mantenimiento</a></li>
-  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'protocolos'" href="javascript:void(0)" (click)="pestanaActiva = 'protocolos'">Protocolos</a></li>
-  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'respaldos'" href="javascript:void(0)" (click)="pestanaActiva = 'respaldos'">Respaldos</a></li>
-  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'disponibilidad'" href="javascript:void(0)" (click)="pestanaActiva = 'disponibilidad'">Disponibilidad</a></li>
+  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'usuarios'" href="javascript:void(0)" (click)="pestanaActiva = 'usuarios'">Usuarios y Roles</a></li>
+  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'turnos'" href="javascript:void(0)" (click)="pestanaActiva = 'turnos'">Turnos del Personal</a></li>
+  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'sistema'" href="javascript:void(0)" (click)="pestanaActiva = 'sistema'">Sistema y Mantenimiento</a></li>
+  <li class="nav-item"><a class="nav-link" [class.active]="pestanaActiva === 'ayuda'" href="javascript:void(0)" (click)="pestanaActiva = 'ayuda'">Mesa de Ayuda</a></li>
 </ul>
+
+<!-- RF-28: usuarios y roles -->
+<div *ngIf="pestanaActiva === 'usuarios'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Nuevo Usuario</h2>
+      <form class="row g-3" style="max-width: 720px;" (ngSubmit)="registrarUsuario()">
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">DNI</label>
+          <input type="text" class="form-control" name="dni" [(ngModel)]="nuevoMedico.dni" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Correo Institucional</label>
+          <input type="email" class="form-control" name="email" [(ngModel)]="nuevoMedico.email" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Nombres</label>
+          <input type="text" class="form-control" name="nombres" [(ngModel)]="nuevoMedico.nombres" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Apellidos</label>
+          <input type="text" class="form-control" name="apellidos" [(ngModel)]="nuevoMedico.apellidos" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Contraseña Temporal</label>
+          <input type="password" class="form-control" name="password" [(ngModel)]="nuevoMedico.password" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">N° Colegiatura (Opcional)</label>
+          <input type="text" class="form-control" name="colegiatura" [(ngModel)]="nuevoMedico.colegiatura">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Rol</label>
+          <select class="form-select" name="rolId" [(ngModel)]="nuevoMedico.rolId" required>
+            <option [ngValue]="2">Médico Solicitante</option>
+            <option [ngValue]="3">Tecnólogo Médico</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Generar Credenciales</button>
+        </div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoMedico" [class.alert-danger]="!exitoMedico" *ngIf="mensajeMedico">
+        {{ mensajeMedico }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Usuarios Registrados</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th>DNI</th><th>Nombre Completo</th><th>Correo</th><th>Rol</th><th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of usuarios">
+              <td>{{ u.dni }}</td>
+              <td>{{ u.nombres }} {{ u.apellidos }}</td>
+              <td>{{ u.email }}</td>
+              <td>{{ u.rolNombre }}</td>
+              <td><span class="badge" [ngClass]="u.estado ? 'bg-success' : 'bg-secondary'">{{ u.estado ? 'Activo' : 'Inactivo' }}</span></td>
+            </tr>
+            <tr *ngIf="usuarios.length === 0"><td colspan="5" class="text-muted">No hay usuarios registrados.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- RF-42: turnos -->
 <div *ngIf="pestanaActiva === 'turnos'">
@@ -67,142 +139,34 @@
   </div>
 </div>
 
-<!-- RF-47: calibraciones/mantenimiento -->
-<div *ngIf="pestanaActiva === 'mantenimientos'">
-  <div class="card shadow-sm mb-4">
-    <div class="card-body">
-      <h2 class="h5 mb-3">Registrar Mantenimiento / Calibración</h2>
-      <form class="row g-3" (ngSubmit)="registrarMantenimiento()">
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Equipo</label>
-          <input type="text" class="form-control" name="nombreEquipo" [(ngModel)]="nuevoMantenimiento.nombreEquipo" placeholder="Ej: Cámara 1" required>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Tipo de Equipo</label>
-          <select class="form-select" name="tipoEquipo" [(ngModel)]="nuevoMantenimiento.tipoEquipo">
-            <option value="CAMARA_REFRIGERACION">Cámara de Refrigeración</option>
-            <option value="CONGELADORA">Congeladora</option>
-            <option value="CENTRIFUGA">Centrífuga</option>
-            <option value="SELLADORA">Selladora</option>
-            <option value="OTRO">Otro</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Tipo de Mantenimiento</label>
-          <select class="form-select" name="tipoMantenimiento" [(ngModel)]="nuevoMantenimiento.tipoMantenimiento">
-            <option value="PREVENTIVO">Preventivo</option>
-            <option value="CALIBRACION">Calibración</option>
-            <option value="CORRECTIVO">Correctivo</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Fecha Realizado</label>
-          <input type="datetime-local" class="form-control" name="fechaRealizado" [(ngModel)]="nuevoMantenimiento.fechaRealizado" required>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Próximo Vencimiento</label>
-          <input type="datetime-local" class="form-control" name="fechaProximoVencimiento" [(ngModel)]="nuevoMantenimiento.fechaProximoVencimiento">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Observaciones</label>
-          <input type="text" class="form-control" name="observaciones" [(ngModel)]="nuevoMantenimiento.observaciones">
-        </div>
-        <div class="col-12"><button type="submit" class="btn btn-primary">Registrar</button></div>
-      </form>
-      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoMantenimiento" [class.alert-danger]="!exitoMantenimiento" *ngIf="mensajeMantenimiento">{{ mensajeMantenimiento }}</div>
+<!-- Sistema y mantenimiento: disponibilidad + respaldos + mantenimiento de equipos + protocolos -->
+<div *ngIf="pestanaActiva === 'sistema'">
+  <div class="row g-3 mb-4">
+    <div class="col-md-6" *ngIf="disponibilidad">
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px; background: var(--green-700); margin-bottom:10px;"></div>
+        <div style="font-size:20px; font-weight:700; letter-spacing:-0.01em;">{{ formatoDuracion(disponibilidad.segundosActivo) }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Disponibilidad (uptime) <span class="mono" style="font-size:10px;">RF-39</span> — en línea desde {{ disponibilidad.enLineaDesde | date:'dd/MM/yyyy HH:mm' }}</div>
+      </div>
     </div>
-  </div>
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h2 class="h5 mb-3">Historial de Mantenimiento</h2>
-      <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
-          <thead><tr><th>Equipo</th><th>Tipo Equipo</th><th>Mantenimiento</th><th>Realizado</th><th>Próximo Vencimiento</th><th>Responsable</th></tr></thead>
-          <tbody>
-            <tr *ngFor="let m of mantenimientos">
-              <td>{{ m.nombreEquipo }}</td>
-              <td>{{ m.tipoEquipo }}</td>
-              <td>{{ m.tipoMantenimiento }}</td>
-              <td>{{ m.fechaRealizado | date:'dd/MM/yyyy HH:mm' }}</td>
-              <td>{{ m.fechaProximoVencimiento ? (m.fechaProximoVencimiento | date:'dd/MM/yyyy') : '-' }}</td>
-              <td>{{ m.responsableNombreCompleto }}</td>
-            </tr>
-            <tr *ngIf="mantenimientos.length === 0"><td colspan="6" class="text-muted">No hay mantenimientos registrados.</td></tr>
-          </tbody>
-        </table>
+    <div class="col-md-6">
+      <div class="card h-100 d-flex flex-row justify-content-between align-items-center" style="padding: 16px 18px;">
+        <div>
+          <div style="width:26px; height:4px; border-radius:2px; background: var(--blue-700); margin-bottom:10px;"></div>
+          <div style="font-size:20px; font-weight:700; letter-spacing:-0.01em;">{{ respaldos.length > 0 ? (respaldos[0].fechaInicio | date:'dd/MM/yyyy HH:mm') : 'Sin respaldos' }}</div>
+          <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Último respaldo <span class="mono" style="font-size:10px;">RF-34</span></div>
+        </div>
+        <button class="btn btn-primary btn-sm" (click)="ejecutarRespaldo()">Ejecutar Ahora</button>
       </div>
     </div>
   </div>
-</div>
+  <div class="alert alert-info py-2" *ngIf="mensajeRespaldo">{{ mensajeRespaldo }}</div>
 
-<!-- RF-49: protocolos -->
-<div *ngIf="pestanaActiva === 'protocolos'">
   <div class="card shadow-sm mb-4">
     <div class="card-body">
-      <h2 class="h5 mb-3">Publicar Versión de Protocolo</h2>
-      <p class="text-muted small">Publicar una nueva versión retira automáticamente la vigencia de las versiones anteriores del mismo nombre.</p>
-      <form class="row g-3" (ngSubmit)="publicarProtocolo()">
-        <div class="col-md-5">
-          <label class="form-label fw-semibold">Nombre del Protocolo</label>
-          <input type="text" class="form-control" name="nombre" [(ngModel)]="nuevoProtocolo.nombre" placeholder="Ej: Guía de Triaje Clínico" required>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label fw-semibold">Versión</label>
-          <input type="text" class="form-control" name="version" [(ngModel)]="nuevoProtocolo.version" placeholder="Ej: 2.1" required>
-        </div>
-        <div class="col-md-5">
-          <label class="form-label fw-semibold">URL del Documento</label>
-          <input type="text" class="form-control" name="contenidoUrl" [(ngModel)]="nuevoProtocolo.contenidoUrl">
-        </div>
-        <div class="col-12">
-          <label class="form-label fw-semibold">Notas de Cambio</label>
-          <textarea class="form-control" rows="2" name="notasCambio" [(ngModel)]="nuevoProtocolo.notasCambio"></textarea>
-        </div>
-        <div class="col-12"><button type="submit" class="btn btn-primary">Publicar</button></div>
-      </form>
-      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoProtocolo" [class.alert-danger]="!exitoProtocolo" *ngIf="mensajeProtocolo">{{ mensajeProtocolo }}</div>
-    </div>
-  </div>
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h2 class="h5 mb-3">Historial de Protocolos</h2>
+      <h2 class="h6 mb-3">Historial de Respaldos</h2>
       <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
-          <thead><tr><th>Nombre</th><th>Versión</th><th>Vigente</th><th>Publicado Por</th><th>Fecha</th></tr></thead>
-          <tbody>
-            <tr *ngFor="let p of protocolos">
-              <td>{{ p.nombre }}</td>
-              <td>{{ p.version }}</td>
-              <td><span class="badge" [ngClass]="p.vigente ? 'bg-success' : 'bg-secondary'">{{ p.vigente ? 'Vigente' : 'Histórico' }}</span></td>
-              <td>{{ p.publicadoPorNombreCompleto }}</td>
-              <td>{{ p.fechaPublicacion | date:'dd/MM/yyyy' }}</td>
-            </tr>
-            <tr *ngIf="protocolos.length === 0"><td colspan="5" class="text-muted">No hay protocolos publicados.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- RF-34: respaldos -->
-<div *ngIf="pestanaActiva === 'respaldos'">
-  <div class="card shadow-sm mb-4">
-    <div class="card-body d-flex justify-content-between align-items-center">
-      <div>
-        <h2 class="h5 mb-1">Respaldos de Base de Datos</h2>
-        <p class="text-muted small mb-0">Se ejecutan automáticamente cada madrugada; también puede forzarse uno manualmente.</p>
-      </div>
-      <button class="btn btn-primary" (click)="ejecutarRespaldo()">Ejecutar Respaldo Ahora</button>
-    </div>
-    <div class="card-body pt-0" *ngIf="mensajeRespaldo">
-      <div class="alert alert-info py-2 mb-0">{{ mensajeRespaldo }}</div>
-    </div>
-  </div>
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle">
+        <table class="table table-striped table-sm align-middle">
           <thead><tr><th>Inicio</th><th>Fin</th><th>Tamaño</th><th>Estado</th><th>Hash SHA-256</th><th></th></tr></thead>
           <tbody>
             <tr *ngFor="let r of respaldos">
@@ -222,31 +186,107 @@
       </div>
     </div>
   </div>
-</div>
 
-<!-- RF-39: disponibilidad -->
-<div *ngIf="pestanaActiva === 'disponibilidad'">
-  <div class="row g-3 mb-4" *ngIf="disponibilidad">
-    <div class="col-md-6">
-      <div class="card h-100" style="padding: 16px 18px;">
-        <div style="width:26px; height:4px; border-radius:2px; background: var(--green-700); margin-bottom:10px;"></div>
-        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ formatoDuracion(disponibilidad.segundosActivo) }}</div>
-        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">En línea desde {{ disponibilidad.enLineaDesde | date:'dd/MM/yyyy HH:mm' }}</div>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Mantenimiento de Equipos Críticos <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-47</span></h2>
+      <form class="row g-2 mb-3" (ngSubmit)="registrarMantenimiento()">
+        <div class="col-md-3"><input type="text" class="form-control form-control-sm" name="nombreEquipo" [(ngModel)]="nuevoMantenimiento.nombreEquipo" placeholder="Ej: Cámara 1" required></div>
+        <div class="col-md-3">
+          <select class="form-select form-select-sm" name="tipoEquipo" [(ngModel)]="nuevoMantenimiento.tipoEquipo">
+            <option value="CAMARA_REFRIGERACION">Cámara de Refrigeración</option>
+            <option value="CONGELADORA">Congeladora</option>
+            <option value="CENTRIFUGA">Centrífuga</option>
+            <option value="SELLADORA">Selladora</option>
+            <option value="OTRO">Otro</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-select form-select-sm" name="tipoMantenimiento" [(ngModel)]="nuevoMantenimiento.tipoMantenimiento">
+            <option value="PREVENTIVO">Preventivo</option>
+            <option value="CALIBRACION">Calibración</option>
+            <option value="CORRECTIVO">Correctivo</option>
+          </select>
+        </div>
+        <div class="col-md-2"><input type="datetime-local" class="form-control form-control-sm" name="fechaRealizado" [(ngModel)]="nuevoMantenimiento.fechaRealizado" required></div>
+        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary w-100">Registrar</button></div>
+      </form>
+      <div class="alert mb-3 py-2" [class.alert-success]="exitoMantenimiento" [class.alert-danger]="!exitoMantenimiento" *ngIf="mensajeMantenimiento">{{ mensajeMantenimiento }}</div>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm align-middle">
+          <thead><tr><th>Equipo</th><th>Mantenimiento</th><th>Realizado</th><th>Próximo Vencimiento</th><th>Responsable</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let m of mantenimientos">
+              <td>{{ m.nombreEquipo }}</td>
+              <td>{{ m.tipoMantenimiento }}</td>
+              <td>{{ m.fechaRealizado | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ m.fechaProximoVencimiento ? (m.fechaProximoVencimiento | date:'dd/MM/yyyy') : '-' }}</td>
+              <td>{{ m.responsableNombreCompleto }}</td>
+            </tr>
+            <tr *ngIf="mantenimientos.length === 0"><td colspan="5" class="text-muted">No hay mantenimientos registrados.</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+
   <div class="card shadow-sm">
     <div class="card-body">
-      <h2 class="h5 mb-3">Historial de Arranques y Apagados</h2>
+      <h2 class="h6 mb-3">Control de Versiones de Protocolos Clínicos <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-49</span></h2>
+      <form class="row g-2 mb-3" (ngSubmit)="publicarProtocolo()">
+        <div class="col-md-4"><input type="text" class="form-control form-control-sm" name="nombre" [(ngModel)]="nuevoProtocolo.nombre" placeholder="Ej: Guía de Triaje Clínico" required></div>
+        <div class="col-md-2"><input type="text" class="form-control form-control-sm" name="version" [(ngModel)]="nuevoProtocolo.version" placeholder="Versión" required></div>
+        <div class="col-md-4"><input type="text" class="form-control form-control-sm" name="contenidoUrl" [(ngModel)]="nuevoProtocolo.contenidoUrl" placeholder="URL del documento"></div>
+        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary w-100">Publicar</button></div>
+      </form>
+      <div class="alert mb-3 py-2" [class.alert-success]="exitoProtocolo" [class.alert-danger]="!exitoProtocolo" *ngIf="mensajeProtocolo">{{ mensajeProtocolo }}</div>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm align-middle">
+          <thead><tr><th>Protocolo</th><th>Versión Vigente</th><th>Actualizado</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let p of protocolos">
+              <td>{{ p.nombre }}</td>
+              <td><span class="badge" [ngClass]="p.vigente ? 'bg-success' : 'bg-secondary'">v{{ p.version }} · {{ p.vigente ? 'Vigente' : 'Histórico' }}</span></td>
+              <td>{{ p.fechaPublicacion | date:'dd/MM/yyyy' }}</td>
+            </tr>
+            <tr *ngIf="protocolos.length === 0"><td colspan="3" class="text-muted">No hay protocolos publicados.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RF-33: mesa de ayuda -->
+<div *ngIf="pestanaActiva === 'ayuda'">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Mesa de Ayuda Interna</h2>
       <div class="table-responsive">
         <table class="table table-striped table-hover align-middle">
-          <thead><tr><th>Evento</th><th>Fecha</th></tr></thead>
+          <thead><tr><th>Usuario</th><th>Asunto</th><th>Descripción</th><th>Prioridad</th><th>Estado</th><th>Respuesta</th><th></th></tr></thead>
           <tbody>
-            <tr *ngFor="let e of disponibilidad?.historial">
-              <td><span class="badge" [ngClass]="e.tipo === 'INICIO' ? 'bg-success' : 'bg-secondary'">{{ e.tipo }}</span></td>
-              <td>{{ e.fecha | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            <tr *ngFor="let t of ticketsTodos">
+              <td>{{ t.usuarioNombreCompleto }}</td>
+              <td>{{ t.asunto }}</td>
+              <td>{{ t.descripcion }}</td>
+              <td>{{ t.prioridad }}</td>
+              <td>
+                <select class="form-select form-select-sm" [(ngModel)]="respuestasTicket[t.id].estado" [ngModelOptions]="{standalone: true}">
+                  <option value="ABIERTO">Abierto</option>
+                  <option value="EN_PROCESO">En Proceso</option>
+                  <option value="RESUELTO">Resuelto</option>
+                  <option value="CERRADO">Cerrado</option>
+                </select>
+              </td>
+              <td>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="respuestasTicket[t.id].respuesta" [ngModelOptions]="{standalone: true}">
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" (click)="responderTicket(t.id)">Guardar</button>
+              </td>
             </tr>
-            <tr *ngIf="!disponibilidad || disponibilidad.historial.length === 0"><td colspan="2" class="text-muted">Sin eventos registrados.</td></tr>
+            <tr *ngIf="ticketsTodos.length === 0"><td colspan="7" class="text-muted">No hay incidencias reportadas.</td></tr>
           </tbody>
         </table>
       </div>

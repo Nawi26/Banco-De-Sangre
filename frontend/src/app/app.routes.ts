@@ -37,8 +37,24 @@ export const routes: Routes = [
         loadComponent: () => import('./features/panel/donaciones/donaciones.component').then(m => m.DonacionesComponent)
       },
       {
-        path: 'clinica',
-        loadComponent: () => import('./features/panel/clinica/clinica.component').then(m => m.ClinicaComponent)
+        path: 'etiquetado',
+        loadComponent: () => import('./features/panel/etiquetado/etiquetado.component').then(m => m.EtiquetadoComponent)
+      },
+      {
+        path: 'solicitudes',
+        loadComponent: () => import('./features/panel/solicitudes-clinicas/solicitudes-clinicas.component').then(m => m.SolicitudesClinicasComponent)
+      },
+      {
+        path: 'despacho',
+        loadComponent: () => import('./features/panel/despacho/despacho.component').then(m => m.DespachoComponent)
+      },
+      {
+        path: 'movil',
+        loadComponent: () => import('./features/panel/app-movil/app-movil.component').then(m => m.AppMovilComponent)
+      },
+      {
+        path: 'hemovigilancia',
+        loadComponent: () => import('./features/panel/hemovigilancia/hemovigilancia.component').then(m => m.HemovigilanciaComponent)
       },
       {
         path: 'soporte',
@@ -50,9 +66,9 @@ export const routes: Routes = [
         canActivate: [supervisionGuard]
       },
       {
-        path: 'medicos',
-        loadComponent: () => import('./features/panel/medicos/medicos.component').then(m => m.MedicosComponent),
-        canActivate: [adminGuard]
+        path: 'auditoria',
+        loadComponent: () => import('./features/panel/auditoria/auditoria.component').then(m => m.AuditoriaComponent),
+        canActivate: [supervisionGuard]
       },
       {
         path: 'administracion',

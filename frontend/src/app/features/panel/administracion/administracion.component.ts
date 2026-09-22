@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdministracionService } from '../../../core/services/administracion.service';
 import { UsuarioService } from '../../../core/services/usuario.service';
+import { SoporteService } from '../../../core/services/soporte.service';
 import {
   Disponibilidad, MantenimientoEquipo, ProtocoloClinico, RespaldoBaseDatos, TurnoPersonal
 } from '../../../core/models/administracion.model';
 import { UsuarioAdmin } from '../../../core/models/usuario.model';
+import { TicketSoporte } from '../../../core/models/soporte.model';
 
 @Component({
   selector: 'app-administracion',
@@ -15,9 +17,14 @@ import { UsuarioAdmin } from '../../../core/models/usuario.model';
   templateUrl: './administracion.component.html'
 })
 export class AdministracionComponent implements OnInit {
-  pestanaActiva: 'turnos' | 'mantenimientos' | 'protocolos' | 'respaldos' | 'disponibilidad' = 'turnos';
+  pestanaActiva: 'usuarios' | 'turnos' | 'sistema' | 'ayuda' = 'usuarios';
 
+  // RF-28: gestión de usuarios y roles (antes "Médicos")
   usuarios: UsuarioAdmin[] = [];
+  nuevoMedico = { dni: '', nombres: '', apellidos: '', email: '', password: '', colegiatura: '', rolId: 2 };
+  mensajeMedico = '';
+  exitoMedico = false;
+
   turnos: TurnoPersonal[] = [];
   mantenimientos: MantenimientoEquipo[] = [];
   protocolos: ProtocoloClinico[] = [];
@@ -39,17 +46,45 @@ export class AdministracionComponent implements OnInit {
   mensajeRespaldo = '';
   verificaciones: Record<number, string> = {};
 
-  constructor(private administracionService: AdministracionService, private usuarioService: UsuarioService) {}
+  // RF-33: mesa de ayuda — vista administrativa de todas las incidencias.
+  ticketsTodos: TicketSoporte[] = [];
+  respuestasTicket: Record<number, { estado: string; respuesta: string }> = {};
+
+  constructor(private administracionService: AdministracionService, private usuarioService: UsuarioService,
+              private soporteService: SoporteService) {}
 
   ngOnInit(): void {
-    this.usuarioService.listarMedicos().subscribe(datos => this.usuarios = datos);
+    this.cargarUsuarios();
     this.cargarTurnos();
     this.cargarMantenimientos();
     this.cargarProtocolos();
     this.cargarRespaldos();
     this.cargarDisponibilidad();
+    this.cargarTickets();
   }
 
+  // ---------- Usuarios y roles ----------
+  cargarUsuarios(): void {
+    this.usuarioService.listarMedicos().subscribe(datos => this.usuarios = datos);
+  }
+
+  registrarUsuario(): void {
+    this.mensajeMedico = '';
+    this.usuarioService.crearMedico(this.nuevoMedico).subscribe({
+      next: () => {
+        this.exitoMedico = true;
+        this.mensajeMedico = 'Usuario registrado correctamente.';
+        this.nuevoMedico = { dni: '', nombres: '', apellidos: '', email: '', password: '', colegiatura: '', rolId: 2 };
+        this.cargarUsuarios();
+      },
+      error: (err) => {
+        this.exitoMedico = false;
+        this.mensajeMedico = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
+      }
+    });
+  }
+
+  // ---------- Turnos del personal (RF-42) ----------
   cargarTurnos(): void {
     this.administracionService.listarTurnos().subscribe(datos => this.turnos = datos);
   }
@@ -75,6 +110,7 @@ export class AdministracionComponent implements OnInit {
     this.administracionService.eliminarTurno(id).subscribe(() => this.cargarTurnos());
   }
 
+  // ---------- Sistema y mantenimiento (RF-34/RF-39/RF-47/RF-49) ----------
   cargarMantenimientos(): void {
     this.administracionService.listarMantenimientos().subscribe(datos => this.mantenimientos = datos);
   }
@@ -144,5 +180,28 @@ export class AdministracionComponent implements OnInit {
     const horas = Math.floor(segundos / 3600);
     const minutos = Math.floor((segundos % 3600) / 60);
     return `${horas}h ${minutos}m`;
+  }
+
+  // ---------- Mesa de ayuda (RF-33) ----------
+  cargarTickets(): void {
+    this.soporteService.listarTodos().subscribe(datos => {
+      this.ticketsTodos = datos;
+      datos.forEach(t => this.respuestasTicket[t.id] = { estado: t.estado, respuesta: t.respuesta ?? '' });
+    });
+  }
+
+  responderTicket(id: number): void {
+    const datos = this.respuestasTicket[id];
+    this.soporteService.responder(id, datos).subscribe(() => this.cargarTickets());
+  }
+
+  colorEstadoTicket(estado: string): string {
+    switch (estado) {
+      case 'ABIERTO': return 'secondary';
+      case 'EN_PROCESO': return 'warning';
+      case 'RESUELTO': return 'success';
+      case 'CERRADO': return 'dark';
+      default: return 'secondary';
+    }
   }
 }

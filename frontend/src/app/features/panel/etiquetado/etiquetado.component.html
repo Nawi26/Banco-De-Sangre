@@ -1,0 +1,57 @@
+<div class="two-col" style="display:grid; grid-template-columns:1.5fr 1fr; gap:16px; align-items:start;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-1">Generación de Etiqueta ISBT 128 <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-05</span></h2>
+      <p class="text-secondary small mb-3">Identificación de Donación (DIN), código de producto, grupo ABO/Rh y vencimiento — consulta a partir del código de producto ya asignado a la unidad durante el fraccionamiento.</p>
+
+      <div class="input-group mb-3">
+        <input type="text" class="form-control mono" placeholder="Código de producto ISBT (ej: W00000000001E01)" [(ngModel)]="codigoEtiqueta" (keyup.enter)="consultarEtiqueta()">
+        <button class="btn btn-primary" (click)="consultarEtiqueta()">Consultar / Leer código</button>
+      </div>
+      <div class="alert alert-danger py-2" *ngIf="errorEtiqueta">{{ errorEtiqueta }}</div>
+
+      <div class="row g-3" *ngIf="etiqueta">
+        <div class="col-md-6">
+          <label class="form-label small mb-1">DIN (verificación módulo 37-2)</label>
+          <input class="form-control mono" [value]="etiqueta.dinMatriz || '—'" readonly>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small mb-1">Código de producto (E-code)</label>
+          <input class="form-control mono" [value]="etiqueta.codigoProducto" readonly>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small mb-1">Grupo ABO/Rh</label>
+          <input class="form-control mono" [value]="etiqueta.grupoAboRh" readonly>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small mb-1">Fecha de vencimiento</label>
+          <input class="form-control mono" [value]="etiqueta.fechaVencimiento ? (etiqueta.fechaVencimiento | date:'dd/MM/yyyy') : '—'" readonly>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap mt-3" *ngIf="etiqueta">
+        <button class="btn btn-outline-secondary btn-sm" (click)="imprimirEtiqueta()">Imprimir etiqueta</button>
+        <a class="btn btn-outline-secondary btn-sm" routerLink="/panel/inventario">Generar certificado de calidad (QR) — en Inventario</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm d-flex flex-column align-items-center gap-3 justify-content-center" style="padding: 22px;">
+    <div style="font-size:12px; color:var(--ink-600); font-weight:600;">VISTA PREVIA DE ETIQUETA</div>
+    <div *ngIf="!etiqueta" class="text-muted small text-center">Consulta un código para ver la vista previa.</div>
+    <div *ngIf="etiqueta" style="width:100%; max-width:280px; border:1.5px solid var(--ink-900); border-radius:4px; padding:14px; font-family:var(--font-mono);">
+      <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid var(--ink-900); padding-bottom:6px; margin-bottom:6px;">
+        <span>HLEV · BANCO DE SANGRE</span><span>ISBT 128</span>
+      </div>
+      <div style="height:34px; background:repeating-linear-gradient(90deg,#12161F 0 2px, transparent 2px 4px, #12161F 4px 6px, transparent 6px 9px); margin-bottom:6px;"></div>
+      <div style="font-size:11px; letter-spacing:.03em; margin-bottom:8px;">{{ etiqueta.dinMatriz || '—' }}</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; font-size:10.5px;">
+        <div><div style="color:var(--ink-400);">PRODUCTO</div><div style="font-weight:700;">{{ etiqueta.codigoProducto }}</div></div>
+        <div><div style="color:var(--ink-400);">GRUPO</div><div style="font-weight:700; color:var(--red-700);">{{ etiqueta.grupoAboRh }}</div></div>
+        <div><div style="color:var(--ink-400);">VENCE</div><div style="font-weight:700;">{{ etiqueta.fechaVencimiento ? (etiqueta.fechaVencimiento | date:'dd/MM/yy') : '—' }}</div></div>
+        <div><div style="color:var(--ink-400);">PAYLOAD 2D</div><div style="font-weight:700; font-size:9px; word-break:break-all;">{{ etiqueta.payload2D }}</div></div>
+      </div>
+      <div style="margin-top:10px; height:22px; background:repeating-linear-gradient(90deg,#12161F 0 1px, transparent 1px 3px);"></div>
+    </div>
+  </div>
+</div>

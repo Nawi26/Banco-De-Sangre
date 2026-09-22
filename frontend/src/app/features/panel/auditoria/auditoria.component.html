@@ -1,0 +1,32 @@
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h2 class="h5 mb-1">Registro de Auditoría Inmutable</h2>
+        <p class="text-secondary small mb-0">Fecha, hora exacta, terminal (IP) y usuario responsable de cada acción crítica del sistema.</p>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-sm btn-outline-secondary" [disabled]="pagina <= 0" (click)="irAPagina(-1)">← Anterior</button>
+        <span class="small text-secondary">Página {{ auditoria.length > 0 ? pagina + 1 : 0 }} de {{ totalPaginas }}</span>
+        <button class="btn btn-sm btn-outline-secondary" [disabled]="pagina >= totalPaginas - 1" (click)="irAPagina(1)">Siguiente →</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-sm align-middle">
+        <thead><tr><th>Fecha / Hora</th><th>Usuario</th><th>Rol</th><th>Acción</th><th>Recurso</th><th>Resultado</th><th>IP Terminal</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let a of auditoria">
+            <td class="mono">{{ a.creadoEn | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{ a.usuarioIdentificador ?? '—' }}</td>
+            <td>{{ a.rol ?? '—' }}</td>
+            <td>{{ a.accion }}</td>
+            <td class="mono cell-muted">{{ a.metodoHttp }} {{ a.endpoint }}</td>
+            <td><span class="badge" [ngClass]="a.exitoso ? 'bg-success' : 'bg-danger'">{{ a.resultadoHttp }}</span></td>
+            <td class="mono">{{ a.ipOrigen }}</td>
+          </tr>
+          <tr *ngIf="auditoria.length === 0"><td colspan="7" class="text-muted">Sin registros de auditoría.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
