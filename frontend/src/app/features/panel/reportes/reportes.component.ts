@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReporteService } from '../../../core/services/reporte.service';
-import { IndicadorCumplimiento, IndicadoresKpi, ReporteNormativo, ReporteOperacional } from '../../../core/models/reporte.model';
+import { IndicadorCumplimiento, IndicadoresKpi, ProyeccionDesabastecimiento, ReporteNormativo, ReporteOperacional } from '../../../core/models/reporte.model';
 
 function haceDias(dias: number): string {
   const fecha = new Date();
@@ -24,6 +24,7 @@ export class ReportesComponent implements OnInit {
   cumplimiento: IndicadorCumplimiento[] = [];
   operacional: ReporteOperacional | null = null;
   historialNormativo: ReporteNormativo[] = [];
+  proyecciones: ProyeccionDesabastecimiento[] = [];
 
   mensaje = '';
   exito = false;
@@ -34,6 +35,15 @@ export class ReportesComponent implements OnInit {
     this.actualizar();
     this.cargarCumplimiento();
     this.cargarHistorialNormativo();
+    this.cargarProyecciones();
+  }
+
+  cargarProyecciones(): void {
+    this.reporteService.obtenerProyeccionDesabastecimiento().subscribe(datos => this.proyecciones = datos);
+  }
+
+  proyeccionesConRiesgo(): ProyeccionDesabastecimiento[] {
+    return this.proyecciones.filter(p => p.nivelRiesgo !== 'BAJO');
   }
 
   actualizar(): void {

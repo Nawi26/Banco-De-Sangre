@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../config';
-import { IndicadorCumplimiento, IndicadoresKpi, ReporteNormativo, ReporteOperacional } from '../models/reporte.model';
+import { IndicadorCumplimiento, IndicadoresKpi, ProyeccionDesabastecimiento, ReporteNormativo, ReporteOperacional } from '../models/reporte.model';
 
 // RF-16/RF-26/RF-27/RF-36/RF-44/RF-50: reportes gerenciales y de cumplimiento.
 @Injectable({ providedIn: 'root' })
@@ -36,6 +36,10 @@ export class ReporteService {
 
   generarNormativoManual(desde: string, hasta: string): Observable<ReporteNormativo> {
     return this.http.post<ReporteNormativo>(`${API_BASE}/reportes/normativos/generar`, {}, { params: { desde, hasta } });
+  }
+
+  obtenerProyeccionDesabastecimiento(): Observable<ProyeccionDesabastecimiento[]> {
+    return this.http.get<ProyeccionDesabastecimiento[]>(`${API_BASE}/inventario/proyeccion`);
   }
 
   private parametros(desde?: string, hasta?: string): Record<string, string> {

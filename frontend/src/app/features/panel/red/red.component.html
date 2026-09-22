@@ -1,3 +1,13 @@
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'intercambios'" href="javascript:void(0)" (click)="pestanaActiva = 'intercambios'">Intercambios</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'convenios'" href="javascript:void(0)" (click)="pestanaActiva = 'convenios'">Convenios</a>
+  </li>
+</ul>
+
+<div *ngIf="pestanaActiva === 'intercambios'">
 <div class="card shadow-sm mb-4">
   <div class="card-body">
     <h2 class="h5 mb-3">Búsqueda en Red Interhospitalaria</h2>
@@ -84,10 +94,78 @@
                         (click)="avanzarEstado(i.id, accion.estado)">
                   {{ accion.etiqueta }}
                 </button>
+                <button class="btn btn-sm btn-outline-dark me-1 mt-1" *ngIf="i.estado === 'ENTREGADO'" (click)="registrarDevolucion(i.id)">
+                  Registrar Devolución
+                </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- RF-45: convenios interinstitucionales -->
+<div *ngIf="pestanaActiva === 'convenios'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Convenio Interinstitucional</h2>
+      <form class="row g-3" (ngSubmit)="crearConvenio()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Establecimiento</label>
+          <select class="form-select" name="ipressId" [(ngModel)]="nuevoConvenio.ipressId" required>
+            <option [ngValue]="null" disabled>Seleccione...</option>
+            <option *ngFor="let h of hospitales" [ngValue]="h.id">{{ h.nombreEstablecimiento }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">N° de Convenio</label>
+          <input type="text" class="form-control" name="numeroConvenio" [(ngModel)]="nuevoConvenio.numeroConvenio" required>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Inicio</label>
+          <input type="datetime-local" class="form-control" name="fechaInicio" [(ngModel)]="nuevoConvenio.fechaInicio" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Fin (opcional)</label>
+          <input type="datetime-local" class="form-control" name="fechaFin" [(ngModel)]="nuevoConvenio.fechaFin">
+        </div>
+        <div class="col-12">
+          <label class="form-label fw-semibold">Objeto del Convenio</label>
+          <textarea class="form-control" rows="2" name="objeto" [(ngModel)]="nuevoConvenio.objeto" required></textarea>
+        </div>
+        <div class="col-12"><button type="submit" class="btn btn-primary">Registrar</button></div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoConvenio" [class.alert-danger]="!exitoConvenio" *ngIf="mensajeConvenio">{{ mensajeConvenio }}</div>
+    </div>
+  </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Convenios Registrados</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead><tr><th>Establecimiento</th><th>N° Convenio</th><th>Objeto</th><th>Inicio</th><th>Fin</th><th>Estado</th><th></th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of convenios">
+              <td>{{ c.ipressNombre }}</td>
+              <td>{{ c.numeroConvenio }}</td>
+              <td>{{ c.objeto }}</td>
+              <td>{{ c.fechaInicio | date:'dd/MM/yyyy' }}</td>
+              <td>{{ c.fechaFin ? (c.fechaFin | date:'dd/MM/yyyy') : 'Indefinido' }}</td>
+              <td><span class="badge" [ngClass]="c.estado === 'VIGENTE' ? 'bg-success' : (c.estado === 'VENCIDO' ? 'bg-secondary' : 'bg-danger')">{{ c.estado }}</span></td>
+              <td>
+                <select class="form-select form-select-sm" style="width: auto;" [ngModel]="c.estado" (ngModelChange)="cambiarEstadoConvenio(c.id, $event)" [ngModelOptions]="{standalone: true}">
+                  <option value="VIGENTE">Vigente</option>
+                  <option value="VENCIDO">Vencido</option>
+                  <option value="RESCINDIDO">Rescindido</option>
+                </select>
+              </td>
+            </tr>
+            <tr *ngIf="convenios.length === 0"><td colspan="7" class="text-muted">No hay convenios registrados.</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

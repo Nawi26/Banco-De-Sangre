@@ -26,6 +26,17 @@ export interface ReporteOperacional {
   certificadosEmitidos: number;
 }
 
+// RF-46: proyección de desabastecimiento por tipo de hemocomponente y grupo ABO/Rh.
+export interface ProyeccionDesabastecimiento {
+  tipoHemocomponente: string;
+  grupoAbo: string;
+  factorRh: string;
+  stockActual: number;
+  consumoDiarioPromedio: number;
+  diasCoberturaEstimados: number | null;
+  nivelRiesgo: string;
+}
+
 export interface ReporteNormativo {
   id: number;
   periodoDesde: string;
