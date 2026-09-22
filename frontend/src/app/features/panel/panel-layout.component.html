@@ -1,6 +1,8 @@
 <div class="d-flex" style="height: 100vh;">
 
-  <aside class="sidebar d-flex flex-column bg-dark text-white d-print-none" style="width: 260px; flex-shrink: 0;">
+  <div class="sidebar-backdrop d-md-none" *ngIf="sidebarAbierto()" (click)="alternarSidebar()"></div>
+
+  <aside class="sidebar d-flex flex-column bg-dark text-white d-print-none" [class.sidebar-abierto]="sidebarAbierto()" style="width: 260px; flex-shrink: 0;">
     <div class="p-4 text-center bg-primary">
       <svg viewBox="0 0 100 100" width="48" height="48" class="mb-2">
         <circle cx="50" cy="55" r="40" fill="none" stroke="#ffffff" stroke-width="9" opacity="0.9"/>
@@ -64,8 +66,18 @@
 
   <main class="flex-grow-1 d-flex flex-column" style="min-height: 0; overflow-y: scroll; scrollbar-gutter: stable;">
     <header class="d-flex justify-content-between align-items-center bg-white border-bottom px-4 py-3 d-print-none">
-      <h1 class="h5 mb-0">{{ authService.esAdministrador() ? accesibilidad.t('header.panelAdmin') : accesibilidad.t('header.panelMedico') }}</h1>
-      <span class="fw-semibold">{{ authService.usuario()?.nombreCompleto }}</span>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary btn-sm d-md-none" (click)="alternarSidebar()" aria-label="Abrir menú">☰</button>
+        <h1 class="h5 mb-0">{{ authService.esAdministrador() ? accesibilidad.t('header.panelAdmin') : accesibilidad.t('header.panelMedico') }}</h1>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-outline-secondary btn-sm" *ngIf="notificaciones.soportado() && !notificaciones.activo()"
+                (click)="notificaciones.activar()" title="RF-21: alertas de stock crítico, vencimiento y respuestas interhospitalarias">
+          🔔 Activar Notificaciones
+        </button>
+        <span class="badge bg-success" *ngIf="notificaciones.activo()">🔔 Notificaciones activas</span>
+        <span class="fw-semibold d-none d-sm-inline">{{ authService.usuario()?.nombreCompleto }}</span>
+      </div>
     </header>
 
     <section class="p-4">
