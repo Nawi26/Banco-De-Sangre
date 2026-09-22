@@ -30,3 +30,62 @@
 a {
   color: #1565c0;
 }
+
+/* RF-37/RNF-08: modo de alto contraste para turnos nocturnos o personal con baja visión. */
+html[data-tema="alto-contraste"] {
+  --bs-primary: #ffcc00;
+  --bs-primary-rgb: 255, 204, 0;
+  --bs-body-bg: #000000;
+  --bs-body-color: #ffffff;
+  --bs-border-color: #ffffff;
+}
+
+html[data-tema="alto-contraste"] body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html[data-tema="alto-contraste"] .card,
+html[data-tema="alto-contraste"] .table,
+html[data-tema="alto-contraste"] .form-control,
+html[data-tema="alto-contraste"] .form-select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+
+html[data-tema="alto-contraste"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+html[data-tema="alto-contraste"] .btn-primary {
+  background-color: #ffcc00 !important;
+  border-color: #ffcc00 !important;
+  color: #000000 !important;
+  font-weight: 600;
+}
+
+html[data-tema="alto-contraste"] .btn-outline-primary,
+html[data-tema="alto-contraste"] .btn-outline-secondary,
+html[data-tema="alto-contraste"] .btn-outline-success,
+html[data-tema="alto-contraste"] .btn-outline-danger,
+html[data-tema="alto-contraste"] .btn-outline-dark {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+html[data-tema="alto-contraste"] a {
+  color: #ffcc00 !important;
+  text-decoration: underline;
+}
+
+html[data-tema="alto-contraste"] .sidebar {
+  background-color: #000000 !important;
+  border-right: 2px solid #ffffff;
+}
+
+html[data-tema="alto-contraste"] .text-secondary,
+html[data-tema="alto-contraste"] .text-muted {
+  color: #cccccc !important;
+}

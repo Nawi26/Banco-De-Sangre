@@ -14,42 +14,57 @@
     <nav class="flex-grow-1 pt-3">
       <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-          <a routerLink="/panel/dashboard" routerLinkActive="active" class="nav-link text-white">Dashboard</a>
+          <a routerLink="/panel/dashboard" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.dashboard') }}</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/inventario" routerLinkActive="active" class="nav-link text-white">Inventario ISBT 128</a>
+          <a routerLink="/panel/inventario" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.inventario') }}</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/red" routerLinkActive="active" class="nav-link text-white">Red Interhospitalaria</a>
+          <a routerLink="/panel/red" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.red') }}</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/donaciones" routerLinkActive="active" class="nav-link text-white">Donantes y Donaciones</a>
+          <a routerLink="/panel/donaciones" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.donaciones') }}</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/clinica" routerLinkActive="active" class="nav-link text-white">Atención Clínica</a>
+          <a routerLink="/panel/clinica" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.clinica') }}</a>
         </li>
         <li class="nav-item" *ngIf="authService.esSupervisionBancoSangre()">
-          <a routerLink="/panel/reportes" routerLinkActive="active" class="nav-link text-white">Reportes</a>
+          <a routerLink="/panel/reportes" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.reportes') }}</a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/soporte" routerLinkActive="active" class="nav-link text-white">Soporte</a>
+          <a routerLink="/panel/soporte" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.soporte') }}</a>
         </li>
         <li class="nav-item" *ngIf="authService.esAdministrador()">
-          <a routerLink="/panel/medicos" routerLinkActive="active" class="nav-link text-white">Gestión de Médicos</a>
+          <a routerLink="/panel/medicos" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.medicos') }}</a>
         </li>
         <li class="nav-item" *ngIf="authService.esAdministrador()">
-          <a routerLink="/panel/administracion" routerLinkActive="active" class="nav-link text-white">Administración</a>
+          <a routerLink="/panel/administracion" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.administracion') }}</a>
         </li>
       </ul>
     </nav>
-    <div class="p-3">
-      <button class="btn btn-outline-light w-100" (click)="cerrarSesion()">Cerrar Sesión</button>
+
+    <!-- RF-37/RNF-08: cambio de idioma y modo de alto contraste -->
+    <div class="p-3 border-top border-secondary">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <label class="form-check-label small mb-0" for="switchContraste">{{ accesibilidad.t('accesibilidad.altoContraste') }}</label>
+        <div class="form-check form-switch mb-0">
+          <input class="form-check-input" type="checkbox" id="switchContraste" [ngModel]="accesibilidad.altoContraste()" (ngModelChange)="accesibilidad.alternarAltoContraste()">
+        </div>
+      </div>
+      <select class="form-select form-select-sm" [ngModel]="accesibilidad.idioma()" (ngModelChange)="cambiarIdioma($event)">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <div class="p-3 pt-0">
+      <button class="btn btn-outline-light w-100" (click)="cerrarSesion()">{{ accesibilidad.t('nav.cerrarSesion') }}</button>
     </div>
   </aside>
 
   <main class="flex-grow-1 d-flex flex-column" style="min-height: 0; overflow-y: scroll; scrollbar-gutter: stable;">
     <header class="d-flex justify-content-between align-items-center bg-white border-bottom px-4 py-3 d-print-none">
-      <h1 class="h5 mb-0">{{ authService.esAdministrador() ? 'Panel de Administrador' : 'Panel Médico' }}</h1>
+      <h1 class="h5 mb-0">{{ authService.esAdministrador() ? accesibilidad.t('header.panelAdmin') : accesibilidad.t('header.panelMedico') }}</h1>
       <span class="fw-semibold">{{ authService.usuario()?.nombreCompleto }}</span>
     </header>
 
