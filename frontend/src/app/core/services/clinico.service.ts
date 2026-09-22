@@ -3,13 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../config';
 import {
+  CampanaDonacion, CitaDonacion, CrearCampanaRequest, CrearCitaRequest,
   CrearDonacionRequest, CrearDonanteRequest, CrearPacienteRequest, CrearReservaQuirurgicaRequest,
   CrearSolicitudRequest, CrearTransfusionRequest, ConfirmarDespachoRequest, Despacho, Donacion,
   Donante, EnviarMensajeRequest, EventoAdversoDonacion, EventoAdversoTransfusional, FraccionarDonacionRequest,
-  Hemocomponente, IniciarDespachoRequest,
+  Hemocomponente, ImportarOrdenHisSisRequest, IniciarDespachoRequest,
   Mensaje, Paciente, PruebaCompatibilidad, RegistrarEventoAdversoDonacionRequest,
-  RegistrarEventoAdversoTransfusionalRequest, RegistrarPruebaCompatibilidadRequest, ReservaQuirurgica,
-  Solicitud, Transfusion
+  RegistrarEventoAdversoTransfusionalRequest, RegistrarPruebaCompatibilidadRequest, RegistrarTamizajeRequest,
+  ReprogramarCitaRequest, ResolverDiscordanciaRequest, ReservaQuirurgica,
+  Solicitud, TamizajeSerologico, Transfusion
 } from '../models/clinico.model';
 
 @Injectable({ providedIn: 'root' })
@@ -134,6 +136,55 @@ export class ClinicoService {
 
   registrarEventoAdversoDonacion(donacionId: number, request: RegistrarEventoAdversoDonacionRequest): Observable<EventoAdversoDonacion> {
     return this.http.post<EventoAdversoDonacion>(`${API_BASE}/donaciones/${donacionId}/eventos-adversos`, request);
+  }
+
+  // Tamizaje serológico de 7 marcadores, doble digitación ciega (RF-07/RF-08/RF-31)
+  obtenerTamizaje(donacionId: number): Observable<TamizajeSerologico> {
+    return this.http.get<TamizajeSerologico>(`${API_BASE}/donaciones/${donacionId}/tamizaje`);
+  }
+
+  primeraDigitacionTamizaje(donacionId: number, request: RegistrarTamizajeRequest): Observable<TamizajeSerologico> {
+    return this.http.post<TamizajeSerologico>(`${API_BASE}/donaciones/${donacionId}/tamizaje/primera-digitacion`, request);
+  }
+
+  segundaDigitacionTamizaje(donacionId: number, request: RegistrarTamizajeRequest): Observable<TamizajeSerologico> {
+    return this.http.post<TamizajeSerologico>(`${API_BASE}/donaciones/${donacionId}/tamizaje/segunda-digitacion`, request);
+  }
+
+  resolverDiscordanciaTamizaje(donacionId: number, request: ResolverDiscordanciaRequest): Observable<TamizajeSerologico> {
+    return this.http.post<TamizajeSerologico>(`${API_BASE}/donaciones/${donacionId}/tamizaje/resolver-discordancia`, request);
+  }
+
+  // Campañas externas de captación de donantes (RF-23/RF-35)
+  listarCampanas(): Observable<CampanaDonacion[]> {
+    return this.http.get<CampanaDonacion[]>(`${API_BASE}/campanas`);
+  }
+
+  crearCampana(request: CrearCampanaRequest): Observable<CampanaDonacion> {
+    return this.http.post<CampanaDonacion>(`${API_BASE}/campanas`, request);
+  }
+
+  // Citas de donación con recordatorio automático (RF-22)
+  listarCitas(donanteId?: number): Observable<CitaDonacion[]> {
+    const url = donanteId ? `${API_BASE}/citas-donacion?donanteId=${donanteId}` : `${API_BASE}/citas-donacion`;
+    return this.http.get<CitaDonacion[]>(url);
+  }
+
+  citasProximas(horas = 48): Observable<CitaDonacion[]> {
+    return this.http.get<CitaDonacion[]>(`${API_BASE}/citas-donacion/proximas?horas=${horas}`);
+  }
+
+  crearCita(request: CrearCitaRequest): Observable<CitaDonacion> {
+    return this.http.post<CitaDonacion>(`${API_BASE}/citas-donacion`, request);
+  }
+
+  reprogramarCita(id: number, request: ReprogramarCitaRequest): Observable<CitaDonacion> {
+    return this.http.patch<CitaDonacion>(`${API_BASE}/citas-donacion/${id}`, request);
+  }
+
+  // Integración HIS/SIS: importación automática de órdenes transfusionales (RF-32)
+  importarOrdenHisSis(request: ImportarOrdenHisSisRequest): Observable<Solicitud> {
+    return this.http.post<Solicitud>(`${API_BASE}/his-sis/ordenes-transfusionales`, request);
   }
 
   // Mensajería interna por solicitud (RF-48)

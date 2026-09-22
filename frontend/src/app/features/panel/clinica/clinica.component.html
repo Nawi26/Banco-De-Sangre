@@ -101,7 +101,70 @@
 <div *ngIf="pestanaActiva === 'solicitudes'">
   <div class="card shadow-sm mb-4">
     <div class="card-body">
-      <h2 class="h5 mb-3">Nueva Solicitud de Sangre</h2>
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <h2 class="h5 mb-3">Nueva Solicitud de Sangre</h2>
+        <button type="button" class="btn btn-ghost btn-outline-secondary btn-sm" (click)="mostrarImportarHisSis = !mostrarImportarHisSis">
+          Importar orden desde HIS/SIS <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-32</span>
+        </button>
+      </div>
+
+      <div class="border rounded p-3 mb-4" *ngIf="mostrarImportarHisSis" style="background: var(--bg);">
+        <p class="text-secondary small mb-3">Simula la recepción de una orden médica electrónica desde el sistema HIS/SIS hospitalario, identificando al paciente y al médico por su documento (no por ID interno).</p>
+        <form class="row g-3" (ngSubmit)="importarOrdenHisSis()">
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Código de Orden Externa</label>
+            <input type="text" class="form-control mono" name="hisCodigoOrden" [(ngModel)]="nuevaOrdenHisSis.codigoOrdenExterna" placeholder="Ej: HIS-2026-88213" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">N° Documento del Paciente</label>
+            <input type="text" class="form-control" name="hisPacienteDoc" [(ngModel)]="nuevaOrdenHisSis.pacienteNumDoc" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">DNI del Médico Solicitante</label>
+            <input type="text" class="form-control" name="hisMedicoDni" [(ngModel)]="nuevaOrdenHisSis.medicoDni" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Nombres del Paciente (si es nuevo)</label>
+            <input type="text" class="form-control" name="hisPacienteNombres" [(ngModel)]="nuevaOrdenHisSis.pacienteNombres">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Apellidos del Paciente (si es nuevo)</label>
+            <input type="text" class="form-control" name="hisPacienteApellidos" [(ngModel)]="nuevaOrdenHisSis.pacienteApellidos">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Hemocomponente</label>
+            <select class="form-select" name="hisTipo" [(ngModel)]="nuevaOrdenHisSis.tipoHemocomponente">
+              <option value="PAQUETE GLOBULAR">Paquete Globular</option>
+              <option value="PLASMA FRESCO CONGELADO">Plasma Fresco Congelado</option>
+              <option value="PLAQUETAS">Plaquetas</option>
+              <option value="CRIOPRECIPITADO">Crioprecipitado</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label fw-semibold">Unidades</label>
+            <input type="number" min="1" class="form-control" name="hisUnidades" [(ngModel)]="nuevaOrdenHisSis.unidadesSolicitadas" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Prioridad</label>
+            <select class="form-select" name="hisPrioridad" [(ngModel)]="nuevaOrdenHisSis.prioridad">
+              <option value="RUTINA">Rutina</option>
+              <option value="URGENTE">Urgente</option>
+              <option value="EMERGENCIA">Emergencia</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Diagnóstico (CIE-10)</label>
+            <input type="text" class="form-control text-uppercase" name="hisCie10" [(ngModel)]="nuevaOrdenHisSis.diagnosticoCie10" placeholder="Ej: D50" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold">Indicación Clínica</label>
+            <textarea class="form-control" rows="2" name="hisIndicacion" [(ngModel)]="nuevaOrdenHisSis.indicacionClinica"></textarea>
+          </div>
+          <div class="col-12"><button type="submit" class="btn btn-primary btn-sm">Importar Orden</button></div>
+        </form>
+        <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoHisSis" [class.alert-danger]="!exitoHisSis" *ngIf="mensajeHisSis">{{ mensajeHisSis }}</div>
+      </div>
+
       <form class="row g-3" (ngSubmit)="registrarSolicitud()">
         <div class="col-md-4">
           <label class="form-label fw-semibold">Paciente</label>

@@ -6,6 +6,15 @@
     <a class="nav-link" [class.active]="pestanaActiva === 'donaciones'" href="javascript:void(0)" (click)="pestanaActiva = 'donaciones'">Donaciones</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'serologia'" href="javascript:void(0)" (click)="pestanaActiva = 'serologia'">Tamizaje Serológico</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'campanas'" href="javascript:void(0)" (click)="pestanaActiva = 'campanas'">Campañas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'citas'" href="javascript:void(0)" (click)="pestanaActiva = 'citas'">Citas</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link" [class.active]="pestanaActiva === 'eventosAdversos'" href="javascript:void(0)" (click)="pestanaActiva = 'eventosAdversos'">Eventos Adversos</a>
   </li>
 </ul>
@@ -146,6 +155,228 @@
                 </span>
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAMIZAJE SEROLÓGICO (RF-07/RF-08/RF-31) -->
+<div *ngIf="pestanaActiva === 'serologia'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-1">Tamizaje Serológico — 7 Marcadores Infecciosos <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-07</span></h2>
+      <p class="text-secondary small mb-3">Doble digitación ciega — bloqueo automático de la unidad ante cualquier marcador reactivo confirmado (RF-08).</p>
+
+      <div class="field mb-3" style="max-width: 420px;">
+        <label class="form-label fw-semibold">Donación a tamizar</label>
+        <select class="form-select mono" [(ngModel)]="donacionSerologiaId" (ngModelChange)="seleccionarDonacionSerologia()">
+          <option [ngValue]="null" disabled>Seleccione...</option>
+          <option *ngFor="let d of donaciones" [ngValue]="d.id">{{ d.dinIsbt128 }} — {{ d.donanteNombreCompleto }}</option>
+        </select>
+      </div>
+
+      <ng-container *ngIf="donacionSerologiaId && !cargandoTamizaje">
+        <table class="table table-sm mb-3" *ngIf="tamizaje">
+          <thead><tr><th>Marcador</th><th>Digitación 1</th><th>Digitación 2</th><th>Resultado Final</th><th>Concordante</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let r of tamizaje.resultados">
+              <td>{{ r.marcador }}</td>
+              <td class="mono">{{ r.resultadoDigitacion1 || '—' }}</td>
+              <td class="mono">{{ r.resultadoDigitacion2 || '—' }}</td>
+              <td class="mono">{{ r.resultadoFinal || '—' }}</td>
+              <td>
+                <span class="badge" *ngIf="r.concordante !== null" [ngClass]="r.concordante ? 'bg-success' : 'bg-danger'">{{ r.concordante ? 'Sí' : 'No' }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="alert" [ngClass]="tamizaje?.resultadoGeneral === 'REACTIVO' ? 'alert-danger' : 'alert-success'" *ngIf="tamizaje?.estado === 'CONFIRMADO'">
+          Resultado general: <strong>{{ tamizaje?.resultadoGeneral }}</strong>
+        </div>
+
+        <ng-container *ngIf="faseTamizaje() === 'PRIMERA' || faseTamizaje() === 'SEGUNDA'">
+          <p class="fw-semibold small mb-2">{{ faseTamizaje() === 'SEGUNDA' ? 'Registrar segunda digitación (ciega, independiente de la primera)' : 'Registrar primera digitación' }}</p>
+          <div class="row g-2 mb-2">
+            <div class="col-md-6" *ngFor="let m of marcadores">
+              <label class="form-label small mb-1">{{ m.etiqueta }}</label>
+              <select class="form-select form-select-sm" [(ngModel)]="resultadosDigitacion[m.valor]" [ngModelOptions]="{standalone: true}">
+                <option value="NO_REACTIVO">No Reactivo</option>
+                <option value="REACTIVO">Reactivo</option>
+                <option value="INDETERMINADO">Indeterminado</option>
+              </select>
+            </div>
+          </div>
+          <div class="row g-2 align-items-end">
+            <div class="col-md-4">
+              <label class="form-label small mb-1">Firma electrónica (tu clave) <span class="mono" style="font-size:10.5px;">RF-31</span></label>
+              <input type="password" class="form-control form-control-sm" [(ngModel)]="claveConfirmacionTamizaje" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-primary btn-sm" (click)="enviarDigitacion()">Guardar digitación</button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="faseTamizaje() === 'DISCORDANCIA'">
+          <div class="alert alert-warning">Hay marcadores discordantes entre ambas digitaciones — requiere resolución por el Jefe de Banco de Sangre.</div>
+          <ng-container *ngIf="authService.esSupervisionBancoSangre()">
+            <div class="row g-2 mb-2">
+              <div class="col-md-6" *ngFor="let marcador of marcadoresDiscordantes()">
+                <label class="form-label small mb-1">{{ marcador }} (definitivo)</label>
+                <select class="form-select form-select-sm" [(ngModel)]="resultadosDigitacion[marcador]" [ngModelOptions]="{standalone: true}">
+                  <option value="NO_REACTIVO">No Reactivo</option>
+                  <option value="REACTIVO">Reactivo</option>
+                  <option value="INDETERMINADO">Indeterminado</option>
+                </select>
+              </div>
+            </div>
+            <div class="row g-2 align-items-end">
+              <div class="col-md-4">
+                <label class="form-label small mb-1">Firma electrónica (tu clave)</label>
+                <input type="password" class="form-control form-control-sm" [(ngModel)]="claveConfirmacionTamizaje" [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-warning btn-sm" (click)="resolverDiscordancia()">Resolver discordancia</button>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoTamizaje" [class.alert-danger]="!exitoTamizaje" *ngIf="mensajeTamizaje">{{ mensajeTamizaje }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPAÑAS EXTERNAS DE CAPTACIÓN (RF-23/RF-35) -->
+<div *ngIf="pestanaActiva === 'campanas'">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Registrar Campaña de Captación</h2>
+      <form class="row g-3" (ngSubmit)="registrarCampana()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Nombre</label>
+          <input type="text" class="form-control" name="campNombre" [(ngModel)]="nuevaCampana.nombre" placeholder="Ej: Dona Vida UTP 2026-II" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Institución</label>
+          <input type="text" class="form-control" name="campInstitucion" [(ngModel)]="nuevaCampana.institucion">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Tipo</label>
+          <select class="form-select" name="campTipo" [(ngModel)]="nuevaCampana.tipo">
+            <option value="UNIVERSIDAD">Universidad</option>
+            <option value="EMPRESA">Empresa</option>
+            <option value="COMUNIDAD">Comunidad</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Inicio</label>
+          <input type="date" class="form-control" name="campInicio" [(ngModel)]="nuevaCampana.fechaInicio">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Fin</label>
+          <input type="date" class="form-control" name="campFin" [(ngModel)]="nuevaCampana.fechaFin">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Meta de Unidades</label>
+          <input type="number" min="1" class="form-control" name="campMeta" [(ngModel)]="nuevaCampana.metaUnidades">
+        </div>
+        <div class="col-12"><button type="submit" class="btn btn-primary">Registrar Campaña</button></div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoCampana" [class.alert-danger]="!exitoCampana" *ngIf="mensajeCampana">{{ mensajeCampana }}</div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Campañas Registradas</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead><tr><th>Campaña</th><th>Institución</th><th>Meta</th><th>Captados</th><th>Avance</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of campanas">
+              <td class="cell-strong">{{ c.nombre }}</td>
+              <td class="cell-muted">{{ c.institucion }}</td>
+              <td class="mono">{{ c.metaUnidades ?? '—' }}</td>
+              <td class="mono">{{ c.unidadesLogradas }}</td>
+              <td style="width:160px;">
+                <div class="progress-track"><div class="progress-fill" [style.width.%]="progresoCampana(c)" [style.background]="progresoCampana(c) >= 100 ? 'var(--green-700)' : 'var(--amber-700)'"></div></div>
+              </td>
+              <td><span class="badge" [ngClass]="c.estado === 'ACTIVA' ? 'bg-success' : 'bg-secondary'">{{ c.estado }}</span></td>
+            </tr>
+            <tr *ngIf="campanas.length === 0"><td colspan="6" class="text-muted">No hay campañas registradas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CITAS DE DONACIÓN (RF-22) -->
+<div *ngIf="pestanaActiva === 'citas'">
+  <div class="card shadow-sm mb-4" *ngIf="citasProximas.length > 0">
+    <div class="card-body">
+      <h2 class="h6 mb-2">⏰ Citas Próximas (48h) — Recordatorio Automático</h2>
+      <div class="d-flex flex-wrap gap-2">
+        <span class="badge bg-info" *ngFor="let c of citasProximas">{{ c.donanteNombreCompleto }} — {{ c.fechaHora | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Programar Cita de Donación</h2>
+      <form class="row g-3" (ngSubmit)="registrarCita()">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Donante</label>
+          <select class="form-select" name="citaDonanteId" [(ngModel)]="nuevaCita.donanteId" required>
+            <option [ngValue]="null" disabled>Seleccione...</option>
+            <option *ngFor="let d of donantes" [ngValue]="d.id">{{ d.nombres }} {{ d.apellidos }} ({{ d.numDoc }})</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Campaña (opcional)</label>
+          <select class="form-select" name="citaCampanaId" [(ngModel)]="nuevaCita.campanaId">
+            <option [ngValue]="null">Sin campaña asociada</option>
+            <option *ngFor="let c of campanas" [ngValue]="c.id">{{ c.nombre }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Fecha y Hora</label>
+          <input type="datetime-local" class="form-control" name="citaFecha" [(ngModel)]="nuevaCita.fechaHora" required>
+        </div>
+        <div class="col-12">
+          <label class="form-label fw-semibold">Notas</label>
+          <input type="text" class="form-control" name="citaNotas" [(ngModel)]="nuevaCita.notas">
+        </div>
+        <div class="col-12"><button type="submit" class="btn btn-primary">Programar Cita</button></div>
+      </form>
+      <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoCita" [class.alert-danger]="!exitoCita" *ngIf="mensajeCita">{{ mensajeCita }}</div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Citas Programadas</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead><tr><th>Donante</th><th>Fecha y Hora</th><th>Estado</th><th>Notas</th><th></th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of citas">
+              <td>{{ c.donanteNombreCompleto }}</td>
+              <td>{{ c.fechaHora | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td><span class="badge" [ngClass]="c.estado === 'ATENDIDA' ? 'bg-success' : (c.estado === 'CANCELADA' ? 'bg-secondary' : 'bg-info')">{{ c.estado }}</span></td>
+              <td>{{ c.notas }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-success me-1" (click)="cambiarEstadoCita(c.id, 'ATENDIDA')">Atendida</button>
+                <button class="btn btn-sm btn-outline-secondary" (click)="cambiarEstadoCita(c.id, 'CANCELADA')">Cancelar</button>
+              </td>
+            </tr>
+            <tr *ngIf="citas.length === 0"><td colspan="5" class="text-muted">No hay citas programadas.</td></tr>
           </tbody>
         </table>
       </div>

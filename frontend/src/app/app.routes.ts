@@ -10,6 +10,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/login/login.component').then(m => m.LoginComponent)
   },
   {
+    // RF-41: verificación pública de certificados de calidad, sin autenticación.
+    path: 'verificar/:codigo',
+    loadComponent: () => import('./features/verificar/verificar-certificado.component').then(m => m.VerificarCertificadoComponent)
+  },
+  {
     path: 'panel',
     loadComponent: () => import('./features/panel/panel-layout.component').then(m => m.PanelLayoutComponent),
     canActivate: [authGuard],

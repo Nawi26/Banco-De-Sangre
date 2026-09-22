@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { InventarioService } from '../../../core/services/inventario.service';
 import { ClinicoService } from '../../../core/services/clinico.service';
 import {
-  CamaraAlmacenamiento, InventarioItem, IsbtEtiqueta, RegistroTemperatura, ResumenExistencias
+  CamaraAlmacenamiento, CertificadoCalidad, InventarioItem, IsbtEtiqueta, RegistroTemperatura, ResumenExistencias
 } from '../../../core/models/inventario.model';
 import { Donacion, Hemocomponente } from '../../../core/models/clinico.model';
 
@@ -52,6 +52,7 @@ export class InventarioComponent implements OnInit {
   hemocomponentesFraccion: Hemocomponente[] = [];
   mensajeFraccion = '';
   exitoFraccion = false;
+  certificadosPorHemocomponente: Record<number, CertificadoCalidad> = {};
 
   constructor(private inventarioService: InventarioService, private clinicoService: ClinicoService) {}
 
@@ -169,5 +170,16 @@ export class InventarioComponent implements OnInit {
         this.mensajeFraccion = err.error?.mensaje ?? 'No se pudo fraccionar la donación.';
       }
     });
+  }
+
+  // ---------- RF-41: Certificado de calidad (QR de verificación pública) ----------
+  generarCertificado(hemocomponenteId: number): void {
+    this.inventarioService.obtenerCertificado(hemocomponenteId).subscribe(certificado => {
+      this.certificadosPorHemocomponente[hemocomponenteId] = certificado;
+    });
+  }
+
+  urlVerificacion(certificado: CertificadoCalidad): string {
+    return `${window.location.origin}/verificar/${certificado.codigoVerificacion}`;
   }
 }

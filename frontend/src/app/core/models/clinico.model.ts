@@ -241,6 +241,112 @@ export interface RegistrarEventoAdversoDonacionRequest {
   accionesTomadas: string;
 }
 
+// RF-07/RF-31: tamizaje serológico de 7 marcadores infecciosos, con doble digitación ciega.
+export const MARCADORES_SEROLOGICOS = [
+  { valor: 'VIH_1_2', etiqueta: 'VIH 1/2' },
+  { valor: 'HEPATITIS_B_HBSAG', etiqueta: 'Hepatitis B (HBsAg)' },
+  { valor: 'HEPATITIS_B_ANTI_CORE', etiqueta: 'Hepatitis B (Anti-Core)' },
+  { valor: 'HEPATITIS_C', etiqueta: 'Hepatitis C' },
+  { valor: 'SIFILIS', etiqueta: 'Sífilis' },
+  { valor: 'CHAGAS', etiqueta: 'Chagas' },
+  { valor: 'HTLV_1_2', etiqueta: 'HTLV 1/2' }
+];
+
+export interface ResultadoMarcadorInput {
+  marcador: string;
+  resultado: string;
+}
+
+export interface ResultadoMarcador {
+  marcador: string;
+  resultadoDigitacion1: string | null;
+  resultadoDigitacion2: string | null;
+  resultadoFinal: string | null;
+  concordante: boolean | null;
+}
+
+export interface TamizajeSerologico {
+  id: number;
+  donacionId: number;
+  origen: string;
+  estado: string;
+  resultadoGeneral: string | null;
+  fechaPrimeraDigitacion: string | null;
+  fechaSegundaDigitacion: string | null;
+  resultados: ResultadoMarcador[];
+}
+
+export interface RegistrarTamizajeRequest {
+  resultados: ResultadoMarcadorInput[];
+  origen: string;
+  claveConfirmacion: string;
+}
+
+export interface ResolverDiscordanciaRequest {
+  resultadosDefinitivos: ResultadoMarcadorInput[];
+  claveConfirmacion: string;
+}
+
+// RF-23/RF-35: campañas externas de captación de donantes.
+export interface CampanaDonacion {
+  id: number;
+  nombre: string;
+  institucion: string | null;
+  tipo: string | null;
+  fechaInicio: string | null;
+  fechaFin: string | null;
+  metaUnidades: number | null;
+  unidadesLogradas: number;
+  estado: string;
+}
+
+export interface CrearCampanaRequest {
+  nombre: string;
+  institucion: string;
+  tipo: string;
+  fechaInicio: string | null;
+  fechaFin: string | null;
+  metaUnidades: number | null;
+}
+
+// RF-22: programación, reprogramación y recordatorio de citas de donación.
+export interface CitaDonacion {
+  id: number;
+  donanteId: number;
+  donanteNombreCompleto: string;
+  campanaId: number | null;
+  fechaHora: string;
+  estado: string;
+  notas: string | null;
+}
+
+export interface CrearCitaRequest {
+  donanteId: number;
+  campanaId: number | null;
+  fechaHora: string;
+  notas: string;
+}
+
+export interface ReprogramarCitaRequest {
+  fechaHora: string | null;
+  estado: string;
+  notas: string;
+}
+
+// RF-32: integración con el HIS/SIS hospitalario para importar órdenes transfusionales.
+export interface ImportarOrdenHisSisRequest {
+  codigoOrdenExterna: string;
+  pacienteNumDoc: string;
+  pacienteNombres: string;
+  pacienteApellidos: string;
+  medicoDni: string;
+  tipoHemocomponente: string;
+  unidadesSolicitadas: number;
+  prioridad: string;
+  indicacionClinica: string;
+  diagnosticoCie10: string;
+}
+
 // RF-48: mensajería interna banco de sangre <-> servicio asistencial, por solicitud.
 export interface Mensaje {
   id: number;

@@ -60,3 +60,12 @@ export interface RegistroTemperatura {
   dentroDeRango: boolean;
   registradoEn: string;
 }
+
+// RF-41: certificado de calidad emitido con código de verificación pública (QR).
+export interface CertificadoCalidad {
+  hemocomponenteId: number;
+  codigoProductoIsbt: string;
+  numeroCertificado: string;
+  codigoVerificacion: string;
+  emitidoEn: string;
+}

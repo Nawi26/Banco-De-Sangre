@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../config';
 import {
-  CamaraAlmacenamiento, CrearCamaraRequest, InventarioItem, IsbtEtiqueta, RedBusqueda,
+  CamaraAlmacenamiento, CertificadoCalidad, CrearCamaraRequest, InventarioItem, IsbtEtiqueta, RedBusqueda,
   RegistroTemperatura, ResumenExistencias
 } from '../models/inventario.model';
 
@@ -44,5 +44,10 @@ export class InventarioService {
 
   listarTemperaturas(camaraId: number): Observable<RegistroTemperatura[]> {
     return this.http.get<RegistroTemperatura[]>(`${API_BASE}/camaras/${camaraId}/temperaturas`);
+  }
+
+  // RF-41: certificado de calidad con código de verificación pública (QR); idempotente.
+  obtenerCertificado(hemocomponenteId: number): Observable<CertificadoCalidad> {
+    return this.http.get<CertificadoCalidad>(`${API_BASE}/hemocomponentes/${hemocomponenteId}/certificado`);
   }
 }

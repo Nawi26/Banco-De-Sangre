@@ -1,0 +1,41 @@
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); padding: 24px;">
+  <div class="card shadow-sm" style="max-width: 460px; width: 100%;">
+    <div class="card-body">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <div style="width: 30px; height: 30px; border-radius: 8px; background: var(--red-700); position: relative; flex: none;">
+          <div style="position: absolute; inset: 8px; border-radius: 2px; background: #fff; opacity: .9;"></div>
+        </div>
+        <div>
+          <div class="fw-bold" style="font-size: 14.5px;">HLEV · Banco de Sangre</div>
+          <div style="font-size: 10.5px; color: var(--ink-600);">Verificación pública de certificado de calidad</div>
+        </div>
+      </div>
+
+      <div *ngIf="cargando" class="text-secondary small">Verificando código {{ codigo }}…</div>
+
+      <ng-container *ngIf="!cargando">
+        <div *ngIf="resultado?.valido" class="alert alert-success mb-3">
+          <strong>✓ Certificado válido</strong>
+        </div>
+        <div *ngIf="!resultado?.valido" class="alert alert-danger mb-3">
+          <strong>✗ Certificado no encontrado o inválido</strong>
+          <div class="small mt-1">El código <span class="mono">{{ codigo }}</span> no corresponde a un certificado emitido por el sistema.</div>
+        </div>
+
+        <table class="table table-sm mb-0" *ngIf="resultado?.valido">
+          <tbody>
+            <tr><th style="width: 45%;">DIN</th><td class="mono">{{ resultado?.din }}</td></tr>
+            <tr><th>Código ISBT</th><td class="mono">{{ resultado?.codigoProductoIsbt }}</td></tr>
+            <tr><th>Hemocomponente</th><td>{{ resultado?.tipoHemocomponente }}</td></tr>
+            <tr><th>Grupo ABO/Rh</th><td>{{ resultado?.grupoAboRh }}</td></tr>
+            <tr><th>Vencimiento</th><td>{{ resultado?.fechaVencimiento ? (resultado?.fechaVencimiento | date:'dd/MM/yyyy') : '-' }}</td></tr>
+            <tr><th>Estado actual</th><td><span class="badge bg-success">{{ resultado?.estadoActual }}</span></td></tr>
+            <tr><th>Emitido</th><td>{{ resultado?.emitidoEn ? (resultado?.emitidoEn | date:'dd/MM/yyyy HH:mm') : '-' }}</td></tr>
+          </tbody>
+        </table>
+      </ng-container>
+
+      <div class="text-center text-muted mt-3" style="font-size: 11px;">Hospital de Lima Este Vitarte — Servicio de Hemoterapia y Banco de Sangre</div>
+    </div>
+  </div>
+</div>

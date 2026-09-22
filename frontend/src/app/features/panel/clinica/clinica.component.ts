@@ -124,6 +124,36 @@ export class ClinicaComponent implements OnInit {
     this.clinicoService.actualizarEstadoSolicitud(id, estado).subscribe(() => this.cargarSolicitudes());
   }
 
+  // RF-32: importación automática de órdenes transfusionales desde el HIS/SIS hospitalario.
+  mostrarImportarHisSis = false;
+  nuevaOrdenHisSis = {
+    codigoOrdenExterna: '', pacienteNumDoc: '', pacienteNombres: '', pacienteApellidos: '',
+    medicoDni: '', tipoHemocomponente: 'PAQUETE GLOBULAR', unidadesSolicitadas: 1,
+    prioridad: 'RUTINA', indicacionClinica: '', diagnosticoCie10: ''
+  };
+  mensajeHisSis = '';
+  exitoHisSis = false;
+
+  importarOrdenHisSis(): void {
+    this.mensajeHisSis = '';
+    this.clinicoService.importarOrdenHisSis(this.nuevaOrdenHisSis).subscribe({
+      next: () => {
+        this.exitoHisSis = true;
+        this.mensajeHisSis = 'Orden importada correctamente desde el HIS/SIS.';
+        this.nuevaOrdenHisSis = {
+          codigoOrdenExterna: '', pacienteNumDoc: '', pacienteNombres: '', pacienteApellidos: '',
+          medicoDni: '', tipoHemocomponente: 'PAQUETE GLOBULAR', unidadesSolicitadas: 1,
+          prioridad: 'RUTINA', indicacionClinica: '', diagnosticoCie10: ''
+        };
+        this.cargarSolicitudes();
+      },
+      error: (err) => {
+        this.exitoHisSis = false;
+        this.mensajeHisSis = err.error?.mensaje ?? 'No se pudo importar la orden.';
+      }
+    });
+  }
+
   eliminarSolicitud(id: number, codigo: string): void {
     if (!confirm(`¿Eliminar la solicitud ${codigo}? Esta acción no se puede deshacer.`)) return;
 
