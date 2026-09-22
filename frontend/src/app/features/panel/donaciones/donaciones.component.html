@@ -3,6 +3,9 @@
     <a class="nav-link" [class.active]="pestanaActiva === 'donantes'" href="javascript:void(0)" (click)="pestanaActiva = 'donantes'">Donantes</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link" [class.active]="pestanaActiva === 'diferimiento'" href="javascript:void(0)" (click)="pestanaActiva = 'diferimiento'">Diferimiento</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link" [class.active]="pestanaActiva === 'donaciones'" href="javascript:void(0)" (click)="pestanaActiva = 'donaciones'">Donaciones</a>
   </li>
   <li class="nav-item">
@@ -71,7 +74,7 @@
     </div>
   </div>
 
-  <div class="card shadow-sm">
+  <div class="card shadow-sm mb-4">
     <div class="card-body">
       <h2 class="h5 mb-3">Donantes Registrados</h2>
       <div class="table-responsive">
@@ -92,6 +95,119 @@
                 </span>
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- RF-03/RF-04/RF-38: triaje clínico y consentimiento informado, requisitos previos a la extracción -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-1">Triaje Clínico y Consentimiento Informado <span class="mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-03/04/38</span></h2>
+      <p class="text-secondary small mb-3">Requisito obligatorio antes de registrar la extracción — el sistema evalúa la aptitud automáticamente según criterios PRONAHEBAS.</p>
+
+      <div class="field mb-3" style="max-width: 420px;">
+        <label class="form-label fw-semibold">Donante</label>
+        <select class="form-select" [(ngModel)]="donanteTriajeId" (ngModelChange)="seleccionarDonanteTriaje()">
+          <option [ngValue]="null" disabled>Seleccione...</option>
+          <option *ngFor="let d of donantes" [ngValue]="d.id">{{ d.nombres }} {{ d.apellidos }} ({{ d.numDoc }})</option>
+        </select>
+      </div>
+
+      <ng-container *ngIf="donanteTriajeId">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Peso (kg)</label>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="cuestionarioTriaje.pesoKg" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Talla (cm)</label>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="cuestionarioTriaje.tallaCm" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Hemoglobina (g/dL)</label>
+            <input type="number" step="0.1" class="form-control form-control-sm" [(ngModel)]="cuestionarioTriaje.hemoglobina" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Pulso (lpm)</label>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="cuestionarioTriaje.pulso" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Presión sistólica</label>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="cuestionarioTriaje.presionSistolica" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Presión diastólica</label>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="cuestionarioTriaje.presionDiastolica" [ngModelOptions]="{standalone: true}">
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-3 mb-3">
+          <div class="checkline"><input type="checkbox" id="antIts" [(ngModel)]="cuestionarioTriaje.antecedenteIts" [ngModelOptions]="{standalone: true}"><label for="antIts">Antecedente de ITS</label></div>
+          <div class="checkline"><input type="checkbox" id="antDrogas" [(ngModel)]="cuestionarioTriaje.antecedenteUsoDrogas" [ngModelOptions]="{standalone: true}"><label for="antDrogas">Uso de drogas</label></div>
+          <div class="checkline"><input type="checkbox" id="antTatuaje" [(ngModel)]="cuestionarioTriaje.tatuajeOPerforacionReciente" [ngModelOptions]="{standalone: true}"><label for="antTatuaje">Tatuaje/perforación reciente</label></div>
+          <div class="checkline"><input type="checkbox" id="antEmbarazo" [(ngModel)]="cuestionarioTriaje.embarazoOPartoReciente" [ngModelOptions]="{standalone: true}"><label for="antEmbarazo">Embarazo/parto reciente</label></div>
+          <div class="checkline"><input type="checkbox" id="antViaje" [(ngModel)]="cuestionarioTriaje.viajeZonaEndemica" [ngModelOptions]="{standalone: true}"><label for="antViaje">Viaje a zona endémica</label></div>
+        </div>
+
+        <div class="field mb-3">
+          <label class="form-label small mb-1">Otros antecedentes</label>
+          <textarea class="form-control form-control-sm" rows="2" [(ngModel)]="cuestionarioTriaje.otrosAntecedentes" [ngModelOptions]="{standalone: true}"></textarea>
+        </div>
+
+        <button class="btn btn-primary btn-sm" (click)="evaluarTriaje()">Evaluar Aptitud</button>
+
+        <div class="mt-3" *ngIf="resultadoTriaje">
+          <span class="pill" [ngClass]="resultadoTriaje.apto ? 'green' : 'red'"><span class="dot"></span>{{ resultadoTriaje.apto ? 'APTO para donar' : 'DIFERIDO: ' + resultadoTriaje.tipoDiferimiento }}</span>
+          <span class="small text-secondary ms-2" *ngIf="resultadoTriaje.motivo">{{ resultadoTriaje.motivo }}</span>
+        </div>
+        <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoTriaje" [class.alert-danger]="!exitoTriaje" *ngIf="mensajeTriaje">{{ mensajeTriaje }}</div>
+
+        <div class="divider my-3" *ngIf="resultadoTriaje?.apto"></div>
+
+        <ng-container *ngIf="resultadoTriaje?.apto">
+          <p class="fw-semibold small mb-2">Consentimiento informado digital (requisito previo a la extracción)</p>
+          <div class="row g-2 align-items-end">
+            <div class="col-md-3">
+              <label class="form-label small mb-1">Tipo de validación</label>
+              <select class="form-select form-select-sm" [(ngModel)]="tipoValidacionConsentimiento" [ngModelOptions]="{standalone: true}">
+                <option value="FIRMA_DIGITAL">Firma digital</option>
+                <option value="OTP">Código OTP</option>
+                <option value="HUELLA">Huella dactilar</option>
+              </select>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label small mb-1">Evidencia de validación</label>
+              <input type="text" class="form-control form-control-sm" placeholder="Ej: hash de firma, código OTP verificado..." [(ngModel)]="evidenciaValidacionConsentimiento" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-primary btn-sm" (click)="registrarConsentimiento()">Registrar Consentimiento</button>
+            </div>
+          </div>
+          <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoConsentimiento" [class.alert-danger]="!exitoConsentimiento" *ngIf="mensajeConsentimiento">{{ mensajeConsentimiento }}</div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- DIFERIMIENTO (RF-04) -->
+<div *ngIf="pestanaActiva === 'diferimiento'">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Donantes Diferidos</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead><tr><th>Donante</th><th>Tipo</th><th>Motivo</th><th>Diferido Hasta</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let d of donantesDiferidos()">
+              <td>{{ d.nombres }} {{ d.apellidos }}</td>
+              <td><span class="badge" [ngClass]="d.tipoDiferimiento === 'PERMANENTE' ? 'bg-danger' : 'bg-warning text-dark'">{{ d.tipoDiferimiento }}</span></td>
+              <td>{{ d.motivoDiferimiento }}</td>
+              <td>{{ d.diferidoHasta ? (d.diferidoHasta | date:'dd/MM/yyyy') : 'Indefinido' }}</td>
+            </tr>
+            <tr *ngIf="donantesDiferidos().length === 0"><td colspan="4" class="text-muted">No hay donantes diferidos actualmente.</td></tr>
           </tbody>
         </table>
       </div>

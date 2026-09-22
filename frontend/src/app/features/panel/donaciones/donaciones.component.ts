@@ -5,7 +5,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ClinicoService } from '../../../core/services/clinico.service';
 import {
   CampanaDonacion, CitaDonacion, Donacion, Donante, EventoAdversoDonacion,
-  MARCADORES_SEROLOGICOS, ResultadoMarcadorInput, TamizajeSerologico
+  MARCADORES_SEROLOGICOS, ResultadoMarcadorInput, ResultadoTriaje, TamizajeSerologico
 } from '../../../core/models/clinico.model';
 
 @Component({
@@ -15,7 +15,7 @@ import {
   templateUrl: './donaciones.component.html'
 })
 export class DonacionesComponent implements OnInit {
-  pestanaActiva: 'donantes' | 'donaciones' | 'serologia' | 'campanas' | 'citas' | 'eventosAdversos' = 'donantes';
+  pestanaActiva: 'donantes' | 'diferimiento' | 'donaciones' | 'serologia' | 'campanas' | 'citas' | 'eventosAdversos' = 'donantes';
 
   donantes: Donante[] = [];
   donaciones: Donacion[] = [];
@@ -28,6 +28,25 @@ export class DonacionesComponent implements OnInit {
   nuevaDonacion = { donanteId: null as number | null, volumenMl: 450, tipoDonacion: 'VOLUNTARIA' };
   mensajeDonacion = '';
   exitoDonacion = false;
+
+  // RF-03/RF-04: triaje clínico-epidemiológico previo a la donación.
+  donanteTriajeId: number | null = null;
+  cuestionarioTriaje = {
+    pesoKg: null as number | null, tallaCm: null as number | null,
+    presionSistolica: null as number | null, presionDiastolica: null as number | null,
+    pulso: null as number | null, hemoglobina: null as number | null,
+    antecedenteIts: false, antecedenteUsoDrogas: false, tatuajeOPerforacionReciente: false,
+    embarazoOPartoReciente: false, viajeZonaEndemica: false, otrosAntecedentes: ''
+  };
+  resultadoTriaje: ResultadoTriaje | null = null;
+  mensajeTriaje = '';
+  exitoTriaje = false;
+
+  // RF-38: consentimiento informado digital previo a la extracción.
+  tipoValidacionConsentimiento = 'FIRMA_DIGITAL';
+  evidenciaValidacionConsentimiento = '';
+  mensajeConsentimiento = '';
+  exitoConsentimiento = false;
 
   nuevoEventoAdverso = { donacionId: null as number | null, tipoEvento: 'MAREO', gravedad: 'LEVE', descripcion: '', accionesTomadas: '' };
   mensajeEventoAdverso = '';
@@ -86,6 +105,57 @@ export class DonacionesComponent implements OnInit {
       error: (err) => {
         this.exitoDonante = false;
         this.mensajeDonante = err.error?.mensaje ?? 'No se pudo contactar con el servidor.';
+      }
+    });
+  }
+
+  // ---------- RF-03/RF-04: Triaje clínico ----------
+  donantesDiferidos(): Donante[] {
+    return this.donantes.filter(d => d.estadoDiferido);
+  }
+
+  seleccionarDonanteTriaje(): void {
+    this.resultadoTriaje = null;
+    this.mensajeTriaje = '';
+    this.mensajeConsentimiento = '';
+  }
+
+  evaluarTriaje(): void {
+    this.mensajeTriaje = '';
+    if (!this.donanteTriajeId) return;
+
+    this.clinicoService.evaluarTriaje(this.donanteTriajeId, this.cuestionarioTriaje).subscribe({
+      next: (resultado) => {
+        this.exitoTriaje = true;
+        this.resultadoTriaje = resultado;
+        this.mensajeTriaje = resultado.apto ? 'Donante apto para la extracción.' : 'Donante diferido — no procede la extracción.';
+        this.cargarDonantes();
+      },
+      error: (err) => {
+        this.exitoTriaje = false;
+        this.mensajeTriaje = err.error?.mensaje ?? 'No se pudo evaluar el triaje.';
+      }
+    });
+  }
+
+  // ---------- RF-38: Consentimiento informado ----------
+  registrarConsentimiento(): void {
+    this.mensajeConsentimiento = '';
+    if (!this.donanteTriajeId) return;
+
+    this.clinicoService.registrarConsentimiento(this.donanteTriajeId, {
+      tipoValidacion: this.tipoValidacionConsentimiento,
+      evidenciaValidacion: this.evidenciaValidacionConsentimiento,
+      aceptado: true
+    }).subscribe({
+      next: () => {
+        this.exitoConsentimiento = true;
+        this.mensajeConsentimiento = 'Consentimiento informado registrado — ya puede registrarse la donación.';
+        this.evidenciaValidacionConsentimiento = '';
+      },
+      error: (err) => {
+        this.exitoConsentimiento = false;
+        this.mensajeConsentimiento = err.error?.mensaje ?? 'No se pudo registrar el consentimiento.';
       }
     });
   }

@@ -10,6 +10,55 @@ export interface Donante {
   factorRh: string;
   estadoDiferido: boolean;
   esOcupacionRiesgo: boolean;
+  pesoKg: number | null;
+  tallaCm: number | null;
+  presionSistolica: number | null;
+  presionDiastolica: number | null;
+  pulso: number | null;
+  hemoglobina: number | null;
+  apto: boolean | null;
+  tipoDiferimiento: string | null;
+  motivoDiferimiento: string | null;
+  diferidoHasta: string | null;
+  fechaUltimaDonacion: string | null;
+}
+
+// RF-03/RF-04: cuestionario de triaje clínico-epidemiológico previo a la donación.
+export interface CuestionarioTriajeRequest {
+  pesoKg: number | null;
+  tallaCm: number | null;
+  presionSistolica: number | null;
+  presionDiastolica: number | null;
+  pulso: number | null;
+  hemoglobina: number | null;
+  antecedenteIts: boolean;
+  antecedenteUsoDrogas: boolean;
+  tatuajeOPerforacionReciente: boolean;
+  embarazoOPartoReciente: boolean;
+  viajeZonaEndemica: boolean;
+  otrosAntecedentes: string;
+}
+
+export interface ResultadoTriaje {
+  apto: boolean;
+  tipoDiferimiento: string | null;
+  motivo: string | null;
+  diferidoHasta: string | null;
+}
+
+// RF-38: consentimiento informado digital del donante previo a la extracción.
+export interface RegistrarConsentimientoRequest {
+  tipoValidacion: string;
+  evidenciaValidacion: string;
+  aceptado: boolean;
+}
+
+export interface ConsentimientoInformado {
+  id: number;
+  donanteId: number;
+  tipoValidacion: string;
+  aceptado: boolean;
+  creadoEn: string;
 }
 
 export interface CrearDonanteRequest {

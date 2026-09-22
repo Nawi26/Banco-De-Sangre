@@ -3,14 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE } from '../config';
 import {
-  CampanaDonacion, CitaDonacion, CrearCampanaRequest, CrearCitaRequest,
+  CampanaDonacion, CitaDonacion, ConsentimientoInformado, CrearCampanaRequest, CrearCitaRequest,
   CrearDonacionRequest, CrearDonanteRequest, CrearPacienteRequest, CrearReservaQuirurgicaRequest,
-  CrearSolicitudRequest, CrearTransfusionRequest, ConfirmarDespachoRequest, Despacho, Donacion,
+  CrearSolicitudRequest, CrearTransfusionRequest, ConfirmarDespachoRequest, CuestionarioTriajeRequest, Despacho,
+  Donacion,
   Donante, EnviarMensajeRequest, EventoAdversoDonacion, EventoAdversoTransfusional, FraccionarDonacionRequest,
   Hemocomponente, ImportarOrdenHisSisRequest, IniciarDespachoRequest,
-  Mensaje, Paciente, PruebaCompatibilidad, RegistrarEventoAdversoDonacionRequest,
+  Mensaje, Paciente, PruebaCompatibilidad, RegistrarConsentimientoRequest, RegistrarEventoAdversoDonacionRequest,
   RegistrarEventoAdversoTransfusionalRequest, RegistrarPruebaCompatibilidadRequest, RegistrarTamizajeRequest,
-  ReprogramarCitaRequest, ResolverDiscordanciaRequest, ReservaQuirurgica,
+  ReprogramarCitaRequest, ResolverDiscordanciaRequest, ResultadoTriaje, ReservaQuirurgica,
   Solicitud, TamizajeSerologico, Transfusion
 } from '../models/clinico.model';
 
@@ -26,6 +27,16 @@ export class ClinicoService {
 
   crearDonante(request: CrearDonanteRequest): Observable<Donante> {
     return this.http.post<Donante>(`${API_BASE}/donantes`, request);
+  }
+
+  // RF-03/RF-04: triaje clínico-epidemiológico — determina aptitud/diferimiento de inmediato.
+  evaluarTriaje(donanteId: number, request: CuestionarioTriajeRequest): Observable<ResultadoTriaje> {
+    return this.http.post<ResultadoTriaje>(`${API_BASE}/donantes/${donanteId}/triaje`, request);
+  }
+
+  // RF-38: consentimiento informado digital previo a la extracción.
+  registrarConsentimiento(donanteId: number, request: RegistrarConsentimientoRequest): Observable<ConsentimientoInformado> {
+    return this.http.post<ConsentimientoInformado>(`${API_BASE}/donantes/${donanteId}/consentimiento`, request);
   }
 
   // Donaciones
