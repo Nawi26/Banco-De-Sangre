@@ -23,7 +23,8 @@ public class CertificadoCalidadService {
 
     // Sólo se certifican unidades que ya superaron el tamizaje serológico (RF-08).
     private static final Set<String> ESTADOS_CERTIFICABLES = Set.of(
-            EstadoHemocomponente.DISPONIBLE, EstadoHemocomponente.RESERVADO, EstadoHemocomponente.DESPACHADO
+            EstadoHemocomponente.DISPONIBLE, EstadoHemocomponente.RESERVADO, EstadoHemocomponente.DESPACHADO,
+            EstadoHemocomponente.TRANSFUNDIDO
     );
 
     private final CertificadoCalidadRepository certificadoCalidadRepository;

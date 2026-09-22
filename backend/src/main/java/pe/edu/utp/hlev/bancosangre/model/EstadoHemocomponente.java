@@ -18,6 +18,7 @@ public final class EstadoHemocomponente {
     public static final String BLOQUEADO = "BLOQUEADO";
     public static final String VENCIDO = "VENCIDO";
     public static final String DESPACHADO = "DESPACHADO";
+    public static final String TRANSFUNDIDO = "TRANSFUNDIDO";
     public static final String INCINERADO = "INCINERADO";
 
     // Estados en los que la unidad cuenta como existencia en el inventario activo (FEFO).

@@ -100,7 +100,7 @@ public class TransfusionService {
 
         Transfusion guardada = transfusionRepository.save(transfusion);
 
-        hemocomponente.setEstado("TRANSFUNDIDO");
+        hemocomponente.setEstado(EstadoHemocomponente.TRANSFUNDIDO);
         hemocomponenteRepository.save(hemocomponente);
 
         solicitud.setEstado("ATENDIDA");
