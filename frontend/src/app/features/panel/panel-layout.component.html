@@ -2,51 +2,69 @@
 
   <div class="sidebar-backdrop d-md-none" *ngIf="sidebarAbierto()" (click)="alternarSidebar()"></div>
 
-  <aside class="sidebar d-flex flex-column bg-dark text-white d-print-none" [class.sidebar-abierto]="sidebarAbierto()" style="width: 260px; flex-shrink: 0;">
-    <div class="p-4 text-center bg-primary">
-      <svg viewBox="0 0 100 100" width="48" height="48" class="mb-2">
-        <circle cx="50" cy="55" r="40" fill="none" stroke="#ffffff" stroke-width="9" opacity="0.9"/>
-        <path d="M50 18 C66 40 78 56 78 68 A28 28 0 1 1 22 68 C22 56 34 40 50 18 Z" fill="#ffffff"/>
-        <rect x="43" y="52" width="14" height="30" rx="4" fill="#c62828"/>
-        <rect x="35" y="60" width="30" height="14" rx="4" fill="#c62828"/>
-      </svg>
-      <h2 class="h5 mb-1">HLEV Sistema</h2>
-      <span class="badge bg-warning text-dark">{{ authService.usuario()?.rol }}</span>
+  <aside class="sidebar d-flex flex-column text-white d-print-none" [class.sidebar-abierto]="sidebarAbierto()" style="width: 264px; flex-shrink: 0; padding: 22px 16px;">
+    <div class="d-flex align-items-center gap-2 px-2 pb-3 mb-1">
+      <div style="width: 30px; height: 30px; border-radius: 8px; background: var(--red-700); position: relative; flex: none;">
+        <div style="position: absolute; inset: 8px; border-radius: 2px; background: #fff; opacity: .9;"></div>
+      </div>
+      <div>
+        <div class="fw-bold" style="font-size: 14.5px; letter-spacing: -0.01em;">HLEV Sistema</div>
+        <div style="font-size: 10.5px; color: #8891A8;">{{ authService.usuario()?.rol }}</div>
+      </div>
     </div>
-    <nav class="flex-grow-1 pt-3">
-      <ul class="nav nav-pills flex-column">
+
+    <nav class="flex-grow-1">
+      <ul class="nav nav-pills flex-column" style="gap: 2px;">
         <li class="nav-item">
-          <a routerLink="/panel/dashboard" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.dashboard') }}</a>
+          <a routerLink="/panel/dashboard" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.dashboard') }}
+          </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/inventario" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.inventario') }}</a>
+          <a routerLink="/panel/inventario" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.inventario') }}
+          </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/red" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.red') }}</a>
+          <a routerLink="/panel/red" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.red') }}
+          </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/donaciones" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.donaciones') }}</a>
+          <a routerLink="/panel/donaciones" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.donaciones') }}
+          </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/clinica" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.clinica') }}</a>
+          <a routerLink="/panel/clinica" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.clinica') }}
+          </a>
         </li>
         <li class="nav-item" *ngIf="authService.esSupervisionBancoSangre()">
-          <a routerLink="/panel/reportes" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.reportes') }}</a>
+          <a routerLink="/panel/reportes" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.reportes') }}
+          </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/panel/soporte" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.soporte') }}</a>
+          <a routerLink="/panel/soporte" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.soporte') }}
+          </a>
         </li>
         <li class="nav-item" *ngIf="authService.esAdministrador()">
-          <a routerLink="/panel/medicos" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.medicos') }}</a>
+          <a routerLink="/panel/medicos" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.medicos') }}
+          </a>
         </li>
         <li class="nav-item" *ngIf="authService.esAdministrador()">
-          <a routerLink="/panel/administracion" routerLinkActive="active" class="nav-link text-white">{{ accesibilidad.t('nav.administracion') }}</a>
+          <a routerLink="/panel/administracion" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <span style="width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5;"></span>{{ accesibilidad.t('nav.administracion') }}
+          </a>
         </li>
       </ul>
     </nav>
 
     <!-- RF-37/RNF-08: cambio de idioma y modo de alto contraste -->
-    <div class="p-3 border-top border-secondary">
+    <div class="rounded-3 p-3 mt-2" style="background: rgba(255,255,255,.06);">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <label class="form-check-label small mb-0" for="switchContraste">{{ accesibilidad.t('accesibilidad.altoContraste') }}</label>
         <div class="form-check form-switch mb-0">
@@ -59,8 +77,10 @@
       </select>
     </div>
 
-    <div class="p-3 pt-0">
-      <button class="btn btn-outline-light w-100" (click)="cerrarSesion()">{{ accesibilidad.t('nav.cerrarSesion') }}</button>
+    <div class="rounded-3 p-3 mt-2" style="background: rgba(255,255,255,.06);">
+      <div class="fw-semibold" style="font-size: 12.5px;">{{ authService.usuario()?.nombreCompleto }}</div>
+      <div style="font-size: 11px; color: #9AA2BB; margin-top: 1px;">{{ authService.usuario()?.rol }}</div>
+      <button class="btn btn-link p-0 mt-2" style="font-size: 11.5px; color: #9AA2BB; text-decoration: underline;" (click)="cerrarSesion()">← {{ accesibilidad.t('nav.cerrarSesion') }}</button>
     </div>
   </aside>
 

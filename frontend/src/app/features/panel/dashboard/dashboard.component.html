@@ -21,71 +21,59 @@
 
   <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold text-primary">{{ datos.unidadesDisponibles }}</div>
-          <div class="small text-secondary">Unidades Disponibles</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px; background: var(--green-700); margin-bottom:10px;"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.unidadesDisponibles }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Unidades Disponibles</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold text-primary">{{ datos.totalDonantes }}</div>
-          <div class="small text-secondary">Donantes Registrados</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px; background: var(--blue-700); margin-bottom:10px;"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.totalDonantes }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Donantes Registrados</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold text-primary">{{ datos.donacionesUltimos30Dias }}</div>
-          <div class="small text-secondary">Donaciones (30 días)</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px; background: var(--purple-700); margin-bottom:10px;"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.donacionesUltimos30Dias }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Donaciones (30 días)</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold text-warning">{{ datos.solicitudesPendientes }}</div>
-          <div class="small text-secondary">Solicitudes Pendientes</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px; background: var(--amber-700); margin-bottom:10px;"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.solicitudesPendientes }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Solicitudes Pendientes</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold text-primary">{{ datos.transfusionesRealizadas }}</div>
-          <div class="small text-secondary">Transfusiones Realizadas</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px; background: var(--green-700); margin-bottom:10px;"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.transfusionesRealizadas }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Transfusiones Realizadas</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold" [ngClass]="datos.transfusionesConReaccionAdversa > 0 ? 'text-danger' : 'text-success'">
-            {{ datos.transfusionesConReaccionAdversa }}
-          </div>
-          <div class="small text-secondary">Con Reacción Adversa</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px;" [style.background]="datos.transfusionesConReaccionAdversa > 0 ? 'var(--red-700)' : 'var(--green-700)'"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.transfusionesConReaccionAdversa }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Con Reacción Adversa</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold" [ngClass]="datos.unidadesPorVencerEn7Dias > 0 ? 'text-danger' : 'text-success'">
-            {{ datos.unidadesPorVencerEn7Dias }}
-          </div>
-          <div class="small text-secondary">Por Vencer (7 días)</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px;" [style.background]="datos.unidadesPorVencerEn7Dias > 0 ? 'var(--amber-700)' : 'var(--green-700)'"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.unidadesPorVencerEn7Dias }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Por Vencer (7 días)</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="fs-3 fw-bold text-info">{{ datos.intercambiosActivos }}</div>
-          <div class="small text-secondary">Intercambios Activos</div>
-        </div>
+      <div class="card h-100" style="padding: 16px 18px;">
+        <div style="width:26px; height:4px; border-radius:2px; background: var(--blue-700); margin-bottom:10px;"></div>
+        <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ datos.intercambiosActivos }}</div>
+        <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Intercambios Activos</div>
       </div>
     </div>
   </div>

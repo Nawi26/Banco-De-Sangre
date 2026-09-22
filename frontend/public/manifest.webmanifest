@@ -2,7 +2,7 @@
   "name": "Banco de Sangre HLEV",
   "short_name": "HLEV Sangre",
   "description": "Sistema de gestión del Banco de Sangre del Hospital de Lima Este Vitarte.",
-  "theme_color": "#c62828",
+  "theme_color": "#9E1B1B",
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "./",

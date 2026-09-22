@@ -1,35 +1,210 @@
-/* Paleta de marca HLEV, basada en el logo (gota roja + anillo azul) */
+/*
+ * Sistema de diseño HLEV. Bootstrap se mantiene cargado (index.html) porque
+ * las plantillas usan sus utilidades de layout (grid, flex, spacing); este
+ * archivo sobrescribe por completo su piel visual para igualar el mockup
+ * de referencia (paleta roja/marino, tarjetas, pills, tablas, tabs, KPIs).
+ */
+
 :root {
-  --bs-primary: #c62828;
-  --bs-primary-rgb: 198, 40, 40;
-  --bs-primary-text-emphasis: #7a1414;
-  --bs-primary-bg-subtle: #f8d7da;
-  --bs-primary-border-subtle: #e39499;
+  --red-800: #7E1414;
+  --red-700: #9E1B1B;
+  --red-600: #B4291F;
+  --red-50: #FBEAEA;
+  --red-100: #F6D6D6;
 
-  --bs-info: #1565c0;
-  --bs-info-rgb: 21, 101, 192;
-  --bs-info-text-emphasis: #0d3d75;
-  --bs-info-bg-subtle: #d3e3f7;
-  --bs-info-border-subtle: #7fa8dd;
+  --navy-900: #10152A;
+  --navy-800: #171D38;
+  --navy-700: #232B4D;
+
+  --ink-900: #12161F;
+  --ink-700: #2B303B;
+  --ink-600: #5B6472;
+  --ink-400: #8B93A1;
+  --ink-200: #C4C9D2;
+
+  --line: #E3E6EB;
+  --line-soft: #EDEFF3;
+  --bg: #F4F5F7;
+  --surface: #FFFFFF;
+
+  --green-700: #1E7F3C;
+  --green-50: #E9F6EC;
+  --amber-700: #A9760A;
+  --amber-50: #FBF1DE;
+  --purple-700: #6941C6;
+  --purple-50: #F1ECFC;
+  --slate-700: #475467;
+  --slate-50: #EEF1F4;
+  --blue-700: #1849A9;
+  --blue-50: #E9F0FB;
+  --char-700: #2A2E35;
+  --char-50: #EAEBED;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Reasigna los tokens de Bootstrap a la paleta HLEV. */
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--ink-900);
+  --bs-body-font-family: var(--font-ui);
+  --bs-border-color: var(--line);
+  --bs-link-color: var(--red-700);
+  --bs-link-hover-color: var(--red-800);
+
+  --bs-primary: var(--red-700);
+  --bs-primary-rgb: 158, 27, 27;
+  --bs-primary-text-emphasis: var(--red-800);
+  --bs-primary-bg-subtle: var(--red-50);
+  --bs-primary-border-subtle: var(--red-100);
+
+  --bs-info: var(--blue-700);
+  --bs-info-rgb: 24, 73, 169;
+  --bs-info-text-emphasis: var(--blue-700);
+  --bs-info-bg-subtle: var(--blue-50);
+  --bs-info-border-subtle: #B9CDEE;
+
+  --bs-success: var(--green-700);
+  --bs-success-rgb: 30, 127, 60;
+  --bs-success-text-emphasis: var(--green-700);
+  --bs-success-bg-subtle: var(--green-50);
+
+  --bs-danger: var(--red-700);
+  --bs-danger-rgb: 158, 27, 27;
+  --bs-danger-text-emphasis: var(--red-700);
+  --bs-danger-bg-subtle: var(--red-50);
+
+  --bs-warning: var(--amber-700);
+  --bs-warning-rgb: 169, 118, 10;
+  --bs-warning-text-emphasis: var(--amber-700);
+  --bs-warning-bg-subtle: var(--amber-50);
+
+  --bs-secondary: var(--slate-700);
+  --bs-secondary-rgb: 71, 84, 103;
+  --bs-secondary-text-emphasis: var(--slate-700);
+  --bs-secondary-bg-subtle: var(--slate-50);
+
+  --bs-dark: var(--char-700);
+  --bs-dark-rgb: 42, 46, 53;
+
+  --bs-card-border-radius: var(--radius-lg);
+  --bs-card-border-color: var(--line);
+  --bs-card-bg: var(--surface);
+  --bs-card-spacer-y: 22px;
+  --bs-card-spacer-x: 22px;
+
+  --bs-btn-border-radius: 8px;
 }
 
+body {
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--ink-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--red-700); }
+a:hover { color: var(--red-800); }
+
+.mono, code, .form-control.mono { font-family: var(--font-mono); }
+
+/* ---------- Botones ---------- */
+.btn { font-weight: 600; border-radius: 8px; }
 .btn-primary {
-  --bs-btn-hover-bg: #a82121;
-  --bs-btn-hover-border-color: #9c1f1f;
-  --bs-btn-active-bg: #9c1f1f;
-  --bs-btn-active-border-color: #901d1d;
+  background-color: var(--red-700); border-color: var(--red-700);
+  --bs-btn-hover-bg: var(--red-800); --bs-btn-hover-border-color: var(--red-800);
+  --bs-btn-active-bg: var(--red-800); --bs-btn-active-border-color: var(--red-800);
+}
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-success,
+.btn-outline-danger,
+.btn-outline-warning,
+.btn-outline-dark,
+.btn-outline-info {
+  background: var(--surface); color: var(--ink-700); border-color: var(--line);
+}
+.btn-outline-primary:hover, .btn-outline-secondary:hover, .btn-outline-success:hover,
+.btn-outline-danger:hover, .btn-outline-warning:hover, .btn-outline-dark:hover, .btn-outline-info:hover {
+  background: var(--line-soft); color: var(--ink-900); border-color: var(--ink-200);
+}
+.btn-link { color: var(--red-700); font-weight: 600; }
+
+/* ---------- Tarjetas ---------- */
+.card { border-radius: var(--radius-lg); border-color: var(--line); }
+.card-body { padding: 22px; }
+.card h2.h5, .card h2.h6 { font-weight: 600; letter-spacing: -0.01em; }
+
+/* ---------- KPI (paneles de indicadores tipo dashboard) ---------- */
+.card.shadow-sm.text-center .fs-3,
+.card.shadow-sm.text-center .fs-4 { letter-spacing: -0.01em; }
+
+/* ---------- Badges / pills ---------- */
+.badge {
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  padding: 5px 11px !important;
+  font-size: 11.5px !important;
+}
+.badge.bg-success { background-color: var(--green-50) !important; color: var(--green-700) !important; }
+.badge.bg-danger { background-color: var(--red-50) !important; color: var(--red-700) !important; }
+.badge.bg-warning { background-color: var(--amber-50) !important; color: var(--amber-700) !important; }
+.badge.bg-secondary { background-color: var(--slate-50) !important; color: var(--slate-700) !important; }
+.badge.bg-info { background-color: var(--blue-50) !important; color: var(--blue-700) !important; }
+.badge.bg-primary { background-color: var(--red-50) !important; color: var(--red-700) !important; }
+.badge.bg-dark { background-color: var(--char-50) !important; color: var(--char-700) !important; }
+
+/* ---------- Tablas ---------- */
+.table { font-size: 13px; }
+.table thead th {
+  font-size: 11px; font-weight: 600; color: var(--ink-600);
+  border-bottom: 1px solid var(--line); text-transform: none;
+}
+.table tbody td { border-color: var(--line-soft); vertical-align: middle; }
+.table-striped > tbody > tr:nth-of-type(odd) > * { background-color: var(--line-soft); }
+.table-hover > tbody > tr:hover > * { background-color: #FAFAFB; }
+
+/* ---------- Formularios ---------- */
+.form-label { font-size: 12.5px; font-weight: 600; color: var(--ink-900); }
+.form-control, .form-select {
+  border-color: var(--line); border-radius: 8px; background: #FCFCFD; color: var(--ink-900);
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--red-600); box-shadow: 0 0 0 .2rem rgba(158, 27, 27, .15);
+}
+.form-check-input:checked { background-color: var(--red-700); border-color: var(--red-700); }
+
+/* ---------- Pestañas (nav-tabs) ---------- */
+.nav-tabs { border-bottom: 1px solid var(--line); }
+.nav-tabs .nav-link {
+  border: none; border-bottom: 2px solid transparent; border-radius: 0;
+  color: var(--ink-400); font-weight: 600; font-size: 13.5px; padding: 10px 4px; margin-right: 22px;
+}
+.nav-tabs .nav-link:hover { border-color: transparent; color: var(--ink-700); }
+.nav-tabs .nav-link.active {
+  background: none; color: var(--red-700); border-bottom-color: var(--red-700);
 }
 
-.btn-outline-primary {
-  --bs-btn-hover-bg: #c62828;
-  --bs-btn-hover-border-color: #c62828;
-  --bs-btn-active-bg: #c62828;
-  --bs-btn-active-border-color: #c62828;
-}
+/* ---------- Alertas ---------- */
+.alert { border-radius: var(--radius-md); border: 1px solid transparent; }
+.alert-success { background: var(--green-50); color: var(--green-700); }
+.alert-danger { background: var(--red-50); color: var(--red-700); }
+.alert-warning { background: var(--amber-50); color: var(--amber-700); }
+.alert-info { background: var(--blue-50); color: var(--blue-700); }
 
-a {
-  color: #1565c0;
+/* ---------- Progreso ---------- */
+.progress { background-color: var(--line-soft); border-radius: 3px; }
+
+/* ---------- Sidebar del panel (layout de la app) ---------- */
+.sidebar { background: var(--navy-900) !important; }
+.sidebar .nav-pills .nav-link {
+  color: rgba(255, 255, 255, .68); border-radius: 8px; font-weight: 500; font-size: 13.5px;
 }
+.sidebar .nav-pills .nav-link:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+.sidebar .nav-pills .nav-link.active { background: var(--red-700) !important; color: #fff; font-weight: 600; }
 
 /* RF-20/RNF-11: sidebar colapsable en pantallas móviles, en vez de comprimir el contenido. */
 @media (max-width: 767.98px) {
