@@ -5,7 +5,8 @@ import { API_BASE } from '../config';
 import {
   CrearDonacionRequest, CrearDonanteRequest, CrearPacienteRequest, CrearReservaQuirurgicaRequest,
   CrearSolicitudRequest, CrearTransfusionRequest, ConfirmarDespachoRequest, Despacho, Donacion,
-  Donante, EnviarMensajeRequest, EventoAdversoDonacion, EventoAdversoTransfusional, IniciarDespachoRequest,
+  Donante, EnviarMensajeRequest, EventoAdversoDonacion, EventoAdversoTransfusional, FraccionarDonacionRequest,
+  Hemocomponente, IniciarDespachoRequest,
   Mensaje, Paciente, PruebaCompatibilidad, RegistrarEventoAdversoDonacionRequest,
   RegistrarEventoAdversoTransfusionalRequest, RegistrarPruebaCompatibilidadRequest, ReservaQuirurgica,
   Solicitud, Transfusion
@@ -32,6 +33,15 @@ export class ClinicoService {
 
   crearDonacion(request: CrearDonacionRequest): Observable<Donacion> {
     return this.http.post<Donacion>(`${API_BASE}/donaciones`, request);
+  }
+
+  // RF-06: fracciona la bolsa de sangre total en los hemocomponentes indicados.
+  fraccionarDonacion(donacionId: number, request: FraccionarDonacionRequest): Observable<Hemocomponente[]> {
+    return this.http.post<Hemocomponente[]>(`${API_BASE}/donaciones/${donacionId}/fraccionamiento`, request);
+  }
+
+  listarHemocomponentesDonacion(donacionId: number): Observable<Hemocomponente[]> {
+    return this.http.get<Hemocomponente[]>(`${API_BASE}/donaciones/${donacionId}/hemocomponentes`);
   }
 
   // Pacientes

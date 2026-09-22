@@ -25,39 +25,33 @@
 <!-- RF-26: KPIs gerenciales -->
 <div class="row g-3 mb-4" *ngIf="kpis">
   <div class="col-6 col-md-3">
-    <div class="card shadow-sm text-center h-100">
-      <div class="card-body">
-        <div class="fs-4 fw-bold text-primary">{{ kpis.rotacionInventario | number:'1.2-2' }}</div>
-        <div class="small text-secondary">Rotación de Inventario</div>
-      </div>
+    <div class="card h-100" style="padding: 16px 18px;">
+      <div style="width:26px; height:4px; border-radius:2px; background: var(--blue-700); margin-bottom:10px;"></div>
+      <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ kpis.rotacionInventario | number:'1.2-2' }}</div>
+      <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Rotación de Inventario</div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="card shadow-sm text-center h-100">
-      <div class="card-body">
-        <div class="fs-4 fw-bold" [ngClass]="kpis.tasaMermaCaducidadPorcentaje > 5 ? 'text-danger' : 'text-success'">
-          {{ kpis.tasaMermaCaducidadPorcentaje | number:'1.1-1' }}%
-        </div>
-        <div class="small text-secondary">Merma por Caducidad</div>
-      </div>
+    <div class="card h-100" style="padding: 16px 18px;">
+      <div style="width:26px; height:4px; border-radius:2px;" [style.background]="kpis.tasaMermaCaducidadPorcentaje > 5 ? 'var(--red-700)' : 'var(--green-700)'"></div>
+      <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ kpis.tasaMermaCaducidadPorcentaje | number:'1.1-1' }}%</div>
+      <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Merma por Caducidad</div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="card shadow-sm text-center h-100">
-      <div class="card-body">
-        <div class="fs-4 fw-bold text-info">
-          {{ kpis.tiempoRespuestaPromedioMinutos !== null ? (kpis.tiempoRespuestaPromedioMinutos | number:'1.0-0') + ' min' : 'N/D' }}
-        </div>
-        <div class="small text-secondary">Tiempo de Respuesta Promedio</div>
+    <div class="card h-100" style="padding: 16px 18px;">
+      <div style="width:26px; height:4px; border-radius:2px; background: var(--purple-700); margin-bottom:10px;"></div>
+      <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">
+        {{ kpis.tiempoRespuestaPromedioMinutos !== null ? (kpis.tiempoRespuestaPromedioMinutos | number:'1.0-0') + ' min' : 'N/D' }}
       </div>
+      <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Tiempo de Respuesta Promedio</div>
     </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="card shadow-sm text-center h-100">
-      <div class="card-body">
-        <div class="fs-4 fw-bold text-primary">{{ kpis.inventarioActivoActual }}</div>
-        <div class="small text-secondary">Inventario Activo Actual</div>
-      </div>
+    <div class="card h-100" style="padding: 16px 18px;">
+      <div style="width:26px; height:4px; border-radius:2px; background: var(--blue-700); margin-bottom:10px;"></div>
+      <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ kpis.inventarioActivoActual }}</div>
+      <div style="font-size:12px; color: var(--ink-600); font-weight:500;">Inventario Activo Actual</div>
     </div>
   </div>
 </div>

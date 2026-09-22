@@ -40,6 +40,26 @@ export interface CrearDonacionRequest {
   tipoDonacion: string;
 }
 
+// RF-06: hemocomponente producido al fraccionar una donación de sangre total.
+export interface Hemocomponente {
+  id: number;
+  codigoProductoIsbt: string;
+  dinMatriz: string | null;
+  tipoHemocomponente: string;
+  grupoAbo: string;
+  factorRh: string;
+  volumenMl: number | null;
+  fechaVencimiento: string | null;
+  ubicacionFisica: string | null;
+  estado: string;
+  camaraId: number | null;
+  camaraNombre: string | null;
+}
+
+export interface FraccionarDonacionRequest {
+  tiposHemocomponente: string[];
+}
+
 export interface Paciente {
   id: number;
   tipoDoc: string;

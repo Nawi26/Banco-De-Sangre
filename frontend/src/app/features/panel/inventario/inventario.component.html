@@ -1,19 +1,32 @@
 <h2 class="h5 mb-3">Existencias por Grupo Sanguíneo</h2>
 <div class="row g-3 mb-4">
-  <div class="col-6 col-md-3" *ngFor="let item of resumen">
-    <div class="card text-center shadow-sm h-100">
-      <div class="card-body">
-        <div class="fs-3 fw-bold text-primary">{{ item.unidades }}</div>
-        <div class="small text-secondary">{{ item.grupoAbo }}{{ signoRh(item.factorRh) }} · {{ item.tipoHemocomponente }}</div>
-      </div>
+  <div class="col-6 col-md-3" *ngFor="let item of resumen; let i = index">
+    <div class="card h-100" style="padding: 16px 18px;">
+      <div style="width:26px; height:4px; border-radius:2px; margin-bottom:10px;" [style.background]="colorBarra(i)"></div>
+      <div style="font-size:25px; font-weight:700; letter-spacing:-0.01em;">{{ item.unidades }}</div>
+      <div style="font-size:12px; color: var(--ink-600); font-weight:500;">{{ item.grupoAbo }}{{ signoRh(item.factorRh) }} · {{ item.tipoHemocomponente }}</div>
     </div>
   </div>
   <p class="text-secondary" *ngIf="resumen.length === 0">No hay unidades disponibles en este momento.</p>
 </div>
 
-<div class="card shadow-sm">
+<div class="card shadow-sm mb-4">
   <div class="card-body">
-    <h2 class="h5 mb-3">Inventario Activo (Algoritmo FEFO)</h2>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+      <h2 class="h5 mb-0">Inventario Activo (Algoritmo FEFO)</h2>
+      <div class="d-flex gap-2">
+        <input type="text" class="form-control form-control-sm" style="width: 200px;" placeholder="Buscar código o grupo..." [(ngModel)]="filtroBusqueda">
+        <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="filtroEstado">
+          <option value="">Todos los estados</option>
+          <option value="DISPONIBLE">Disponible</option>
+          <option value="RESERVADO">Reservado</option>
+          <option value="CUARENTENA">Cuarentena</option>
+          <option value="BLOQUEADO">Bloqueado</option>
+          <option value="VENCIDO">Vencido</option>
+          <option value="DESPACHADO">Despachado</option>
+        </select>
+      </div>
+    </div>
     <div class="table-responsive">
       <table class="table table-striped table-hover align-middle">
         <thead>
@@ -26,12 +39,135 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of inventario">
-            <td><strong>{{ item.codigoProductoIsbt }}</strong></td>
+          <tr *ngFor="let item of inventarioFiltrado()">
+            <td class="mono"><strong>{{ item.codigoProductoIsbt }}</strong></td>
             <td>{{ item.tipoHemocomponente }}</td>
             <td>{{ item.grupoAbo }} {{ item.factorRh }}</td>
             <td>{{ item.fechaVencimiento ? (item.fechaVencimiento | date:'dd/MM/yyyy') : 'Sin fecha' }}</td>
             <td><span class="badge bg-success">{{ item.estado }}</span></td>
+          </tr>
+          <tr *ngIf="inventarioFiltrado().length === 0"><td colspan="5" class="text-muted">No hay unidades que coincidan con el filtro.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <!-- RF-05: Etiquetado ISBT 128 -->
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100 d-print-none">
+      <div class="card-body">
+        <h2 class="h5 mb-1">Etiquetado ISBT 128 <span class="badge-rf mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-05</span></h2>
+        <p class="text-secondary small mb-3">Consulta el contenido normalizado de la etiqueta a partir del código de producto de la unidad.</p>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control mono" placeholder="Ej: E001" [(ngModel)]="codigoEtiqueta" (keyup.enter)="consultarEtiqueta()">
+          <button class="btn btn-primary" (click)="consultarEtiqueta()">Consultar</button>
+        </div>
+        <div class="alert alert-danger py-2" *ngIf="errorEtiqueta">{{ errorEtiqueta }}</div>
+
+        <div *ngIf="etiqueta" style="width:100%; max-width:320px; border:1.5px solid var(--ink-900); border-radius:4px; padding:14px; font-family:var(--font-mono); margin: 0 auto;" id="label-preview">
+          <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid var(--ink-900); padding-bottom:6px; margin-bottom:6px;">
+            <span>HLEV · BANCO DE SANGRE</span><span>ISBT 128</span>
+          </div>
+          <div style="height:34px; background:repeating-linear-gradient(90deg,#12161F 0 2px, transparent 2px 4px, #12161F 4px 6px, transparent 6px 9px); margin-bottom:6px;"></div>
+          <div style="font-size:11px; letter-spacing:.03em; margin-bottom:8px;">{{ etiqueta.dinMatriz || '—' }}</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; font-size:10.5px;">
+            <div><div style="color:var(--ink-400);">PRODUCTO</div><div style="font-weight:700;">{{ etiqueta.codigoProducto }}</div></div>
+            <div><div style="color:var(--ink-400);">GRUPO</div><div style="font-weight:700; color:var(--red-700);">{{ etiqueta.grupoAboRh }}</div></div>
+            <div><div style="color:var(--ink-400);">VENCE</div><div style="font-weight:700;">{{ etiqueta.fechaVencimiento ? (etiqueta.fechaVencimiento | date:'dd/MM/yy') : '—' }}</div></div>
+            <div><div style="color:var(--ink-400);">PAYLOAD 2D</div><div style="font-weight:700; font-size:9px; word-break:break-all;">{{ etiqueta.payload2D }}</div></div>
+          </div>
+          <div style="margin-top:10px; height:22px; background:repeating-linear-gradient(90deg,#12161F 0 1px, transparent 1px 3px);"></div>
+        </div>
+        <div class="text-center mt-3" *ngIf="etiqueta">
+          <button class="btn btn-ghost btn-outline-secondary btn-sm" (click)="imprimirEtiqueta()">Imprimir etiqueta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RF-09/RF-24: Monitoreo de temperatura de cámaras -->
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 mb-1">Cámaras y Monitoreo de Temperatura <span class="badge-rf mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-24</span></h2>
+        <p class="text-secondary small mb-3">Registro manual o por integración de sensores — alerta automática ante desviación fuera de rango.</p>
+
+        <div class="mb-3" *ngFor="let camara of camaras" style="border: 1px solid var(--line); border-radius: 10px; padding: 12px;">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <div class="fw-semibold">{{ camara.nombre }}</div>
+              <div class="small text-secondary">{{ camara.tipo }} · Rango seguro: {{ camara.temperaturaMinima }}°C a {{ camara.temperaturaMaxima }}°C</div>
+            </div>
+            <span class="badge" *ngIf="ultimaTemperaturaPorCamara[camara.id]" [ngClass]="ultimaTemperaturaPorCamara[camara.id].dentroDeRango ? 'bg-success' : 'bg-danger'">
+              {{ ultimaTemperaturaPorCamara[camara.id].temperatura }}°C
+            </span>
+          </div>
+          <div class="input-group input-group-sm">
+            <input type="number" step="0.1" class="form-control" placeholder="Nueva lectura °C" [(ngModel)]="temperaturaIngresada[camara.id]" [ngModelOptions]="{standalone: true}">
+            <button class="btn btn-outline-primary" (click)="registrarTemperatura(camara.id)">Registrar</button>
+          </div>
+        </div>
+        <p class="text-muted small" *ngIf="camaras.length === 0">Aún no hay cámaras registradas.</p>
+        <div class="alert alert-info py-2" *ngIf="mensajeTemperatura">{{ mensajeTemperatura }}</div>
+
+        <details class="mt-2">
+          <summary class="small text-secondary" style="cursor: pointer;">+ Registrar nueva cámara</summary>
+          <form class="row g-2 mt-2" (ngSubmit)="registrarCamara()">
+            <div class="col-md-6"><input type="text" class="form-control form-control-sm" placeholder="Nombre (ej: Cámara 1)" name="camNombre" [(ngModel)]="nuevaCamara.nombre" required></div>
+            <div class="col-md-6">
+              <select class="form-select form-select-sm" name="camTipo" [(ngModel)]="nuevaCamara.tipo">
+                <option value="REFRIGERACION">Refrigeración</option>
+                <option value="CONGELACION">Congelación</option>
+              </select>
+            </div>
+            <div class="col-md-4"><input type="text" class="form-control form-control-sm" placeholder="Ubicación" name="camUbicacion" [(ngModel)]="nuevaCamara.ubicacion"></div>
+            <div class="col-md-4"><input type="number" step="0.1" class="form-control form-control-sm" placeholder="Mín °C" name="camMin" [(ngModel)]="nuevaCamara.temperaturaMinima"></div>
+            <div class="col-md-4"><input type="number" step="0.1" class="form-control form-control-sm" placeholder="Máx °C" name="camMax" [(ngModel)]="nuevaCamara.temperaturaMaxima"></div>
+            <div class="col-12"><button type="submit" class="btn btn-sm btn-primary">Registrar cámara</button></div>
+          </form>
+          <div class="alert mt-2 mb-0 py-2" [class.alert-success]="exitoCamara" [class.alert-danger]="!exitoCamara" *ngIf="mensajeCamara">{{ mensajeCamara }}</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RF-06: Fraccionamiento de hemocomponentes -->
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-1">Fraccionamiento de Hemocomponentes <span class="badge-rf mono" style="font-size:10.5px; background: var(--slate-50); color: var(--ink-600); border-radius:5px; padding:2px 6px;">RF-06</span></h2>
+    <p class="text-secondary small mb-3">Separación de la bolsa de sangre total en hemocomponentes, vinculados al DIN de la donación matriz.</p>
+
+    <div class="field mb-3" style="max-width: 420px;">
+      <label class="form-label fw-semibold">Donación (bolsa de sangre total) a fraccionar</label>
+      <select class="form-select mono" [(ngModel)]="donacionSeleccionada">
+        <option [ngValue]="null" disabled>Seleccione...</option>
+        <option *ngFor="let d of donaciones" [ngValue]="d.id">{{ d.dinIsbt128 }} — {{ d.donanteNombreCompleto }}</option>
+      </select>
+    </div>
+
+    <div class="d-flex flex-wrap gap-3 mb-3">
+      <div class="checkline" *ngFor="let tipo of tiposHemocomponente">
+        <input type="checkbox" [id]="'tipo-' + tipo.valor" [(ngModel)]="tiposSeleccionados[tipo.valor]">
+        <label [for]="'tipo-' + tipo.valor">{{ tipo.etiqueta }}</label>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-sm" (click)="fraccionar()" [disabled]="!donacionSeleccionada">Fraccionar y generar hemocomponentes</button>
+    <div class="alert mt-3 mb-0 py-2" [class.alert-success]="exitoFraccion" [class.alert-danger]="!exitoFraccion" *ngIf="mensajeFraccion">{{ mensajeFraccion }}</div>
+
+    <div class="table-responsive mt-3" *ngIf="hemocomponentesFraccion.length > 0">
+      <table class="table table-striped table-sm align-middle">
+        <thead><tr><th>Código ISBT</th><th>Tipo</th><th>Grupo</th><th>Vencimiento</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let h of hemocomponentesFraccion">
+            <td class="mono">{{ h.codigoProductoIsbt }}</td>
+            <td>{{ h.tipoHemocomponente }}</td>
+            <td>{{ h.grupoAbo }} {{ h.factorRh }}</td>
+            <td>{{ h.fechaVencimiento ? (h.fechaVencimiento | date:'dd/MM/yyyy') : '-' }}</td>
+            <td><span class="badge bg-success">{{ h.estado }}</span></td>
           </tr>
         </tbody>
       </table>
