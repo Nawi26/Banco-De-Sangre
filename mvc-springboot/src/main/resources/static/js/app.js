@@ -5,7 +5,7 @@
    comportamiento de un sistema transaccional real.
 
    Los arreglos empiezan VACÍOS a propósito: los datos de ejemplo ya
-   NO viven aquí, viven en el servidor (ver BaseDatosDemo.java) y el
+   NO viven aquí, viven en el servidor (PostgreSQL, a través de los DAO) y el
    Controlador se los entrega a cada Vista, que los usa para llenar
    este mismo "state" apenas carga la página (ver el <script> al
    final de cada plantilla). Este objeto sigue existiendo para que
@@ -27,6 +27,7 @@ const state = {
   serologia: [],
 
   solicitudes: [],
+  pacientes: [],
   // { solicitudId, prueba, muestra, unidad, grupoPaciente, resultado, estado, validadoPor, fecha }
   pruebas: [],
   hemovigilancia: [],
@@ -44,7 +45,7 @@ const state = {
    "BASE DE DATOS" LOCAL DEL NAVEGADOR (localStorage)
    Esta etapa del proyecto no tiene un backend con base de datos real:
    cada carga de pagina recibe de nuevo los datos de ejemplo del
-   servidor (BaseDatosDemo). Para que la aplicacion se sienta realmente
+   servidor (PostgreSQL). Para que la aplicacion se sienta realmente
    conectada -que una solicitud creada desde la app movil aparezca
    tambien en el panel web, y que los cambios sobrevivan a navegar
    entre pantallas- usamos localStorage como una "base de datos" local:
@@ -654,23 +655,41 @@ function fraccionarUnidad(){
 }
 
 /* ---------------- Donantes (RF-03, RF-04) ---------------- */
-function evaluarAptitud(){
+/* Un diferimiento temporal siempre lleva fecha de fin (campo diferimiento_hasta de la base). */
+const SIN_ANTECEDENTES = /^(ninguno|ninguna|ningun|no|no refiere|sin antecedentes|n\/a|niega)\.?$/i;
+function evaluarAntecedentes(texto){
+  const t = String(texto || '').trim();
+  if(!t || SIN_ANTECEDENTES.test(t)) return null;
+  const n = t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  if(/(conducta de riesgo|riesgo|vih|sida|hepatitis|sifilis|drogas|inyectable)/.test(n))
+    return { motivo: 'Antecedente de conducta de riesgo declarado', tipo: 'Permanente', dias: 0 };
+  if(/(viaje|malaria|endemic|dengue|zika|chagas|selva)/.test(n))
+    return { motivo: 'Antecedente epidemiológico declarado (viaje a zona endémica)', tipo: 'Temporal', dias: 365 };
+  if(/(tatuaje|piercing|perforacion|cirugia|operacion|transfusion|vacuna|antibiotic|medicacion|medicamento|embarazo|parto)/.test(n))
+    return { motivo: 'Antecedente médico declarado (tatuaje, cirugía, vacuna o medicación reciente)', tipo: 'Temporal', dias: 180 };
+  // Cualquier otro antecedente escrito no se da por bueno: queda diferido hasta que el médico lo evalúe
+  return { motivo: 'Antecedente declarado pendiente de evaluación médica', tipo: 'Temporal', dias: 30 };
+}
+/* Evalúa peso, hemoglobina y antecedentes. Devuelve null si es apto, o { motivo, tipo, dias }. */
+function evaluarDonante(){
   const peso = parseFloat(document.getElementById('don-peso').value);
   const hb = parseFloat(document.getElementById('don-hb').value);
-  const antecedentes = document.getElementById('don-antecedentes').value.toLowerCase();
+  if(!isNaN(peso) && peso < 50) return { motivo: `Peso bajo el mínimo para donar (${peso} kg < 50 kg)`, tipo: 'Temporal', dias: 30 };
+  if(!isNaN(hb) && hb < 12.5) return { motivo: `Hemoglobina bajo el mínimo (${hb} g/dL < 12.5 g/dL)`, tipo: 'Temporal', dias: 30 };
+  return evaluarAntecedentes(document.getElementById('don-antecedentes').value);
+}
+function evaluarAptitud(){
   const pill = document.getElementById('aptitud-pill');
-
-  let motivo = null;
-  if(!isNaN(peso) && peso < 50) motivo = `Peso bajo el mínimo para donar (${peso} kg < 50 kg)`;
-  else if(!isNaN(hb) && hb < 12.5) motivo = `Hemoglobina bajo el mínimo (${hb} g/dL < 12.5 g/dL)`;
-  else if(antecedentes.includes('viaje') || antecedentes.includes('malaria') || antecedentes.includes('riesgo')) motivo = `Antecedente epidemiológico declarado`;
-
-  if(motivo){
-    pill.className = 'pill amber'; pill.innerHTML = `<span class="dot"></span>Aptitud automática: DIFERIDO — ${motivo}`;
-  } else {
-    pill.className = 'pill green'; pill.innerHTML = `<span class="dot"></span>Evaluación: APTO para donar`;
+  const ev = evaluarDonante();
+  if(pill){
+    if(ev){
+      pill.className = 'pill ' + (ev.tipo === 'Permanente' ? 'red' : 'amber');
+      pill.innerHTML = `<span class="dot"></span>Aptitud automática: ${ev.tipo === 'Permanente' ? 'EXCLUIDO' : 'DIFERIDO'} — ${ev.motivo}`;
+    } else {
+      pill.className = 'pill green'; pill.innerHTML = `<span class="dot"></span>Evaluación: APTO para donar`;
+    }
   }
-  return motivo;
+  return ev;
 }
 
 /* ---------------- Registro de donantes ---------------- */
@@ -704,7 +723,11 @@ function registrarDonante(){
     ['don-fecnac','fechaNacimiento',{label:'Fecha de nacimiento'}],
     ['don-peso','peso',{label:'Peso'}],
     ['don-hb','hemoglobina',{label:'Hemoglobina'}],
-    ['don-antecedentes','texto',{label:'Antecedentes',req:false}]
+    ['don-telefono','telefono',{label:'Teléfono'}],
+    ['don-correo','correoPersonal',{label:'Correo electrónico'}],
+    ['don-sexo','seleccion',{label:'Sexo'}],
+    ['don-direccion','texto',{label:'Dirección'}],
+    ['don-antecedentes','texto',{label:'Antecedentes'}]
   ])) return;
   const nombre = document.getElementById('don-nombre').value.trim();
   const dni = document.getElementById('don-dni').value.trim();
@@ -713,21 +736,28 @@ function registrarDonante(){
     toast('Falta registrar el consentimiento informado firmado', true);
     return;
   }
-  const motivo = evaluarAptitud();
+  const ev = evaluarAptitud();
+  const motivo = ev ? ev.motivo : null;
   const donante = {
     nombre, dni,
     abo: document.getElementById('don-abo').value || 'Por confirmar',
     tipo: document.getElementById('don-tipo').selectedOptions[0].textContent,
     ultimaDonacion: '—',
     donaciones: 0,
-    estado: motivo ? 'amber:Diferido' : 'green:Apto',
+    estado: !ev ? 'green:Apto' : ev.tipo === 'Permanente' ? 'red:Excluido' : 'amber:Diferido',
     fechaNacimiento: document.getElementById('don-fecnac').value.trim(),
     pesoKg: parseFloat(document.getElementById('don-peso').value) || null,
     antecedentes: document.getElementById('don-antecedentes').value.trim(),
+    sexo: document.getElementById('don-sexo').value,
+    telefono: document.getElementById('don-telefono').value.trim(),
+    correo: document.getElementById('don-correo').value.trim(),
+    direccion: document.getElementById('don-direccion').value.trim(),
+    hemoglobina: parseFloat(document.getElementById('don-hb').value) || null,
+    campana: document.getElementById('don-campana').selectedOptions[0].textContent.replace(/^—\s*Ninguna.*$/, 'Donación directa'),
     consentimiento: true,
     motivoDiferimiento: motivo || null,
-    tipoDiferimiento: motivo ? 'Temporal' : null,
-    vigenciaDiferimiento: '—',
+    tipoDiferimiento: ev ? ev.tipo : null,
+    vigenciaDiferimiento: ev && ev.tipo === 'Temporal' ? formatoFecha(sumarDias(new Date(), ev.dias)) : '—',
   };
   state.donantes.unshift(donante);
   renderDonantes();
@@ -735,17 +765,17 @@ function registrarDonante(){
   if(motivo){
     renderDiferimientos();
     logAudit('Registró donante — diferido automáticamente', nombre);
-    toast(`${nombre} quedó diferido: ${motivo}`, true);
+    toast(`${nombre} quedó ${ev.tipo === 'Permanente' ? 'excluido' : 'diferido'}: ${motivo}`, true);
   } else {
     logAudit('Registró la ficha de un donante — APTO', nombre);
     toast(`${nombre} quedó registrado como apto. Ya puede registrar su donación`);
   }
   // El formulario queda listo para el siguiente donante
-  ['don-nombre','don-dni','don-fecnac','don-peso','don-hb','don-abo','don-antecedentes'].forEach(id => {
+  ['don-nombre','don-dni','don-fecnac','don-peso','don-hb','don-abo','don-antecedentes','don-sexo','don-telefono','don-correo','don-direccion'].forEach(id => {
     const campo = document.getElementById(id);
     if(campo) campo.value = '';
   });
-  VAL.limpiar(['don-nombre','don-dni','don-fecnac','don-peso','don-hb','don-antecedentes']);
+  VAL.limpiar(['don-sexo','don-nombre','don-dni','don-fecnac','don-peso','don-hb','don-antecedentes','don-telefono','don-correo','don-direccion']);
   document.getElementById('don-consentimiento').checked = false;
   switchTab('donantes','donantes:registro');
 }
@@ -933,7 +963,7 @@ function guardarSerologia(){
       } else {
         donante.estado = 'amber:Diferido';
         donante.motivoDiferimiento = `Tamizaje indeterminado en ${lista} (DIN ${din}) — repetir la muestra`;
-        donante.tipoDiferimiento = 'Temporal'; donante.vigenciaDiferimiento = '—';
+        donante.tipoDiferimiento = 'Temporal'; donante.vigenciaDiferimiento = formatoFecha(sumarDias(new Date(), 30));
       }
     }
     logAudit(`Bloqueó unidad automáticamente por resultado no conforme en ${lista}`, `DIN ${din}`);
@@ -1013,47 +1043,105 @@ function generarCertificado(){
 }
 
 /* ---------------- Solicitudes (RF-11, RF-12) ---------------- */
+/* La fecha solo se pide cuando hace falta: si es una reserva para cirugía
+   o si la prioridad es "Programada". Con Urgente o Diferible no aparece. */
+function requiereFechaSolicitud(){
+  return document.getElementById('sol-tipo').value === 'reserva'
+      || document.getElementById('sol-prioridad').value === 'Programada';
+}
 function toggleTipoSolicitud(){
+  const pide = requiereFechaSolicitud();
   const esReserva = document.getElementById('sol-tipo').value === 'reserva';
-  document.getElementById('sol-reserva-field').style.display = esReserva ? '' : 'none';
+  document.getElementById('sol-reserva-field').style.display = pide ? '' : 'none';
+  document.getElementById('sol-reserva-label').textContent = esReserva ? 'Fecha límite de la reserva' : 'Fecha programada de la transfusión';
+  if(!pide){
+    const f = document.getElementById('sol-reserva-fecha');
+    f.value = '';
+    VAL.limpiar(['sol-reserva-fecha']);
+  }
+}
+/* Al completar la historia clinica, si el paciente ya tiene una solicitud previa
+   se rellenan solos su nombre y su DNI (y quedan bloqueados para no desalinear datos). */
+function autocompletarPaciente(){
+  const hc = (document.getElementById('sol-hc').value || '').trim().toUpperCase();
+  const dni = document.getElementById('sol-dni');
+  const nom = document.getElementById('sol-paciente');
+  if(!dni || !nom) return;
+  const previa = hc.length === 13
+    ? (state.pacientes || []).find(p => String(p.hc).toUpperCase() === hc && p.dni)
+    : null;
+  if(previa){
+    dni.value = previa.dni; nom.value = previa.nombre;
+    dni.readOnly = true; nom.readOnly = true;
+    VAL.limpiar(['sol-dni','sol-paciente']);
+  } else if(dni.readOnly){
+    dni.readOnly = false; nom.readOnly = false;
+    dni.value = ''; nom.value = '';
+  }
+}
+/* (Ya no se usa al enviar una solicitud: los pacientes se registran en su módulo.) */
+function recordarPaciente(hc, dni, nombre){
+  state.pacientes = (state.pacientes || []).filter(p => String(p.hc).toUpperCase() !== hc.toUpperCase());
+  state.pacientes.push({ hc: hc.toUpperCase(), dni, nombre });
+  const lista = document.getElementById('lista-pacientes');
+  if(lista && !lista.querySelector(`option[value="${hc.toUpperCase()}"]`)){
+    const op = document.createElement('option');
+    op.value = hc.toUpperCase(); op.label = `${nombre} · DNI ${dni}`;
+    lista.appendChild(op);
+  }
 }
 function importarHIS(){
-  document.getElementById('sol-paciente').value = 'Marcos Effio Bravo';
-  document.getElementById('sol-hc').value = `HC-2026-${String(Math.floor(Math.random()*99999)+1).padStart(5,'0')}`;
+  const pac = (state.pacientes || [])[0];
+  if(!pac){ toast('No hay pacientes registrados: registra primero al paciente en el módulo Pacientes', true); return; }
+  document.getElementById('sol-hc').value = pac.hc;
+  autocompletarPaciente();
   document.getElementById('sol-cie10').value = 'K92.2 — Hemorragia digestiva alta';
   document.getElementById('sol-componente').value = '2 unidades — Concentrado de Hematíes';
-  VAL.limpiar(['sol-paciente','sol-hc','sol-cie10','sol-componente']);
+  VAL.limpiar(['sol-paciente','sol-dni','sol-hc','sol-cie10','sol-componente']);
   toast('Orden importada automáticamente desde el HIS/SIS hospitalario');
 }
 function enviarSolicitud(){
   const tipo = document.getElementById('sol-tipo').value;
+  const pideFecha = requiereFechaSolicitud();
   if(!VAL.formulario([
     ['sol-paciente','nombre',{label:'Paciente'}],
     ['sol-hc','hc',{label:'Historia clínica'}],
+    ['sol-dni','dni',{label:'DNI del paciente'}],
     ['sol-cie10','cie10',{label:'Diagnóstico CIE-10'}],
     ['sol-componente','componente',{label:'Hemocomponente'}],
-    ['sol-reserva-fecha','fechaFutura',{label:'Fecha límite de la reserva',req:tipo==='reserva'}]
+    ['sol-reserva-fecha','fechaFutura',{label: tipo==='reserva' ? 'Fecha límite de la reserva' : 'Fecha programada', req:pideFecha}]
   ])) return;
   const paciente = document.getElementById('sol-paciente').value.trim();
+  const hcEscrita = document.getElementById('sol-hc').value.trim().toUpperCase();
+  if(!(state.pacientes || []).some(p => String(p.hc).toUpperCase() === hcEscrita)){
+    VAL.marcar(document.getElementById('sol-hc'), 'Esta historia clínica no está registrada');
+    toast('Registra primero al paciente en el módulo Pacientes (todos sus datos son obligatorios)', true);
+    return;
+  }
   const req = {
     id: siguienteIdSolicitud(),
     paciente,
-    hc: document.getElementById('sol-hc').value.trim() || `HC-2026-${Math.floor(Math.random()*90000+10000)}`,
+    dni: document.getElementById('sol-dni').value.trim(),
+    hc: document.getElementById('sol-hc').value.trim().toUpperCase(),
     servicio: document.getElementById('sol-servicio').value,
-    cie10: document.getElementById('sol-cie10').value.trim() || '—',
-    componente: document.getElementById('sol-componente').value.trim() || '1 unidad',
+    cie10: document.getElementById('sol-cie10').value.trim(),
+    componente: document.getElementById('sol-componente').value.trim(),
     prioridad: document.getElementById('sol-prioridad').value,
-    tipo, reservaFecha: tipo==='reserva' ? (document.getElementById('sol-reserva-fecha').value.trim() || 'Sin fecha límite') : null,
+    tipo, reservaFecha: pideFecha ? document.getElementById('sol-reserva-fecha').value.trim() : null,
     estado: 'pendiente',
   };
   state.solicitudes.unshift(req);
-  logAudit(tipo==='reserva' ? `Registró reserva quirúrgica programada` : `Registró solicitud transfusional`, `${req.id} · ${req.servicio}`);
+  if(req.dni) recordarPaciente(req.hc, req.dni, paciente);
+  logAudit(tipo==='reserva' ? `Registró reserva quirúrgica programada` : pideFecha ? `Registró solicitud transfusional programada` : `Registró solicitud transfusional`, `${req.id} · ${req.servicio}`);
   toast(`Solicitud ${req.id} enviada al Banco de Sangre`);
   pushAlert('blue', `Nueva solicitud — ${req.servicio}`, `${req.componente} · ${req.cie10} · ${paciente}`);
   document.getElementById('sol-paciente').value=''; document.getElementById('sol-hc').value='';
+  const d = document.getElementById('sol-dni'); d.value=''; d.readOnly=false;
+  document.getElementById('sol-paciente').readOnly=false;
   document.getElementById('sol-cie10').value=''; document.getElementById('sol-componente').value='';
   document.getElementById('sol-reserva-fecha').value='';
-  VAL.limpiar(['sol-paciente','sol-hc','sol-cie10','sol-componente','sol-reserva-fecha']);
+  toggleTipoSolicitud();
+  VAL.limpiar(['sol-paciente','sol-dni','sol-hc','sol-cie10','sol-componente','sol-reserva-fecha']);
   renderSolicitudes();
 }
 function siguienteIdSolicitud(){
@@ -1077,7 +1165,7 @@ function renderSolicitudes(){
   body.innerHTML = state.solicitudes.length ? state.solicitudes.map(r=>{
     const prColor = r.prioridad.startsWith('Urgente') ? 'red' : r.prioridad==='Programada' ? 'blue' : 'slate';
     const [colE, txtE] = ESTADOS_SOLICITUD[r.estado] || ESTADOS_SOLICITUD.pendiente;
-    const tipoTag = r.tipo==='reserva' ? `<div class="cell-muted">Reserva hasta ${r.reservaFecha}</div>` : '';
+    const tipoTag = r.reservaFecha ? `<div class="cell-muted">${r.tipo==='reserva' ? 'Reserva hasta' : 'Programada para el'} ${r.reservaFecha}</div>` : '';
     const accion = puede && r.estado!=='compatible'
       ? `<button class="btn btn-ghost btn-sm" onclick="validarSolicitud('${r.id}')">${r.estado==='incompatible' ? 'Repetir pruebas' : 'Validar'}</button>` : '';
     return `<tr>
@@ -1299,8 +1387,8 @@ function guardarEventoHemovigilancia(){
   const evento = {
     id: nuevoId(),
     fecha: nowStr().split(' ')[0], paciente,
-    din: document.getElementById('hv-din').value || '—',
-    reaccion: document.getElementById('hv-reaccion').value.trim() || 'Reacción no especificada',
+    din: dinSel,
+    reaccion: document.getElementById('hv-reaccion').value.trim(),
     severidad: document.getElementById('hv-severidad').value,
     estado: 'amber:En investigación',
   };

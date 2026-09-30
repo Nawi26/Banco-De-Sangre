@@ -23,19 +23,23 @@
           </div>
           <div class="grid-2" style="margin-bottom:14px;">
             <div class="field"><label>Paciente</label><input class="input" id="sol-paciente" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Nombres y apellidos del receptor"></div>
-            <div class="field"><label>Historia clínica</label><input class="input mono" id="sol-hc" data-val="hc" data-req="1" maxlength="13" autocomplete="off" placeholder="HC-2026-00000"></div>
+            <div class="field"><label>Historia clínica</label><input class="input mono" id="sol-hc" list="lista-pacientes" data-val="hc" data-req="1" oninput="autocompletarPaciente()" onchange="autocompletarPaciente()" maxlength="13" autocomplete="off" placeholder="Elige o escribe: HC-2026-00000">
+              <datalist id="lista-pacientes">
+                <option th:each="p : ${pacientes}" th:value="${p['hc']}" th:label="${p['nombre'] + ' · DNI ' + p['dni']}"></option>
+              </datalist></div>
+            <div class="field"><label>DNI del paciente</label><input class="input mono" id="sol-dni" data-val="dni" data-req="1" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="Se completa solo si la historia clínica ya existe"></div>
             <div class="field"><label>Servicio solicitante</label>
               <select class="input" id="sol-servicio"><option>Emergencia</option><option>UCI</option><option>Centro Quirúrgico</option><option>Gineco-Obstetricia</option></select>
             </div>
             <div class="field"><label>Diagnóstico (CIE-10)</label><input class="input mono" id="sol-cie10" data-val="cie10" data-req="1" maxlength="90" autocomplete="off" placeholder="Ej. O72.1 — Hemorragia posparto"></div>
             <div class="field"><label>Hemocomponente y cantidad</label><input class="input" id="sol-componente" data-val="componente" data-req="1" maxlength="80" autocomplete="off" placeholder="2 unidades — Concentrado de Hematíes"></div>
             <div class="field"><label>Prioridad clínica</label>
-              <select class="input" id="sol-prioridad"><option>Urgente (&lt;15 min)</option><option>Programada</option><option>Diferible</option></select>
+              <select class="input" id="sol-prioridad" onchange="toggleTipoSolicitud()"><option>Urgente (&lt;15 min)</option><option>Programada</option><option>Diferible</option></select>
             </div>
           </div>
           <div class="field" id="sol-reserva-field" style="display:none; max-width:280px; margin-bottom:14px;">
-            <label>Fecha límite de la reserva</label>
-            <input class="input" id="sol-reserva-fecha" data-val="fechaFutura" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa — liberación automática al vencer">
+            <label id="sol-reserva-label">Fecha límite de la reserva</label>
+            <input class="input" id="sol-reserva-fecha" data-val="fechaFutura" data-req="1" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa — liberación automática al vencer">
           </div>
           <div style="display:flex; justify-content:flex-end;"><button class="btn btn-primary btn-sm" onclick="enviarSolicitud()">Enviar solicitud</button></div>
 
@@ -84,6 +88,7 @@
 
   <script th:inline="javascript">
     state.solicitudes = /*[[${solicitudes}]]*/ [];
+    state.pacientes = /*[[${pacientes}]]*/ [];
     state.pruebas = /*[[${pruebas}]]*/ [];
     state.inventory = /*[[${inventario}]]*/ [];
     sincronizarLocal('solicitudes', 'pruebas', 'inventory');

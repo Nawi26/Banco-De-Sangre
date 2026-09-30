@@ -85,6 +85,9 @@ const VAL = (function () {
         return true;
       },
     },
+    seleccion: {
+      check: v => v !== '' || 'Selecciona una opción',
+    },
     fechaFutura: {
       permite: /^\d$/,
       mask: (v, el, ev) => tipos.fecha.mask(v, el, ev),
@@ -133,6 +136,16 @@ const VAL = (function () {
       mask: v => v.toLowerCase().replace(/[^a-z0-9._@-]/g, '').slice(0, 60),
       check: v => /^[a-z0-9._-]+@hlev\.gob\.pe$/.test(v) || 'Usa el correo institucional (usuario@hlev.gob.pe)',
     },
+    telefono: {
+      permite: /^\d$/,
+      mask: v => v.replace(/\D/g, '').slice(0, 9),
+      check: v => /^9\d{8}$/.test(v) || 'El teléfono debe tener 9 dígitos y empezar con 9',
+    },
+    correoPersonal: {
+      permite: /^[A-Za-z0-9._@+-]$/,
+      mask: v => v.toLowerCase().replace(/[^a-z0-9._@+-]/g, '').slice(0, 80),
+      check: v => /^[a-z0-9._+-]+@[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(v) || 'Escribe un correo válido (ejemplo@correo.com)',
+    },
     usuarioLogin: {
       mask: v => /^\d/.test(v) ? v.replace(/\D/g, '').slice(0, 8) : v.toLowerCase().replace(/[^a-z0-9._@-]/g, '').slice(0, 60),
       check: v => (/^\d{8}$/.test(v) || /^[a-z0-9._-]+@hlev\.gob\.pe$/.test(v)) ||
@@ -141,6 +154,11 @@ const VAL = (function () {
     clave: {
       mask: v => v.replace(/\s/g, '').slice(0, 40),
       check: v => v.length >= 6 || 'La contraseña debe tener al menos 6 caracteres',
+    },
+    pesoPaciente: {
+      permite: /^[\d.,]$/,
+      mask: v => tipos.peso.mask(v),
+      check: v => { const n = num(v); return (n >= 2 && n <= 250) || 'El peso debe estar entre 2 y 250 kg'; },
     },
     peso: {
       permite: /^[\d.,]$/,

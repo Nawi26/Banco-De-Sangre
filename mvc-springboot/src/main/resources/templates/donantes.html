@@ -35,6 +35,10 @@
             <div class="field"><label>Nombres y apellidos</label><input class="input" id="don-nombre" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Ej. María Fernanda Quispe Rojas"></div>
             <div class="field"><label>DNI</label><input class="input" id="don-dni" data-val="dni" data-req="1" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="8 dígitos, ej. 45678912"></div>
             <div class="field"><label>Fecha de nacimiento</label><input class="input" id="don-fecnac" data-val="fechaNacimiento" data-req="1" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa"></div>
+            <div class="field"><label>Sexo</label><select class="input" id="don-sexo" data-val="seleccion" data-req="1"><option value="">Selecciona</option><option value="M">Masculino</option><option value="F">Femenino</option></select></div>
+            <div class="field"><label>Teléfono</label><input class="input" id="don-telefono" data-val="telefono" data-req="1" inputmode="numeric" maxlength="9" autocomplete="off" placeholder="9 dígitos, ej. 987654321"></div>
+            <div class="field"><label>Correo electrónico</label><input class="input" id="don-correo" data-val="correoPersonal" data-req="1" maxlength="80" autocomplete="off" placeholder="ejemplo@correo.com"></div>
+            <div class="field"><label>Dirección</label><input class="input" id="don-direccion" data-val="texto" data-req="1" data-min="5" data-max="150" maxlength="150" autocomplete="off" placeholder="Calle, número y distrito"></div>
             <div class="field"><label>Peso (kg)</label><input class="input" id="don-peso" data-val="peso" data-req="1" type="text" inputmode="decimal" maxlength="5" autocomplete="off" placeholder="62" oninput="evaluarAptitud()"></div>
             <div class="field"><label>Hemoglobina (g/dL)</label><input class="input" id="don-hb" data-val="hemoglobina" data-req="1" type="text" inputmode="decimal" maxlength="4" autocomplete="off" placeholder="13.4" oninput="evaluarAptitud()"></div>
             <div class="field"><label>Grupo sanguíneo declarado</label><select class="input" id="don-abo"><option value="">Por confirmar en laboratorio</option><option>O POS</option><option>O NEG</option><option>A POS</option><option>A NEG</option><option>B POS</option><option>B NEG</option><option>AB POS</option><option>AB NEG</option></select></div>
@@ -57,7 +61,7 @@
           </div>
           <div class="field" style="margin-bottom:14px;">
             <label>Antecedentes del donante</label>
-            <textarea class="input" id="don-antecedentes" data-val="texto" data-min="0" data-max="500" maxlength="500" placeholder="Zonas endémicas visitadas en los últimos 12 meses, conductas de riesgo, medicación reciente..." oninput="evaluarAptitud()"></textarea>
+            <textarea class="input" id="don-antecedentes" data-val="texto" data-req="1" data-min="4" data-max="500" maxlength="500" placeholder="Zonas endémicas visitadas en los últimos 12 meses, conductas de riesgo, medicación reciente... (escribe «Ninguno» si no hay)" oninput="evaluarAptitud()"></textarea>
           </div>
           <div class="checkline" style="margin-bottom:14px;">
             <input type="checkbox" id="don-consentimiento">

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="tabs">
+          <button class="tab active" data-tab="pacientes:lista">Pacientes registrados</button>
+          <button class="tab" data-tab="pacientes:nuevo">Registrar paciente</button>
+        </div>
+
+        <div data-tabpanel="pacientes:lista" class="card">
+          <div class="card-title-row">
+            <div><div class="card-title">Pacientes</div>
+            <div class="card-desc">Receptores de sangre registrados y el estado de su última solicitud</div></div>
+            <div style="display:flex; gap:8px;">
+              <input class="input btn-sm" style="width:220px;" id="pac-buscar" data-val="buscar" maxlength="40" autocomplete="off" placeholder="Buscar nombre, DNI o historia..." oninput="filtrarPacientes()">
+              <button class="btn btn-primary btn-sm" onclick="switchTab('pacientes','pacientes:nuevo')">+ Nuevo paciente</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Paciente</th><th>DNI</th><th>Historia clínica</th><th>Solicitudes</th><th>Última solicitud</th><th>Estado</th></tr></thead>
+            <tbody id="pacientes-rows">
+              <tr class="pac-fila" th:each="p : ${pacientes}"
+                  th:attr="data-texto=${#strings.toLowerCase(p['nombre'] + ' ' + p['dni'] + ' ' + p['hc'])}">
+                <td class="cell-strong" th:text="${p['nombre']}">Nombre</td>
+                <td class="mono" th:text="${p['dni'] == '' ? '—' : p['dni']}">DNI</td>
+                <td class="mono" th:text="${p['hc']}">HC</td>
+                <td class="mono" th:text="${p['solicitudes']}">0</td>
+                <td class="cell-muted" th:text="${p['ultima']}">—</td>
+                <td class="cell-muted" th:text="${p['estado'] == 'pendiente' ? 'Pendiente' : p['estado'] == 'compatible' ? 'Compatible' : p['estado'] == 'incompatible' ? 'Incompatible' : '—'}">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="cell-muted" id="pac-count" style="margin-top:10px;"></div>
+        </div>
+
+        <div data-tabpanel="pacientes:nuevo" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Registrar paciente</div>
+          <div class="card-desc">Si la historia clínica ya existe, se actualizan sus datos. Todos los campos son obligatorios, salvo el grupo sanguíneo si aún no está confirmado</div></div></div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Nombres y apellidos</label><input class="input" id="pac-nombre" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Nombres y apellidos del paciente"></div>
+            <div class="field"><label>DNI</label><input class="input mono" id="pac-dni" data-val="dni" data-req="1" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="8 dígitos"></div>
+            <div class="field"><label>Historia clínica</label><input class="input mono" id="pac-hc" data-val="hc" data-req="1" maxlength="13" autocomplete="off" placeholder="HC-2026-00000"></div>
+            <div class="field"><label>Fecha de nacimiento</label><input class="input" id="pac-fecnac" data-val="fechaNacimiento" data-req="1" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa"></div>
+            <div class="field"><label>Sexo</label><select class="input" id="pac-sexo" data-val="seleccion" data-req="1"><option value="">Selecciona</option><option value="M">Masculino</option><option value="F">Femenino</option></select></div>
+            <div class="field"><label>Teléfono</label><input class="input" id="pac-telefono" data-val="telefono" data-req="1" inputmode="numeric" maxlength="9" autocomplete="off" placeholder="9 dígitos, ej. 987654321"></div>
+            <div class="field"><label>Correo electrónico</label><input class="input" id="pac-correo" data-val="correoPersonal" data-req="1" maxlength="80" autocomplete="off" placeholder="ejemplo@correo.com"></div>
+            <div class="field"><label>Dirección</label><input class="input" id="pac-direccion" data-val="texto" data-req="1" data-min="5" data-max="150" maxlength="150" autocomplete="off" placeholder="Calle, número y distrito"></div>
+            <div class="field"><label>Peso (kg)</label><input class="input" id="pac-peso" data-val="pesoPaciente" data-req="1" type="text" inputmode="decimal" maxlength="5" autocomplete="off" placeholder="70"></div>
+            <div class="field"><label>Hemoglobina (g/dL)</label><input class="input" id="pac-hb" data-val="hemoglobina" data-req="1" type="text" inputmode="decimal" maxlength="4" autocomplete="off" placeholder="8.5"></div>
+            <div class="field"><label>Grupo sanguíneo declarado</label><select class="input" id="pac-abo"><option value="">Por confirmar en laboratorio</option><option>O POS</option><option>O NEG</option><option>A POS</option><option>A NEG</option><option>B POS</option><option>B NEG</option><option>AB POS</option><option>AB NEG</option></select></div>
+          </div>
+          <button class="btn btn-primary" onclick="guardarPaciente()">Guardar paciente</button>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    const PAC_USUARIO = /*[[${usuario + ' (' + rol.etiqueta + ')'}]]*/ 'usuario';
+    function filtrarPacientes(){
+      const q = (document.getElementById('pac-buscar').value || '').trim().toLowerCase();
+      let visibles = 0;
+      document.querySelectorAll('#pacientes-rows .pac-fila').forEach(tr => {
+        const ok = !q || tr.dataset.texto.includes(q);
+        tr.style.display = ok ? '' : 'none';
+        if (ok) visibles++;
+      });
+      document.getElementById('pac-count').textContent = visibles + ' paciente(s)';
+    }
+    function guardarPaciente(){
+      if (!VAL.formulario([
+        ['pac-nombre','nombre',{label:'Nombres y apellidos'}],
+        ['pac-dni','dni',{label:'DNI'}],
+        ['pac-hc','hc',{label:'Historia clínica'}],
+        ['pac-fecnac','fechaNacimiento',{label:'Fecha de nacimiento'}],
+        ['pac-sexo','seleccion',{label:'Sexo'}],
+        ['pac-telefono','telefono',{label:'Teléfono'}],
+        ['pac-correo','correoPersonal',{label:'Correo electrónico'}],
+        ['pac-direccion','texto',{label:'Dirección'}],
+        ['pac-peso','pesoPaciente',{label:'Peso'}],
+        ['pac-hb','hemoglobina',{label:'Hemoglobina'}]
+      ])) return;
+      const v = id => document.getElementById(id).value.trim();
+      const nombre = document.getElementById('pac-nombre').value.trim();
+      const dni = document.getElementById('pac-dni').value.trim();
+      const hc = document.getElementById('pac-hc').value.trim().toUpperCase();
+      fetch('/api/sincronizar', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pacientes: [{ paciente: nombre, dni: dni, hc: hc, fechaNacimiento: v('pac-fecnac'), sexo: v('pac-sexo'),
+                        abo: v('pac-abo'), pesoKg: parseFloat(v('pac-peso').replace(',', '.')), hemoglobina: parseFloat(v('pac-hb').replace(',', '.')),
+                        telefono: v('pac-telefono'), correo: v('pac-correo'), direccion: v('pac-direccion') }],
+          auditNuevos: [{ usuario: PAC_USUARIO, accion: 'Registró paciente', recurso: hc, ip: '—' }]
+        })
+      }).then(r => r.json().catch(() => ({ ok: false, error: 'Respuesta inválida del servidor' })))
+        .then(res => {
+          if (!res.ok) { toast(res.error || 'No se pudo guardar el paciente', true); return; }
+          toast('Paciente guardado');
+          setTimeout(() => location.reload(), 600);
+        })
+        .catch(() => toast('No se pudo conectar con el servidor', true));
+    }
+    document.addEventListener('DOMContentLoaded', filtrarPacientes);
+  </script>
+</body>
+</html>
