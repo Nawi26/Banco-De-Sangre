@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Registro de auditoría</div>
+          <div class="card-desc">Quién hizo cada acción, cuándo y desde qué equipo</div></div></div>
+          <table>
+            <thead><tr><th>Fecha / hora</th><th>Usuario</th><th>Acción</th><th>Recurso</th><th>IP terminal</th></tr></thead>
+            <tbody id="audit-rows"></tbody>
+          </table>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.auditLog = /*[[${auditLog}]]*/ [];
+    sincronizarLocal('auditLog');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderAudit();
+    });
+  </script>
+</body>
+</html>

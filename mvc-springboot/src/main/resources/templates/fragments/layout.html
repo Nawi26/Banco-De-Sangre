@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--/* ============================================================
+     Fragmento "head": cabecera comun (charset, fuentes, CSS global).
+     Cada Vista lo inserta pasando su propio titulo de pestana.
+     ============================================================ */-->
+<th:block th:fragment="head(titulo)">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title th:text="${titulo} + ' · BancoSangre HLEV'">BancoSangre HLEV</title>
+  <link rel="icon" type="image/svg+xml" th:href="@{/img/logo.svg}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</th:block>
+</head>
+<body>
+
+<!--/* ============================================================
+     Fragmento "shell": la estructura comun de TODA pantalla autenticada
+     (sidebar de navegacion + topbar). El contenido propio de cada Vista
+     se inserta en el parametro "contenido" (fragmento ::section de la
+     propia plantilla que llama a este layout).
+
+     El menu lateral se genera recorriendo el catalogo de Vistas (Modelo)
+     y aplica el RBAC de RF-02 con rol.puedeVer(...) del lado del
+     servidor, en vez de esconder botones por JavaScript como en el
+     versión original.
+     ============================================================ */-->
+<div class="app" th:fragment="shell(contenido)"
+     th:classappend="${modoMovil} ? ' app-movil' : ''">
+  <aside class="sidebar">
+    <div class="brand">
+      <img class="brand-mark" th:src="@{/img/logo.svg}" width="34" height="34" alt="Logotipo del banco de sangre"/>
+      <div>
+        <div class="brand-name">BancoSangre HLEV</div>
+        <div class="brand-sub">Tipo II · ISBT 128</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a th:each="item : ${catalogo}"
+         th:if="${rol.puedeVer(item.clave())}"
+         th:href="@{'/' + ${item.clave()}}"
+         th:classappend="${item.clave() == vistaActual} ? 'active' : ''"
+         class="nav-item" style="text-decoration:none; display:flex;">
+        <span class="dot"></span><span th:text="${item.titulo()}">Vista</span>
+      </a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="user-card">
+      <div class="user-name" th:text="${usuario}">Usuario</div>
+      <div class="user-role" th:text="${rol.etiqueta}">Rol</div>
+    </div>
+    <a class="logout" th:href="@{/logout}" style="text-decoration:none; display:block; text-align:center;">← Cerrar sesión</a>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-btn" type="button" onclick="alternarMenu()" aria-label="Mostrar u ocultar el menú">
+        <span></span><span></span><span></span>
+      </button>
+      <div style="flex:1; min-width:0;">
+        <h1 th:text="${info.titulo()}">Título</h1>
+        <div class="subtitle" th:text="${info.subtitulo()}">Subtítulo</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div th:replace="${contenido}"></div>
+    </div>
+  </div>
+
+  <!-- Modal generico y toasts (usados por app.js en todas las vistas autenticadas) -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-box" id="modal-box"></div>
+  </div>
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <!--/* app.js trae todas las funciones de interaccion (render*, modales, toasts, tabs),
+       igual que en la versión original; lo unico que cambio es que ya no hay un router SPA:
+       cada Vista llama solo a las funciones que necesita (ver el <script> al final de
+       cada plantilla). Aqui sincronizamos el usuario/rol reales de la sesion (Modelo)
+       con el estado de la vista, reemplazando lo que antes hacia enterApp().
+
+       IMPORTANTE: estos <script> deben ir DENTRO de este div (el que tiene
+       th:fragment="shell"), porque th:replace solo inserta el elemento marcado
+       con th:fragment, no sus hermanos siguientes. Si quedan fuera, nunca se
+       insertan en la pagina y app.js jamas se carga (ese era el bug: ninguna
+       tabla se llenaba ni las pestanas cambiaban, porque las funciones de
+       app.js -y hasta la variable "state"- no existian en la pagina). */-->
+  <script>window.PERSISTENCIA = 'servidor';</script>
+  <script th:src="@{/js/validacion.js}"></script>
+  <script th:src="@{/js/app.js}"></script>
+  <script th:inline="javascript">
+    state.currentUser = /*[[${usuario}]]*/ 'Usuario';
+    state.currentRole = /*[[${rol.etiqueta}]]*/ 'Rol';
+    // Pantallas permitidas para este rol (Rol.java): con esto la pagina ajusta
+    // lo que ofrece —por ejemplo, los accesos rapidos del Panel general—.
+    state.vistasPermitidas = /*[[${rol.vistasPermitidas()}]]*/ [];
+  </script>
+</div>
+
+</body>
+</html>

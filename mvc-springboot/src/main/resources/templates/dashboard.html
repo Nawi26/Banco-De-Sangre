@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="grid-4">
+          <div class="kpi"><div class="bar" style="background:var(--green-700)"></div><div class="label">Unidades disponibles</div><div class="value">1,248</div><div class="hint">+4.2% vs. semana previa</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--amber-700)"></div><div class="label">Próximas a vencer (≤72h)</div><div class="value">37</div><div class="hint">Primeras en salir</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--blue-700)"></div><div class="label">Solicitudes activas</div><div class="value">12</div><div class="hint">UCI · Emergencia · SOP</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--red-700)"></div><div class="label">Stock crítico (O−)</div><div class="value">6 un.</div><div class="hint">Bajo el mínimo de seguridad</div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">Stock de glóbulos rojos por grupo sanguíneo</div>
+                <div class="card-desc">Actualizado en tiempo real</div>
+              </div>
+              <span class="pill purple"><span class="dot"></span>Orden por vencimiento</span>
+            </div>
+            <div id="abo-grid" class="grid-4" style="grid-template-columns:repeat(4,1fr); gap:10px;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">Alertas y notificaciones</div>
+                <div class="card-desc">Vencimiento y quiebre de stock crítico</div>
+              </div>
+            </div>
+            <div class="timeline" id="alerts-list"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Cumplimiento y proyección de demanda</div>
+              <div class="card-desc">Indicadores del servicio y previsión de abastecimiento</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="kpi"><div class="bar" style="background:var(--green-700)"></div><div class="label">Cumplimiento normativo PRONAHEBAS</div><div class="value">96.8%</div><div class="hint">32 de 33 controles conformes este trimestre</div></div>
+            <div class="kpi"><div class="bar" style="background:var(--amber-700)"></div><div class="label">Proyección de desabastecimiento</div><div class="value" style="font-size:18px;">O− en 4 días</div><div class="hint">Según demanda histórica vs. stock actual</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Accesos rápidos</div>
+              <div class="card-desc">Ir directo a lo que más se usa</div>
+            </div>
+          </div>
+          <div class="grid-4" id="quick-access"></div>
+        </div>
+  </section>
+</div>
+
+  <!--/* Hidrata el estado del navegador con los datos que trajo el Controlador
+       desde BaseDatosDemo (la "base de datos" del lado del servidor). */-->
+  <script th:inline="javascript">
+    state.aboGroups = /*[[${aboGroups}]]*/ [];
+    state.alerts = /*[[${alertas}]]*/ [];
+    sincronizarLocal('alerts');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderAbo(); renderAlerts(); renderQuickAccess();
+    });
+  </script>
+</body>
+</html>

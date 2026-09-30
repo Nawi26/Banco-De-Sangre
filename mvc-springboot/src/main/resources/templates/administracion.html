@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+
+        <div data-tabpanel="admin:usuarios" class="card">
+          <div class="card-title-row"><div><div class="card-title">Gestión de usuarios y roles</div>
+          <div class="card-desc">Crear cuentas, cambiar su rol o desactivarlas</div></div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="restablecerDatos()">Restablecer datos de ejemplo</button>
+            <button class="btn btn-primary btn-sm" onclick="abrirModalUsuario()">+ Nuevo usuario</button>
+          </div>
+          </div>
+          <table>
+            <thead><tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Último acceso</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="usuarios-rows"></tbody>
+          </table>
+        </div>
+
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.usuarios = /*[[${usuarios}]]*/ [];
+    sincronizarLocal('usuarios');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderUsuarios();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BancoSangre HLEV — Iniciar sesión</title>
+  <link rel="icon" type="image/svg+xml" th:href="@{/img/logo.svg}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="view-login" class="view active" style="display:flex;">
+  <div class="login-shell">
+    <div class="login-left">
+      <img class="login-logo" th:src="@{/img/logo-claro.svg}" width="56" height="56" alt="Logotipo del banco de sangre"/>
+      <span class="login-badge">PRONAHEBAS · MINSA · DIGDOT</span>
+      <h1>Sistema Web de Gestión<br/>de Banco de Sangre</h1>
+      <p>Hospital de Lima Este Vitarte — Servicio de Hemoterapia y Banco de Sangre.</p>
+    </div>
+    <div class="login-right">
+      <form class="login-form" method="post" novalidate onsubmit="return validarLogin()" th:action="@{/login}">
+        <h2>Iniciar sesión</h2>
+
+        <div th:if="${errorAcceso}" class="login-note" style="color:var(--red-700); font-weight:600;" th:text="${errorAcceso}"></div>
+
+        <div class="field">
+          <label>DNI o correo institucional</label>
+          <input class="input" id="login-usuario" data-val="usuarioLogin" data-req="1" maxlength="60" autocomplete="username" name="usuario" placeholder="12345678 o usuario@hlev.gob.pe" value="jcangana@hlev.gob.pe"/>
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input class="input" id="login-clave" data-val="clave" data-req="1" maxlength="40" autocomplete="current-password" type="password" name="clave" placeholder="••••••••••" value="••••••••••"/>
+        </div>
+        <div class="field">
+          <label>Rol</label>
+          <select class="input" name="rol">
+            <option th:each="r : ${roles}" th:value="${r.etiqueta}" th:text="${r.etiqueta}">Rol</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit" style="justify-content:center; padding:12px;">Ingresar</button>
+        <div class="login-note">Acceso protegido · Ley N° 29733 de protección de datos personales</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/js/validacion.js}"></script>
+<script>
+  function validarLogin(){
+    return VAL.formulario([
+      ['login-usuario','usuarioLogin',{label:'Usuario'}],
+      ['login-clave','clave',{label:'Contraseña'}]
+    ]);
+  }
+  /* La aplicación arranca siempre desde los datos de ejemplo del servidor:
+     al pasar por el inicio de sesión se descarta lo que hubiera quedado
+     guardado en este navegador de una sesión anterior. */
+  try { localStorage.removeItem('bancosangre_local_db'); } catch (e) { /* sin almacenamiento */ }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="tabs">
+          <button class="tab active" data-tab="donantes:registro">Donantes registrados</button>
+          <button class="tab" data-tab="donantes:ficha">Ficha clínica del donante</button>
+          <button class="tab" data-tab="donantes:diferimiento">Diferimiento</button>
+          <button class="tab" data-tab="donantes:serologia">Tamizaje serológico</button>
+          <button class="tab" data-tab="donantes:campanas">Campañas</button>
+        </div>
+
+        <div data-tabpanel="donantes:registro" class="card">
+          <div class="card-title-row">
+            <div><div class="card-title">Registro de donantes</div>
+            <div class="card-desc">Personas registradas en el banco de sangre y su situación actual</div></div>
+            <div style="display:flex; gap:8px;">
+              <input class="input btn-sm" style="width:190px;" id="don-buscar" data-val="buscar" maxlength="40" autocomplete="off" placeholder="Buscar nombre o DNI..." oninput="renderDonantes()">
+              <button class="btn btn-primary btn-sm" onclick="switchTab('donantes','donantes:ficha')">+ Nuevo donante</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Donante</th><th>DNI</th><th>Grupo</th><th>Tipo</th><th>Última donación</th><th>Donaciones</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="donantes-rows"></tbody>
+          </table>
+          <div class="cell-muted" id="don-count" style="margin-top:10px;"></div>
+        </div>
+
+        <div data-tabpanel="donantes:ficha" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Ficha del donante</div>
+          <div class="card-desc">Datos personales y evaluación previa a la donación</div></div></div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Nombres y apellidos</label><input class="input" id="don-nombre" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Ej. María Fernanda Quispe Rojas"></div>
+            <div class="field"><label>DNI</label><input class="input" id="don-dni" data-val="dni" data-req="1" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="8 dígitos, ej. 45678912"></div>
+            <div class="field"><label>Fecha de nacimiento</label><input class="input" id="don-fecnac" data-val="fechaNacimiento" data-req="1" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa"></div>
+            <div class="field"><label>Peso (kg)</label><input class="input" id="don-peso" data-val="peso" data-req="1" type="text" inputmode="decimal" maxlength="5" autocomplete="off" placeholder="62" oninput="evaluarAptitud()"></div>
+            <div class="field"><label>Hemoglobina (g/dL)</label><input class="input" id="don-hb" data-val="hemoglobina" data-req="1" type="text" inputmode="decimal" maxlength="4" autocomplete="off" placeholder="13.4" oninput="evaluarAptitud()"></div>
+            <div class="field"><label>Grupo sanguíneo declarado</label><select class="input" id="don-abo"><option value="">Por confirmar en laboratorio</option><option>O POS</option><option>O NEG</option><option>A POS</option><option>A NEG</option><option>B POS</option><option>B NEG</option><option>AB POS</option><option>AB NEG</option></select></div>
+            <div class="field">
+              <label>Tipo de donación</label>
+              <select class="input" id="don-tipo">
+                <option value="voluntaria">Voluntaria</option>
+                <option value="reposicion">Reposición</option>
+                <option value="autologa">Autóloga</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Campaña de donación</label>
+              <select class="input" id="don-campana">
+                <option value="">— Ninguna (donación directa) —</option>
+                <option value="utp">Dona Vida UTP 2026-II</option>
+                <option value="ate">Empresas Solidarias ATE</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:14px;">
+            <label>Antecedentes del donante</label>
+            <textarea class="input" id="don-antecedentes" data-val="texto" data-min="0" data-max="500" maxlength="500" placeholder="Zonas endémicas visitadas en los últimos 12 meses, conductas de riesgo, medicación reciente..." oninput="evaluarAptitud()"></textarea>
+          </div>
+          <div class="checkline" style="margin-bottom:14px;">
+            <input type="checkbox" id="don-consentimiento">
+            <label for="don-consentimiento" style="font-weight:400;">El donante firmó digitalmente el consentimiento informado previo a la extracción</label>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="pill green" id="aptitud-pill"><span class="dot"></span>Evaluación: APTO para donar</span>
+            <button class="btn btn-primary btn-sm" onclick="registrarDonante()">Registrar donante</button>
+          </div>
+        </div>
+
+        <div data-tabpanel="donantes:diferimiento" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Donantes diferidos</div>
+          <div class="card-desc">Personas que por ahora, o de forma definitiva, no pueden donar</div></div></div>
+          <table>
+            <thead><tr><th>Donante</th><th>Motivo</th><th>Tipo</th><th>Vigente hasta</th><th>Estado</th></tr></thead>
+            <tbody id="diferimiento-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="donantes:serologia" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Tamizaje serológico</div>
+          <div class="card-desc">Cada resultado se digita dos veces por separado. Solo se guarda si las dos coinciden; si alguno es reactivo, la unidad se bloquea sola</div></div></div>
+          <div class="field" style="max-width:340px; margin-bottom:14px;">
+            <label>Unidad a tamizar</label>
+            <select class="input mono" id="serologia-din" onchange="renderSerologia()"></select>
+          </div>
+          <table>
+            <thead><tr><th>Marcador</th><th>Digitación 1</th><th>Digitación 2</th><th>Estado</th></tr></thead>
+            <tbody id="serologia-rows"></tbody>
+          </table>
+          <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+            <button class="btn btn-primary btn-sm" onclick="guardarSerologia()">Guardar resultados</button>
+          </div>
+          <div id="serologia-alert"></div>
+          <div class="divider" style="margin:20px 0;"></div>
+          <div class="card-title" style="margin-bottom:10px;">Tamizajes registrados</div>
+          <table>
+            <thead><tr><th>Unidad (DIN)</th><th>Donante</th><th>Resultado</th><th>Registrado por</th></tr></thead>
+            <tbody id="tamizajes-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="donantes:campanas" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Campañas de donación</div>
+          <div class="card-desc">Universidades, empresas e instituciones — metas y resultados</div></div></div>
+          <table>
+            <thead><tr><th>Campaña</th><th>Institución</th><th>Meta</th><th>Captados</th><th>Avance</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Dona Vida UTP 2026-II</td><td class="cell-muted">Universidad Tecnológica del Perú</td><td class="mono">150</td><td class="mono">98</td><td style="width:160px;"><div class="progress-track"><div class="progress-fill" style="width:65%; background:var(--green-700);"></div></div></td></tr>
+              <tr><td class="cell-strong">Empresas Solidarias ATE</td><td class="cell-muted">Consorcio industrial ATE-Vitarte</td><td class="mono">80</td><td class="mono">34</td><td style="width:160px;"><div class="progress-track"><div class="progress-fill" style="width:42%; background:var(--amber-700);"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.donantes = /*[[${donantes}]]*/ [];
+    state.inventory = /*[[${inventario}]]*/ [];
+    state.serologia = /*[[${serologia}]]*/ [];
+    sincronizarLocal('donantes', 'inventory', 'serologia');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderDonantes(); renderDiferimientos(); fillSerologiaSelect();
+    });
+  </script>
+</body>
+</html>

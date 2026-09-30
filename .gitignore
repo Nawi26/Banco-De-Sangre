@@ -1,0 +1,9 @@
+node_modules/
+target/
+.vscode/
+.idea/
+*.log
+# Configuración local con tu clave de PostgreSQL: NO se sube
+application-local.properties
+# Scripts de ayuda para hacer los commits
+commit-*.ps1

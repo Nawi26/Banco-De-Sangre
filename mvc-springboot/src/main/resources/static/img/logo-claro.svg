@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="BancoSangre HLEV">
+  <!-- Misma marca en una sola tinta blanca, para fondos oscuros o rojos:
+       la cruz y el código de barras quedan calados (dejan ver el fondo). -->
+  <path fill="#FFFFFF" fill-rule="evenodd" d="
+    M32 3.5C32 3.5 52 26.4 52 39.2 52 50.3 43.0 59.3 32 59.3S12 50.3 12 39.2C12 26.4 32 3.5 32 3.5Z
+    M28.6 26.5h6.8v7.2h7.2v6.8h-7.2v7.2h-6.8v-7.2h-7.2v-6.8h7.2z
+    M23.4 51.2h1.6v5.2h-1.6z
+    M26.6 51.2h1v5.2h-1z
+    M29.2 51.2h2v5.2h-2z
+    M32.8 51.2h1v5.2h-1z
+    M35.4 51.2h1.6v5.2h-1.6z
+    M38.6 51.2h1v5.2h-1z"/>
+</svg>

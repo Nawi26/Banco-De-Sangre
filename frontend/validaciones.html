@@ -1,0 +1,3256 @@
+<title>BancoSangre HLEV</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkJhbmNvU2FuZ3JlIEhMRVYiPgogIDwhLS0gR290YSBkZSBzYW5ncmU6IGlkZW50aWRhZCBkZWwgYmFuY28gZGUgc2FuZ3JlIC0tPgogIDxwYXRoIGQ9Ik0zMiAzLjVDMzIgMy41IDUyIDI2LjQgNTIgMzkuMiA1MiA1MC4zIDQzLjAgNTkuMyAzMiA1OS4zUzEyIDUwLjMgMTIgMzkuMkMxMiAyNi40IDMyIDMuNSAzMiAzLjVaIgogICAgICAgIGZpbGw9IiM4QTE2MjIiLz4KICA8cGF0aCBkPSJNMzIgMy41QzMyIDMuNSA1MiAyNi40IDUyIDM5LjIgNTIgNTAuMyA0My4wIDU5LjMgMzIgNTkuM1MxMiA1MC4zIDEyIDM5LjJDMTIgMjYuNCAzMiAzLjUgMzIgMy41WiIKICAgICAgICBmaWxsPSJ1cmwoI2JyaWxsbykiIG9wYWNpdHk9Ii41NSIvPgogIDwhLS0gQ3J1eiBzYW5pdGFyaWEgLS0+CiAgPHBhdGggZD0iTTI4LjYgMjYuNWg2Ljh2Ny4yaDcuMnY2LjhoLTcuMnY3LjJoLTYuOHYtNy4yaC03LjJ2LTYuOGg3LjJ6IiBmaWxsPSIjRkZGRkZGIi8+CiAgPCEtLSBDw7NkaWdvIGRlIGJhcnJhczogdHJhemFiaWxpZGFkIGRlIGNhZGEgdW5pZGFkIC0tPgogIDxnIGZpbGw9IiNGRkZGRkYiIG9wYWNpdHk9Ii45MiI+CiAgICA8cmVjdCB4PSIyMy40IiB5PSI1MS4yIiB3aWR0aD0iMS42IiBoZWlnaHQ9IjUuMiIgcng9Ii40Ii8+CiAgICA8cmVjdCB4PSIyNi42IiB5PSI1MS4yIiB3aWR0aD0iMSIgaGVpZ2h0PSI1LjIiIHJ4PSIuMyIvPgogICAgPHJlY3QgeD0iMjkuMiIgeT0iNTEuMiIgd2lkdGg9IjIiIGhlaWdodD0iNS4yIiByeD0iLjQiLz4KICAgIDxyZWN0IHg9IjMyLjgiIHk9IjUxLjIiIHdpZHRoPSIxIiBoZWlnaHQ9IjUuMiIgcng9Ii4zIi8+CiAgICA8cmVjdCB4PSIzNS40IiB5PSI1MS4yIiB3aWR0aD0iMS42IiBoZWlnaHQ9IjUuMiIgcng9Ii40Ii8+CiAgICA8cmVjdCB4PSIzOC42IiB5PSI1MS4yIiB3aWR0aD0iMSIgaGVpZ2h0PSI1LjIiIHJ4PSIuMyIvPgogIDwvZz4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYnJpbGxvIiB4MT0iMTYiIHkxPSI4IiB4Mj0iNTAiIHkyPSI1NiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNDNjIwMzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNkUwRjFBIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgo8L3N2Zz4K">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --red-800:#7E1414; --red-700:#9E1B1B; --red-600:#B4291F; --red-50:#FBEAEA; --red-100:#F6D6D6;
+  --navy-900:#10152A; --navy-800:#171D38; --navy-700:#232B4D;
+  --ink-900:#12161F; --ink-700:#2B303B; --ink-600:#5B6472; --ink-400:#8B93A1; --ink-200:#C4C9D2;
+  --line:#E3E6EB; --line-soft:#EDEFF3; --bg:#F4F5F7; --surface:#FFFFFF;
+  --green-700:#1E7F3C; --green-50:#E9F6EC;
+  --amber-700:#A9760A; --amber-50:#FBF1DE;
+  --purple-700:#6941C6; --purple-50:#F1ECFC;
+  --slate-700:#475467; --slate-50:#EEF1F4;
+  --blue-700:#1849A9; --blue-50:#E9F0FB;
+  --char-700:#2A2E35; --char-50:#EAEBED;
+  --radius-sm:6px; --radius-md:10px; --radius-lg:16px;
+  --font-ui:'Inter',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  color-scheme: light;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-ui); background:var(--bg); color:var(--ink-900);
+  -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.45;
+}
+::selection{background:var(--red-100);}
+a{color:inherit;}
+button{font-family:inherit; cursor:pointer;}
+
+/* ---------- Layout shell ---------- */
+.app{display:flex; min-height:100vh;}
+.sidebar{
+  width:264px; min-width:264px; color:#fff;
+  background:linear-gradient(180deg, #161B2B 0%, var(--navy-900) 46%, #0D111C 100%);
+  border-right:1px solid rgba(255,255,255,.06);
+  display:flex; flex-direction:column; padding:22px 16px; position:sticky; top:0; height:100vh;
+}
+.brand{display:flex; align-items:center; gap:10px; padding:6px 8px 22px 8px;}
+.brand-mark{width:34px; height:34px; flex:none; display:block;}
+.brand-name{font-weight:700; font-size:14.5px; letter-spacing:-0.01em;}
+.brand-sub{font-size:10.5px; color:#8891A8; margin-top:1px;}
+
+.nav{display:flex; flex-direction:column; gap:2px; margin-top:6px;}
+.nav-item{
+  display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px;
+  color:rgba(255,255,255,.66); background:none; border:none; text-align:left; width:100%;
+  font-size:13.5px; font-weight:500; position:relative;
+  transition:background .15s ease, color .15s ease;
+}
+.nav-item .dot{width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5; flex:none;}
+.nav-item:hover{background:rgba(255,255,255,.06); color:#fff;}
+.nav-item.active{background:var(--red-700); color:#fff; font-weight:600;
+  box-shadow:0 2px 8px rgba(138,22,34,.35);}
+.nav-item.active .dot{opacity:1;}
+.nav-group-label{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#5C6584; padding:16px 12px 6px;}
+
+.sidebar-spacer{flex:1;}
+.user-card{background:rgba(255,255,255,.06); border-radius:10px; padding:11px 12px; margin-top:8px;}
+.user-name{font-size:12.5px; font-weight:600;}
+.user-role{font-size:11px; color:#9AA2BB; margin-top:1px;}
+.logout{margin-top:10px; font-size:11.5px; color:#9AA2BB; background:none; border:none; padding:0 4px; text-decoration:underline; text-underline-offset:2px;}
+
+.main{flex:1; min-width:0; display:flex; flex-direction:column;}
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:20px 40px 18px 40px; background:var(--surface);
+  border-bottom:1px solid var(--line); position:sticky; top:0; z-index:4;
+}
+.topbar h1{font-size:21px; margin:0 0 2px 0; letter-spacing:-0.02em;}
+.topbar .subtitle{font-size:12.5px; color:var(--ink-600);}
+.topbar-right{display:flex; align-items:center; gap:10px;}
+
+.content{padding:22px 40px 48px 40px; display:flex; flex-direction:column; gap:20px;}
+
+/* ---------- Reusable bits ---------- */
+.pill{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:20px; font-size:11.5px; font-weight:600;}
+.pill.red{background:var(--red-50); color:var(--red-700);}
+.pill.green{background:var(--green-50); color:var(--green-700);}
+.pill.amber{background:var(--amber-50); color:var(--amber-700);}
+.pill.purple{background:var(--purple-50); color:var(--purple-700);}
+.pill.slate{background:var(--slate-50); color:var(--slate-700);}
+.pill.blue{background:var(--blue-50); color:var(--blue-700);}
+.pill.char{background:var(--char-50); color:var(--char-700);}
+.pill .dot{width:6px; height:6px; border-radius:50%; background:currentColor;}
+
+.btn{border-radius:8px; font-weight:600; font-size:13px; padding:10px 16px; border:1px solid transparent;
+  display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+  transition:background .15s ease, border-color .15s ease, box-shadow .15s ease, transform .1s ease;}
+.btn:active{transform:translateY(1px);}
+.btn-primary{background:var(--red-700); color:#fff; box-shadow:0 1px 2px rgba(138,22,34,.25);}
+.btn-primary:hover{background:var(--red-800);}
+.btn-ghost{background:#fff; color:var(--ink-700); border-color:var(--line);}
+.btn-ghost:hover{border-color:var(--ink-200);}
+.btn-sm{padding:6px 11px; font-size:12px; border-radius:7px;}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px;
+  box-shadow:0 1px 2px rgba(16,21,42,.04);}
+.card-title-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; gap:12px;}
+.card-title{font-size:15px; font-weight:650; letter-spacing:-0.01em;}
+.card-desc{font-size:12px; color:var(--ink-600); margin-top:2px;}
+
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.kpi{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md); padding:16px 18px;
+  box-shadow:0 1px 2px rgba(16,21,42,.04);}
+.kpi .bar{width:26px; height:4px; border-radius:2px; margin-bottom:10px;}
+.kpi .label{font-size:12px; color:var(--ink-600); font-weight:500;}
+.kpi .value{font-size:25px; font-weight:700; margin:4px 0 3px 0; letter-spacing:-0.01em;}
+.kpi .hint{font-size:11px; color:var(--ink-400);}
+
+table{width:100%; border-collapse:collapse; font-size:13px;}
+thead th{
+  text-align:left; font-size:10.5px; font-weight:700; color:var(--ink-600);
+  text-transform:uppercase; letter-spacing:.045em;
+  padding:0 12px 10px 12px; border-bottom:1px solid var(--line);
+}
+tbody td{padding:12px; border-bottom:1px solid var(--line-soft); vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:#FAFAFB;}
+.mono{font-family:var(--font-mono); font-size:12.5px; color:var(--ink-700);}
+.cell-strong{font-weight:600;}
+.cell-muted{color:var(--ink-600); font-size:12.5px;}
+
+.field{display:flex; flex-direction:column; gap:6px;}
+.field label{font-size:12.5px; font-weight:600; color:var(--ink-900);}
+.field .hint{font-size:11px; color:var(--ink-400); font-weight:400;}
+.input, select.input, textarea.input{
+  border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:13.5px;
+  font-family:var(--font-ui); background:#FCFCFD; color:var(--ink-900); width:100%;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.input::placeholder{color:var(--ink-400);}
+textarea.input{resize:vertical; min-height:64px;}
+.checkline{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-700);}
+.checkline input{accent-color:var(--red-700);}
+
+.tabs{display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:4px;}
+.tab{padding:10px 4px; margin-right:22px; font-size:13.5px; font-weight:600; color:var(--ink-400); border:none; background:none; border-bottom:2px solid transparent; position:relative; top:1px;}
+.tab.active{color:var(--red-700); border-bottom-color:var(--red-700);}
+
+.badge-rf{font-family:var(--font-mono); font-size:10.5px; font-weight:600; color:var(--ink-600); background:var(--slate-50); border-radius:5px; padding:2px 6px;}
+
+.view{display:none;}
+.view.active{display:flex; flex-direction:column; gap:20px;}
+/* Cada Vista entrega su contenido dentro de un <section>: se comporta igual que
+   la antigua .view.active de la versión original (columna con separacion entre tarjetas). */
+.content > section{display:flex; flex-direction:column; gap:20px;}
+.panel-flex{display:flex; flex-direction:column; gap:20px;}
+
+.divider{height:1px; background:var(--line); margin:2px 0;}
+
+.progress-track{height:6px; border-radius:3px; background:var(--line-soft); overflow:hidden;}
+.progress-fill{height:100%; border-radius:3px;}
+
+.timeline{display:flex; flex-direction:column;}
+.timeline-item{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--line-soft);}
+.timeline-item:last-child{border-bottom:none;}
+.timeline-dot{width:9px; height:9px; border-radius:50%; margin-top:4px; flex:none;}
+.timeline-title{font-size:13px; font-weight:600;}
+.timeline-meta{font-size:11.5px; color:var(--ink-400); margin-top:2px;}
+
+.two-col{display:grid; grid-template-columns:1.5fr 1fr; gap:16px; align-items:start;}
+
+/* Login screen */
+.login-shell{display:flex; min-height:100vh; width:100%;}
+.login-left{width:44%; min-width:460px; background:linear-gradient(165deg,var(--red-700),var(--red-800)); color:#fff; padding:60px; display:flex; flex-direction:column; justify-content:center; gap:22px;}
+.login-badge{align-self:flex-start; padding:6px 14px; border-radius:20px; background:rgba(255,255,255,.15); font-size:11.5px; font-weight:600; letter-spacing:.02em;}
+.login-left h1{font-size:32px; line-height:1.2; margin:0; font-weight:700; letter-spacing:-0.01em;}
+.login-left p{font-size:14.5px; color:rgba(255,255,255,.85); line-height:1.6; margin:0; max-width:420px;}
+.login-stats{display:flex; gap:34px; margin-top:8px;}
+.login-stats .num{font-size:23px; font-weight:700;}
+.login-stats .lbl{font-size:10.5px; color:rgba(255,255,255,.7); margin-top:3px; line-height:1.3;}
+.login-right{flex:1; display:flex; align-items:center; justify-content:center; background:#fff; padding:40px;}
+.login-form{width:100%; max-width:400px; display:flex; flex-direction:column; gap:16px;}
+.login-form h2{font-size:24px; margin:0 0 2px 0;}
+.login-form .sub{font-size:13px; color:var(--ink-600); margin-bottom:6px;}
+.login-note{font-size:11px; color:var(--ink-400); text-align:center; margin-top:4px;}
+
+.audit-log-line{display:flex; gap:14px; padding:10px 0; border-bottom:1px solid var(--line-soft); font-size:12.5px;}
+.audit-log-line:last-child{border-bottom:none;}
+
+.scan-box{border:1.5px dashed var(--ink-200); border-radius:12px; padding:26px; text-align:center; background:var(--bg);}
+.scan-icon{width:44px; height:44px; margin:0 auto 10px; border-radius:10px; background:var(--navy-900); display:flex; align-items:center; justify-content:center;}
+
+.match-row{display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:8px; background:var(--green-50); border:1px solid #CFE9D5;}
+.match-row.mismatch{background:var(--red-50); border-color:var(--red-100);}
+
+/* Modal + Toast */
+.modal-overlay{position:fixed; inset:0; background:rgba(16,21,42,.5); display:none; align-items:center; justify-content:center; z-index:100; padding:24px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff; border-radius:16px; width:100%; max-width:520px; max-height:88vh; overflow-y:auto; padding:24px;}
+.modal-head{display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;}
+.modal-title{font-size:16px; font-weight:700;}
+.modal-close{background:none; border:none; font-size:18px; color:var(--ink-400); line-height:1; padding:4px;}
+.toast-wrap{position:fixed; bottom:24px; right:24px; z-index:200; display:flex; flex-direction:column; gap:8px; align-items:flex-end;}
+.toast{background:var(--navy-900); color:#fff; padding:12px 16px; border-radius:10px; font-size:13px; font-weight:500; box-shadow:0 8px 24px rgba(16,21,42,.25); max-width:320px; opacity:0; transform:translateY(6px); transition:opacity .18s ease, transform .18s ease;}
+.toast.show{opacity:1; transform:translateY(0);}
+.toast.err{background:var(--red-700);}
+.select-inline{border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-size:12.5px; font-family:var(--font-mono); background:#FCFCFD;}
+
+/* App móvil mockup */
+.csv-preview{font-family:var(--font-mono); font-size:11.5px; line-height:1.7; background:var(--bg); border:1px solid var(--line);
+  border-radius:8px; padding:12px; margin:0; max-height:220px; overflow:auto; white-space:pre; color:var(--ink-600);}
+
+.phone{width:280px; height:560px; border-radius:36px; border:10px solid var(--navy-900); background:#fff; overflow:hidden; position:relative; box-shadow:0 20px 50px rgba(16,21,42,.25); flex:none;}
+.phone-notch{position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:22px; background:var(--navy-900); border-radius:0 0 14px 14px; z-index:2;}
+.phone-screen{padding:34px 16px 16px 16px; height:100%; overflow-y:auto; background:var(--bg);}
+.phone-topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+.phone-card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px;}
+
+/* --- App movil: la propia aplicacion web corriendo DENTRO del celular --- */
+.phone-screen.embed{padding:30px 0 0 0; display:flex; flex-direction:column; overflow:hidden;}
+.phone-screen.embed .phone-topbar{padding:0 12px; margin-bottom:8px; flex:none;}
+.phone-nav{display:flex; gap:6px; padding:0 10px 8px 10px; overflow-x:auto; scrollbar-width:none; flex:none;}
+.phone-nav::-webkit-scrollbar{display:none;}
+.phone-chip{flex:none; font-family:inherit; font-size:10.5px; font-weight:600; padding:5px 10px; border-radius:999px;
+  border:1px solid var(--line); background:#fff; color:var(--ink-600); cursor:pointer; white-space:nowrap;}
+.phone-chip.active{background:var(--red-700); border-color:var(--red-700); color:#fff;}
+.phone-frame{flex:1; width:100%; border:0; background:var(--bg); display:block;}
+.phone-push{position:absolute; left:12px; right:12px; top:102px; z-index:3;}
+.phone-push .push-note{box-shadow:0 8px 20px rgba(16,21,42,.18);}
+
+/* Modo movil (?movil=1): la MISMA aplicacion sin el menu lateral, porque la
+   navegacion la dan los accesos de arriba del celular. Todo lo demas (una
+   columna, textos mas chicos, tablas desplazables) lo resuelven las reglas
+   responsivas de abajo, que se activan por el ancho de la pantalla: sirven
+   igual dentro del celular de esta pantalla y en un telefono de verdad. */
+.app-movil .phone{display:none;}
+.push-note{background:var(--navy-900); color:#fff; border-radius:10px; padding:10px 12px; font-size:11.5px; margin-bottom:8px;}
+
+/* ================= Diseño responsivo ================= */
+
+/* Tablet y ventanas angostas */
+@media (max-width: 980px){
+  /* El !important vence a los grid-template-columns escritos en el HTML */
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+  .two-col{grid-template-columns:1fr !important;}
+}
+
+/* El menú lateral se mantiene donde siempre; solo se hace más angosto para
+   dejarle sitio al contenido. */
+@media (max-width: 860px){
+  .sidebar{width:212px; min-width:212px; padding:18px 12px;}
+  .nav-item{padding:8px 10px; font-size:12.5px;}
+  .topbar{padding:16px 20px 0 20px;}
+  .content{padding:16px 20px 32px 20px; gap:16px;}
+  .login-shell{flex-direction:column; min-height:0;}
+  .login-left{width:100%; min-width:0; padding:34px 24px;}
+  .login-left h1{font-size:25px;}
+  .login-right{padding:28px 24px 40px 24px;}
+}
+
+/* Telefono (y la pantalla del celular de la vista "Aplicación móvil") */
+@media (max-width: 560px){
+  .sidebar{width:168px; min-width:168px; padding:16px 10px;}
+  .sidebar .brand-name{font-size:12.5px;}
+  .nav-item{padding:7px 9px; font-size:11.5px; gap:7px;}
+  .user-card{padding:9px 10px;}
+  .user-name{font-size:11.5px;}
+  .topbar{padding:12px 14px 0 14px;}
+  .topbar h1{font-size:18px;}
+  .topbar .subtitle{font-size:11.5px;}
+  .content{padding:12px 14px 28px 14px; gap:12px;}
+  .card{padding:14px; border-radius:10px;}
+  .card-title{font-size:13.5px;}
+  .card-desc{font-size:11.5px;}
+  /* Los controles de cada tarjeta (buscador, filtros, botones) se acomodan
+     en varias filas en vez de salirse de la pantalla. */
+  .card-title-row{flex-wrap:wrap; gap:8px;}
+  .card-title-row > div{flex-wrap:wrap; gap:8px; min-width:0;}
+  .card-title-row .input{width:auto !important; flex:1 1 130px; min-width:0;}
+  .card-title-row .btn{flex:0 0 auto;}
+  .field{min-width:0;}
+  .field .input{max-width:100% !important;}
+  .grid-2{grid-template-columns:1fr !important;}
+  .grid-4{gap:8px;}
+  .card, .kpi{min-width:0;}
+  .kpi{padding:12px 13px;}
+  .kpi .value{font-size:20px;}
+  .kpi .label{font-size:11.5px;}
+  .kpi .hint{font-size:10.5px;}
+  /* Las tablas se desplazan de lado en vez de apretar las columnas */
+  table{display:block; width:100%; overflow-x:auto; white-space:nowrap; font-size:11.5px;}
+  th, td{padding:8px 10px;}
+  .tabs{overflow-x:auto; scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{font-size:12px; white-space:nowrap;}
+  .field, .input, .btn{max-width:100%;}
+  .scan-box{padding:18px 14px;}
+  .login-left{padding:26px 18px;}
+  .login-left h1{font-size:22px;}
+  .login-right{padding:22px 18px 34px 18px;}
+  /* Barras de desplazamiento finas, como en un celular */
+  ::-webkit-scrollbar{width:6px; height:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--ink-200); border-radius:3px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+}
+
+/* ---------- Acabado: foco visible y detalles de interacción ---------- */
+.input:focus, select.input:focus, textarea.input:focus{
+  outline:none; border-color:var(--red-700); box-shadow:0 0 0 3px rgba(138,22,34,.10);
+}
+.btn:focus-visible, .nav-item:focus-visible, .tab:focus-visible{
+  outline:2px solid var(--red-700); outline-offset:2px;
+}
+.btn-ghost:hover{background:#FCFCFD;}
+.kpi{transition:box-shadow .15s ease;}
+.kpi:hover{box-shadow:0 2px 10px rgba(16,21,42,.07);}
+.brand{align-items:center;}
+.login-left .login-logo{width:56px; height:56px; display:block; margin-bottom:4px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.28));}
+
+.reporte-resumen{background:var(--bg); border:1px solid var(--line); border-radius:8px;
+  padding:10px 12px; font-size:12.5px; color:var(--ink-700); margin-bottom:14px;}
+
+/* ---------- Menú hamburguesa (solo en celular) ---------- */
+.menu-btn{display:none; width:38px; height:38px; flex:none; flex-direction:column;
+  align-items:center; justify-content:center; gap:4px; border:1px solid var(--line);
+  border-radius:9px; background:var(--surface); cursor:pointer; padding:0;
+  transition:border-color .15s ease, background .15s ease;}
+.menu-btn span{display:block; width:16px; height:2px; border-radius:1px; background:var(--ink-700);
+  transition:transform .18s ease, opacity .18s ease;}
+.menu-btn:hover{border-color:var(--ink-200); background:#FCFCFD;}
+.menu-btn:focus-visible{outline:2px solid var(--red-700); outline-offset:2px;}
+
+/* En el celular el menú se desliza sobre el contenido; en pantallas grandes
+   sigue fijo a la izquierda como siempre, y el botón ni siquiera aparece. */
+@media (max-width: 560px){
+  .menu-btn{display:inline-flex; width:34px; height:34px;}
+  .sidebar{
+    position:fixed; left:0; top:0; height:100%; width:232px; min-width:232px; padding:18px 12px;
+    z-index:30; box-shadow:6px 0 24px rgba(16,21,42,.28);
+    transform:translateX(0); transition:transform .2s ease;
+  }
+  .app.menu-oculto .sidebar{transform:translateX(-100%); box-shadow:none;}
+  /* Velo sobre el contenido mientras el menú está abierto */
+  .app:not(.menu-oculto)::after{
+    content:""; position:fixed; inset:0; background:rgba(10,13,22,.45); z-index:25;
+  }
+  .app.menu-oculto .menu-btn span:nth-child(1){transform:none;}
+  .app:not(.menu-oculto) .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  .app:not(.menu-oculto) .menu-btn span:nth-child(2){opacity:0;}
+  .app:not(.menu-oculto) .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+}
+
+/* ---------- Documento del reporte (vista previa e impresión) ---------- */
+.doc-reporte{background:#fff; border:1px solid var(--line); border-radius:8px; padding:26px 28px;
+  max-height:58vh; overflow:auto;}
+.doc-membrete{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  border-bottom:2px solid var(--red-700); padding-bottom:12px; margin-bottom:18px;}
+.doc-institucion{font-size:14px; font-weight:700; letter-spacing:-0.01em;}
+.doc-area{font-size:11.5px; color:var(--ink-600); margin-top:2px;}
+.doc-codigo{font-family:var(--font-mono); font-size:11px; color:var(--ink-600); white-space:nowrap;}
+.doc-titulo{font-size:17px; margin:0 0 16px 0; text-align:center; letter-spacing:-0.01em;}
+.doc-datos{display:grid; grid-template-columns:repeat(2,1fr); gap:8px 24px; margin-bottom:16px;
+  font-size:12px;}
+.doc-datos > div{display:flex; justify-content:space-between; gap:12px;
+  border-bottom:1px dotted var(--line); padding-bottom:4px;}
+.doc-datos span{color:var(--ink-600);}
+.doc-resumen{font-size:12.5px; color:var(--ink-700); background:var(--bg); border-left:3px solid var(--red-700);
+  padding:10px 12px; margin:0 0 16px 0;}
+.doc-firma{margin-top:34px; text-align:center; font-size:12px;}
+.doc-linea{width:220px; height:1px; background:var(--ink-900); margin:0 auto 6px auto;}
+.doc-cargo{font-size:11px; color:var(--ink-600); margin-top:2px;}
+
+@media print{
+  /* Al imprimir solo sale el documento, sin la aplicación alrededor */
+  body > *{display:none !important;}
+  .modal-overlay{display:block !important; position:static !important; background:#fff !important;
+    padding:0 !important;}
+  .modal-box{box-shadow:none !important; border:none !important; max-width:100% !important;
+    width:100% !important; padding:0 !important;}
+  .doc-reporte{border:none; max-height:none; overflow:visible; padding:0;}
+  .no-print{display:none !important;}
+  table{font-size:11px;}
+}
+
+/* ---- Validación de formularios ---- */
+.input.input-error, select.input.input-error, textarea.input.input-error{
+  border-color:var(--red-600) !important; background:var(--red-50);
+}
+.input.input-rechazo{ animation:rechazo .25s; }
+@keyframes rechazo{ 25%{transform:translateX(-3px);} 75%{transform:translateX(3px);} }
+.field-error{ color:var(--red-700); font-size:11.5px; font-weight:600; margin-top:-2px; }
+
+
+/* --- Equivalente de las media queries dentro del celular --- */
+#mv-pantalla /* El !important vence a los grid-template-columns escritos en el HTML */
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+#mv-pantalla .two-col{grid-template-columns:1fr !important;}
+#mv-pantalla .sidebar{width:212px; min-width:212px; padding:18px 12px;}
+#mv-pantalla .nav-item{padding:8px 10px; font-size:12.5px;}
+#mv-pantalla .topbar{padding:16px 20px 0 20px;}
+#mv-pantalla .content{padding:16px 20px 32px 20px; gap:16px;}
+#mv-pantalla .sidebar{width:168px; min-width:168px; padding:16px 10px;}
+#mv-pantalla .sidebar .brand-name{font-size:12.5px;}
+#mv-pantalla .nav-item{padding:7px 9px; font-size:11.5px; gap:7px;}
+#mv-pantalla .user-card{padding:9px 10px;}
+#mv-pantalla .user-name{font-size:11.5px;}
+#mv-pantalla .topbar{padding:12px 14px 0 14px;}
+#mv-pantalla .topbar h1{font-size:18px;}
+#mv-pantalla .topbar .subtitle{font-size:11.5px;}
+#mv-pantalla .content{padding:12px 14px 28px 14px; gap:12px;}
+#mv-pantalla .card{padding:14px; border-radius:10px;}
+#mv-pantalla .card-title{font-size:13.5px;}
+#mv-pantalla .card-desc{font-size:11.5px;}
+#mv-pantalla /* Los controles de cada tarjeta (buscador, #mv-pantalla filtros, #mv-pantalla botones) se acomodan
+     en varias filas en vez de salirse de la pantalla. */
+  .card-title-row{flex-wrap:wrap; gap:8px;}
+#mv-pantalla .card-title-row > div{flex-wrap:wrap; gap:8px; min-width:0;}
+#mv-pantalla .card-title-row .input{width:auto !important; flex:1 1 130px; min-width:0;}
+#mv-pantalla .card-title-row .btn{flex:0 0 auto;}
+#mv-pantalla .field{min-width:0;}
+#mv-pantalla .field .input{max-width:100% !important;}
+#mv-pantalla .grid-2{grid-template-columns:1fr !important;}
+#mv-pantalla .grid-4{gap:8px;}
+#mv-pantalla .card, #mv-pantalla .kpi{min-width:0;}
+#mv-pantalla .kpi{padding:12px 13px;}
+#mv-pantalla .kpi .value{font-size:20px;}
+#mv-pantalla .kpi .label{font-size:11.5px;}
+#mv-pantalla .kpi .hint{font-size:10.5px;}
+#mv-pantalla /* Las tablas se desplazan de lado en vez de apretar las columnas */
+  table{display:block; width:100%; overflow-x:auto; white-space:nowrap; font-size:11.5px;}
+#mv-pantalla th, #mv-pantalla td{padding:8px 10px;}
+#mv-pantalla .tabs{overflow-x:auto; scrollbar-width:none;}
+#mv-pantalla .tabs::-webkit-scrollbar{display:none;}
+#mv-pantalla .tab{font-size:12px; white-space:nowrap;}
+#mv-pantalla .field, #mv-pantalla .input, #mv-pantalla .btn{max-width:100%;}
+#mv-pantalla .scan-box{padding:18px 14px;}
+#mv-pantalla /* Barras de desplazamiento finas, #mv-pantalla como en un celular */
+  ::-webkit-scrollbar{width:6px; height:6px;}
+#mv-pantalla ::-webkit-scrollbar-thumb{background:var(--ink-200); border-radius:3px;}
+#mv-pantalla ::-webkit-scrollbar-track{background:transparent;}
+#mv-pantalla .menu-btn{display:inline-flex; width:34px; height:34px;}
+#mv-pantalla .sidebar{position:absolute; left:0; top:0; height:100%; width:232px; min-width:232px; padding:18px 12px;
+    z-index:30; box-shadow:6px 0 24px rgba(16,21,42,.28);
+    transform:translateX(0); transition:transform .2s ease;}
+#mv-pantalla.menu-oculto .sidebar{transform:translateX(-100%); box-shadow:none;}
+#mv-pantalla /* Velo sobre el contenido mientras el menú está abierto */
+  .app:not(.menu-oculto)::after{content:""; position:absolute; inset:0; background:rgba(10,13,22,.45); z-index:25;}
+#mv-pantalla.menu-oculto .menu-btn span:nth-child(1){transform:none;}
+#mv-pantalla:not(.menu-oculto) .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+#mv-pantalla:not(.menu-oculto) .menu-btn span:nth-child(2){opacity:0;}
+#mv-pantalla:not(.menu-oculto) .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+/* --- Solo para esta version de revision en el navegador --- */
+html, body { margin:0; padding:0; }
+:root { padding:0 !important; }
+#app-shell[hidden], .vista[hidden] { display:none !important; }
+#mv-pantalla { position:relative; flex:1; display:block; overflow:hidden; }
+#mv-pantalla .main { display:flex; flex-direction:column; height:100%; overflow-y:auto; }
+#mv-pantalla .menu-btn { display:inline-flex; }
+/* El menú del celular va por encima de su barra de título y cubre toda la pantalla */
+#mv-pantalla .sidebar { top:0; bottom:0; height:auto; z-index:40; overflow-y:auto; }
+#mv-pantalla .topbar { z-index:2; }
+#mv-pantalla .grid-4 { grid-template-columns:repeat(2,1fr); }
+.demo-nota { font-size:11.5px; color:var(--ink-400); text-align:center; margin-top:10px; }
+</style>
+
+<!-- ============ INICIO DE SESION ============ -->
+<div id="view-login" class="view active" style="display:flex;">
+  <div class="login-shell">
+    <div class="login-left">
+      <img class="login-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkJhbmNvU2FuZ3JlIEhMRVYiPgogIDwhLS0gTWlzbWEgbWFyY2EgZW4gdW5hIHNvbGEgdGludGEgYmxhbmNhLCBwYXJhIGZvbmRvcyBvc2N1cm9zIG8gcm9qb3M6CiAgICAgICBsYSBjcnV6IHkgZWwgY8OzZGlnbyBkZSBiYXJyYXMgcXVlZGFuIGNhbGFkb3MgKGRlamFuIHZlciBlbCBmb25kbykuIC0tPgogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iCiAgICBNMzIgMy41QzMyIDMuNSA1MiAyNi40IDUyIDM5LjIgNTIgNTAuMyA0My4wIDU5LjMgMzIgNTkuM1MxMiA1MC4zIDEyIDM5LjJDMTIgMjYuNCAzMiAzLjUgMzIgMy41WgogICAgTTI4LjYgMjYuNWg2Ljh2Ny4yaDcuMnY2LjhoLTcuMnY3LjJoLTYuOHYtNy4yaC03LjJ2LTYuOGg3LjJ6CiAgICBNMjMuNCA1MS4yaDEuNnY1LjJoLTEuNnoKICAgIE0yNi42IDUxLjJoMXY1LjJoLTF6CiAgICBNMjkuMiA1MS4yaDJ2NS4yaC0yegogICAgTTMyLjggNTEuMmgxdjUuMmgtMXoKICAgIE0zNS40IDUxLjJoMS42djUuMmgtMS42egogICAgTTM4LjYgNTEuMmgxdjUuMmgtMXoiLz4KPC9zdmc+Cg==" width="56" height="56" alt="Logotipo del banco de sangre">
+      <span class="login-badge">PRONAHEBAS · MINSA · DIGDOT</span>
+      <h1>Sistema Web de Gesti&oacute;n<br>de Banco de Sangre</h1>
+      <p>Hospital de Lima Este Vitarte — Servicio de Hemoterapia y Banco de Sangre.</p>
+    </div>
+    <div class="login-right">
+      <form class="login-form" id="login-form">
+        <h2>Iniciar sesi&oacute;n</h2>
+        <div class="field">
+          <label for="login-usuario">DNI o correo institucional</label>
+          <input class="input" id="login-usuario" data-val="usuarioLogin" data-req="1" maxlength="60" value="jcangana@hlev.gob.pe">
+        </div>
+        <div class="field">
+          <label for="login-clave">Contrase&ntilde;a</label>
+          <input class="input" id="login-clave" data-val="clave" data-req="1" maxlength="40" type="password" value="••••••••••">
+        </div>
+        <div class="field">
+          <label for="login-rol">Rol</label>
+          <select class="input" id="login-rol">
+            <option>M&eacute;dico Solicitante</option>
+            <option>Tecn&oacute;logo M&eacute;dico</option>
+            <option>Jefe de Banco de Sangre</option>
+            <option selected>Administrador</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit" style="justify-content:center; padding:12px;">Ingresar</button>
+        <div class="login-note">Acceso protegido · Ley N° 29733 de protección de datos personales</div>
+        <div class="demo-nota">Versi&oacute;n de revisi&oacute;n en el navegador · los cambios se guardan localmente</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APLICACION ============ -->
+<div class="app" id="app-shell" hidden>
+  <aside class="sidebar">
+    <div class="brand">
+      <img class="brand-mark" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkJhbmNvU2FuZ3JlIEhMRVYiPgogIDwhLS0gR290YSBkZSBzYW5ncmU6IGlkZW50aWRhZCBkZWwgYmFuY28gZGUgc2FuZ3JlIC0tPgogIDxwYXRoIGQ9Ik0zMiAzLjVDMzIgMy41IDUyIDI2LjQgNTIgMzkuMiA1MiA1MC4zIDQzLjAgNTkuMyAzMiA1OS4zUzEyIDUwLjMgMTIgMzkuMkMxMiAyNi40IDMyIDMuNSAzMiAzLjVaIgogICAgICAgIGZpbGw9IiM4QTE2MjIiLz4KICA8cGF0aCBkPSJNMzIgMy41QzMyIDMuNSA1MiAyNi40IDUyIDM5LjIgNTIgNTAuMyA0My4wIDU5LjMgMzIgNTkuM1MxMiA1MC4zIDEyIDM5LjJDMTIgMjYuNCAzMiAzLjUgMzIgMy41WiIKICAgICAgICBmaWxsPSJ1cmwoI2JyaWxsbykiIG9wYWNpdHk9Ii41NSIvPgogIDwhLS0gQ3J1eiBzYW5pdGFyaWEgLS0+CiAgPHBhdGggZD0iTTI4LjYgMjYuNWg2Ljh2Ny4yaDcuMnY2LjhoLTcuMnY3LjJoLTYuOHYtNy4yaC03LjJ2LTYuOGg3LjJ6IiBmaWxsPSIjRkZGRkZGIi8+CiAgPCEtLSBDw7NkaWdvIGRlIGJhcnJhczogdHJhemFiaWxpZGFkIGRlIGNhZGEgdW5pZGFkIC0tPgogIDxnIGZpbGw9IiNGRkZGRkYiIG9wYWNpdHk9Ii45MiI+CiAgICA8cmVjdCB4PSIyMy40IiB5PSI1MS4yIiB3aWR0aD0iMS42IiBoZWlnaHQ9IjUuMiIgcng9Ii40Ii8+CiAgICA8cmVjdCB4PSIyNi42IiB5PSI1MS4yIiB3aWR0aD0iMSIgaGVpZ2h0PSI1LjIiIHJ4PSIuMyIvPgogICAgPHJlY3QgeD0iMjkuMiIgeT0iNTEuMiIgd2lkdGg9IjIiIGhlaWdodD0iNS4yIiByeD0iLjQiLz4KICAgIDxyZWN0IHg9IjMyLjgiIHk9IjUxLjIiIHdpZHRoPSIxIiBoZWlnaHQ9IjUuMiIgcng9Ii4zIi8+CiAgICA8cmVjdCB4PSIzNS40IiB5PSI1MS4yIiB3aWR0aD0iMS42IiBoZWlnaHQ9IjUuMiIgcng9Ii40Ii8+CiAgICA8cmVjdCB4PSIzOC42IiB5PSI1MS4yIiB3aWR0aD0iMSIgaGVpZ2h0PSI1LjIiIHJ4PSIuMyIvPgogIDwvZz4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYnJpbGxvIiB4MT0iMTYiIHkxPSI4IiB4Mj0iNTAiIHkyPSI1NiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNDNjIwMzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNkUwRjFBIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgo8L3N2Zz4K" width="34" height="34" alt="Logotipo del banco de sangre">
+      <div>
+        <div class="brand-name">BancoSangre HLEV</div>
+        <div class="brand-sub">Tipo II · ISBT 128</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidebar-spacer"></div>
+    <div class="user-card">
+      <div class="user-name" id="user-name">Usuario</div>
+      <div class="user-role" id="user-role">Rol</div>
+    </div>
+    <a class="logout" href="#" id="logout" style="text-decoration:none; display:block; text-align:center;">&larr; Cerrar sesi&oacute;n</a>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-btn" type="button" onclick="alternarMenu()" aria-label="Mostrar u ocultar el menú">
+        <span></span><span></span><span></span>
+      </button>
+      <div style="flex:1; min-width:0;">
+        <h1 id="topbar-titulo">Panel General</h1>
+        <div class="subtitle" id="topbar-subtitulo"></div>
+      </div>
+    </div>
+    <div class="content" id="content">
+<section class="vista" data-vista="dashboard" hidden>
+        <div class="grid-4">
+          <div class="kpi"><div class="bar" style="background:var(--green-700)"></div><div class="label">Unidades disponibles</div><div class="value">1,248</div><div class="hint">+4.2% vs. semana previa</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--amber-700)"></div><div class="label">Próximas a vencer (≤72h)</div><div class="value">37</div><div class="hint">Primeras en salir</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--blue-700)"></div><div class="label">Solicitudes activas</div><div class="value">12</div><div class="hint">UCI · Emergencia · SOP</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--red-700)"></div><div class="label">Stock crítico (O−)</div><div class="value">6 un.</div><div class="hint">Bajo el mínimo de seguridad</div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">Stock de glóbulos rojos por grupo sanguíneo</div>
+                <div class="card-desc">Actualizado en tiempo real</div>
+              </div>
+              <span class="pill purple"><span class="dot"></span>Orden por vencimiento</span>
+            </div>
+            <div id="abo-grid" class="grid-4" style="grid-template-columns:repeat(4,1fr); gap:10px;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">Alertas y notificaciones</div>
+                <div class="card-desc">Vencimiento y quiebre de stock crítico</div>
+              </div>
+            </div>
+            <div class="timeline" id="alerts-list"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Cumplimiento y proyección de demanda</div>
+              <div class="card-desc">Indicadores del servicio y previsión de abastecimiento</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="kpi"><div class="bar" style="background:var(--green-700)"></div><div class="label">Cumplimiento normativo PRONAHEBAS</div><div class="value">96.8%</div><div class="hint">32 de 33 controles conformes este trimestre</div></div>
+            <div class="kpi"><div class="bar" style="background:var(--amber-700)"></div><div class="label">Proyección de desabastecimiento</div><div class="value" style="font-size:18px;">O− en 4 días</div><div class="hint">Según demanda histórica vs. stock actual</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Accesos rápidos</div>
+              <div class="card-desc">Ir directo a lo que más se usa</div>
+            </div>
+          </div>
+          <div class="grid-4" id="quick-access"></div>
+        </div>
+  </section>
+<section class="vista" data-vista="inventario" hidden>
+        <div class="tabs">
+          <button class="tab active" data-tab="inv:hemo">Hemocomponentes</button>
+          <button class="tab" data-tab="inv:donaciones">Donaciones recibidas</button>
+        </div>
+
+        <div data-tabpanel="inv:hemo" class="panel-flex">
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Cámaras de refrigeración y congeladoras</div>
+              <div class="card-desc">Ordenadas por fecha de vencimiento: primero sale la que vence antes</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <input class="input btn-sm" style="width:180px;" id="inv-search" data-val="buscar" maxlength="40" autocomplete="off" placeholder="Buscar DIN o grupo..." oninput="renderInventory()">
+              <select class="input btn-sm" style="width:auto;" id="inv-filter" onchange="renderInventory()">
+                <option value="">Todos los estados</option>
+                <option value="disponible">Disponible</option>
+                <option value="reservado">Reservado</option>
+                <option value="cuarentena">Cuarentena</option>
+                <option value="bloqueado">Bloqueado</option>
+                <option value="vencido">Vencido</option>
+                <option value="despachado">Despachado</option>
+                <option value="fraccionado">Fraccionado</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="exportarInventario()">Exportar</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr>
+              <th>DIN (ISBT 128)</th><th>Hemocomponente</th><th>ABO/Rh</th><th>Cámara</th><th>Vence</th><th>Estado</th><th></th>
+            </tr></thead>
+            <tbody id="inventory-rows"></tbody>
+          </table>
+          <div class="cell-muted" id="inv-count" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Monitoreo de temperatura de cámaras</div>
+            <div class="card-desc">Avisa cuando una cámara sale de su rango de temperatura</div></div></div>
+            <div id="temp-grid" class="grid-4" style="grid-template-columns:repeat(3,1fr);"></div>
+          </div>
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Vida útil por hemocomponente</div><div class="card-desc">Cuánto dura cada componente</div></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--red-700);"></div><div><div class="timeline-title">Plaquetas</div><div class="timeline-meta">5 días de vida útil</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--amber-700);"></div><div><div class="timeline-title">Glóbulos rojos (CH)</div><div class="timeline-meta">30 días de vida útil</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--blue-700);"></div><div><div class="timeline-title">Plasma Fresco Congelado</div><div class="timeline-meta">Hasta 1 año de vida útil</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div><div class="card-title">Fraccionamiento de hemocomponentes</div>
+            <div class="card-desc">Separación de una bolsa de sangre total en sus componentes</div></div>
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label>Bolsa de sangre total a fraccionar</label>
+            <select class="input mono" id="fract-din"></select>
+          </div>
+          <div class="grid-4" style="grid-template-columns:repeat(4,1fr); margin-bottom:14px;">
+            <div class="kpi" style="padding:12px;"><div class="label">Concentrado de Hematíes</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Plasma Fresco Congelado</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Crioprecipitados</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Concentrado Plaquetas</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fraccionarUnidad()">Fraccionar y generar hemocomponentes</button>
+        </div>
+        </div>
+
+        <div data-tabpanel="inv:donaciones" class="card" style="display:none;">
+          <div class="card-title-row">
+            <div><div class="card-title">Donaciones recibidas</div>
+            <div class="card-desc">Cada bolsa que llegó de un donante, su tamizaje y los hemocomponentes que salieron de ella</div></div>
+            <input class="input btn-sm" style="width:210px;" id="don-inv-buscar" data-val="buscar" maxlength="40" autocomplete="off" placeholder="Buscar donante, DNI o DIN..." oninput="renderDonaciones()">
+          </div>
+          <table>
+            <thead><tr><th>Bolsa (DIN)</th><th>Donante</th><th>DNI</th><th>Grupo</th><th>Tamizaje</th><th>Hemocomponentes obtenidos</th></tr></thead>
+            <tbody id="donaciones-rows"></tbody>
+          </table>
+          <div class="cell-muted" id="donaciones-count" style="margin-top:10px;"></div>
+        </div>
+  </section>
+<section class="vista" data-vista="donantes" hidden>
+        <div class="tabs">
+          <button class="tab active" data-tab="donantes:registro">Donantes registrados</button>
+          <button class="tab" data-tab="donantes:ficha">Ficha clínica del donante</button>
+          <button class="tab" data-tab="donantes:diferimiento">Diferimiento</button>
+          <button class="tab" data-tab="donantes:serologia">Tamizaje serológico</button>
+          <button class="tab" data-tab="donantes:campanas">Campañas</button>
+        </div>
+
+        <div data-tabpanel="donantes:registro" class="card">
+          <div class="card-title-row">
+            <div><div class="card-title">Registro de donantes</div>
+            <div class="card-desc">Personas registradas en el banco de sangre y su situación actual</div></div>
+            <div style="display:flex; gap:8px;">
+              <input class="input btn-sm" style="width:190px;" id="don-buscar" data-val="buscar" maxlength="40" autocomplete="off" placeholder="Buscar nombre o DNI..." oninput="renderDonantes()">
+              <button class="btn btn-primary btn-sm" onclick="switchTab('donantes','donantes:ficha')">+ Nuevo donante</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Donante</th><th>DNI</th><th>Grupo</th><th>Tipo</th><th>Última donación</th><th>Donaciones</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="donantes-rows"></tbody>
+          </table>
+          <div class="cell-muted" id="don-count" style="margin-top:10px;"></div>
+        </div>
+
+        <div data-tabpanel="donantes:ficha" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Ficha del donante</div>
+          <div class="card-desc">Datos personales y evaluación previa a la donación</div></div></div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Nombres y apellidos</label><input class="input" id="don-nombre" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Ej. María Fernanda Quispe Rojas"></div>
+            <div class="field"><label>DNI</label><input class="input" id="don-dni" data-val="dni" data-req="1" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="8 dígitos, ej. 45678912"></div>
+            <div class="field"><label>Fecha de nacimiento</label><input class="input" id="don-fecnac" data-val="fechaNacimiento" data-req="1" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa"></div>
+            <div class="field"><label>Peso (kg)</label><input class="input" id="don-peso" data-val="peso" data-req="1" type="text" inputmode="decimal" maxlength="5" autocomplete="off" placeholder="62" oninput="evaluarAptitud()"></div>
+            <div class="field"><label>Hemoglobina (g/dL)</label><input class="input" id="don-hb" data-val="hemoglobina" data-req="1" type="text" inputmode="decimal" maxlength="4" autocomplete="off" placeholder="13.4" oninput="evaluarAptitud()"></div>
+            <div class="field"><label>Grupo sanguíneo declarado</label><select class="input" id="don-abo"><option value="">Por confirmar en laboratorio</option><option>O POS</option><option>O NEG</option><option>A POS</option><option>A NEG</option><option>B POS</option><option>B NEG</option><option>AB POS</option><option>AB NEG</option></select></div>
+            <div class="field">
+              <label>Tipo de donación</label>
+              <select class="input" id="don-tipo">
+                <option value="voluntaria">Voluntaria</option>
+                <option value="reposicion">Reposición</option>
+                <option value="autologa">Autóloga</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Campaña de donación</label>
+              <select class="input" id="don-campana">
+                <option value="">— Ninguna (donación directa) —</option>
+                <option value="utp">Dona Vida UTP 2026-II</option>
+                <option value="ate">Empresas Solidarias ATE</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:14px;">
+            <label>Antecedentes del donante</label>
+            <textarea class="input" id="don-antecedentes" data-val="texto" data-min="0" data-max="500" maxlength="500" placeholder="Zonas endémicas visitadas en los últimos 12 meses, conductas de riesgo, medicación reciente..." oninput="evaluarAptitud()"></textarea>
+          </div>
+          <div class="checkline" style="margin-bottom:14px;">
+            <input type="checkbox" id="don-consentimiento">
+            <label for="don-consentimiento" style="font-weight:400;">El donante firmó digitalmente el consentimiento informado previo a la extracción</label>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="pill green" id="aptitud-pill"><span class="dot"></span>Evaluación: APTO para donar</span>
+            <button class="btn btn-primary btn-sm" onclick="registrarDonante()">Registrar donante</button>
+          </div>
+        </div>
+
+        <div data-tabpanel="donantes:diferimiento" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Donantes diferidos</div>
+          <div class="card-desc">Personas que por ahora, o de forma definitiva, no pueden donar</div></div></div>
+          <table>
+            <thead><tr><th>Donante</th><th>Motivo</th><th>Tipo</th><th>Vigente hasta</th><th>Estado</th></tr></thead>
+            <tbody id="diferimiento-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="donantes:serologia" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Tamizaje serológico</div>
+          <div class="card-desc">Cada resultado se digita dos veces por separado. Solo se guarda si las dos coinciden; si alguno es reactivo, la unidad se bloquea sola</div></div></div>
+          <div class="field" style="max-width:340px; margin-bottom:14px;">
+            <label>Unidad a tamizar</label>
+            <select class="input mono" id="serologia-din" onchange="renderSerologia()"></select>
+          </div>
+          <table>
+            <thead><tr><th>Marcador</th><th>Digitación 1</th><th>Digitación 2</th><th>Estado</th></tr></thead>
+            <tbody id="serologia-rows"></tbody>
+          </table>
+          <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+            <button class="btn btn-primary btn-sm" onclick="guardarSerologia()">Guardar resultados</button>
+          </div>
+          <div id="serologia-alert"></div>
+          <div class="divider" style="margin:20px 0;"></div>
+          <div class="card-title" style="margin-bottom:10px;">Tamizajes registrados</div>
+          <table>
+            <thead><tr><th>Unidad (DIN)</th><th>Donante</th><th>Resultado</th><th>Registrado por</th></tr></thead>
+            <tbody id="tamizajes-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="donantes:campanas" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Campañas de donación</div>
+          <div class="card-desc">Universidades, empresas e instituciones — metas y resultados</div></div></div>
+          <table>
+            <thead><tr><th>Campaña</th><th>Institución</th><th>Meta</th><th>Captados</th><th>Avance</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Dona Vida UTP 2026-II</td><td class="cell-muted">Universidad Tecnológica del Perú</td><td class="mono">150</td><td class="mono">98</td><td style="width:160px;"><div class="progress-track"><div class="progress-fill" style="width:65%; background:var(--green-700);"></div></div></td></tr>
+              <tr><td class="cell-strong">Empresas Solidarias ATE</td><td class="cell-muted">Consorcio industrial ATE-Vitarte</td><td class="mono">80</td><td class="mono">34</td><td style="width:160px;"><div class="progress-track"><div class="progress-fill" style="width:42%; background:var(--amber-700);"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+  </section>
+<section class="vista" data-vista="etiquetado" hidden>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Generación de la etiqueta</div>
+            <div class="card-desc">Datos que se imprimen en la etiqueta de la unidad</div></div></div>
+            <div class="grid-2" style="margin-bottom:14px;">
+              <div class="field"><label>Código de la donación (DIN)</label><input class="input mono" id="et-din" value="=W1237250171238" readonly></div>
+              <div class="field"><label>Código del componente</label><input class="input mono" id="et-code" value="E0387V00" readonly></div>
+              <div class="field"><label>Grupo ABO/Rh</label>
+                <select class="input mono" id="et-abo" onchange="updateEtiquetaPreview()">
+                  <option>O NEG</option><option>O POS</option><option>A NEG</option><option>A POS</option>
+                  <option>B NEG</option><option>B POS</option><option>AB NEG</option><option>AB POS</option>
+                </select>
+              </div>
+              <div class="field"><label>Fecha / hora de colecta</label><input class="input mono" id="et-colecta" value="12/09/2026 08:14" readonly></div>
+              <div class="field"><label>Fecha de vencimiento</label><input class="input mono" id="et-vence" value="11/10/2026" readonly></div>
+              <div class="field"><label>Hemocomponente</label>
+                <select class="input mono" id="et-producto" onchange="updateEtiquetaPreview()">
+                  <option value="E0387V00|Concentrado de Hematíes">Concentrado de Hematíes</option>
+                  <option value="E0217V00|Plasma Fresco Congelado">Plasma Fresco Congelado</option>
+                  <option value="E0453V00|Concentrado de Plaquetas">Concentrado de Plaquetas</option>
+                  <option value="E0301V00|Crioprecipitado">Crioprecipitado</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="generarNuevoDIN()">Generar nuevo DIN</button>
+              <button class="btn btn-ghost btn-sm" onclick="imprimirEtiqueta()">Imprimir etiqueta</button>
+              <button class="btn btn-ghost btn-sm" onclick="leerCodigo()">Leer código (escáner)</button>
+              <button class="btn btn-ghost btn-sm" onclick="generarCertificado()">Certificado de calidad (QR)</button>
+            </div>
+          </div>
+
+          <div class="card" style="display:flex; flex-direction:column; align-items:center; gap:14px; justify-content:center;">
+            <div style="font-size:12px; color:var(--ink-600); font-weight:600;">VISTA PREVIA DE ETIQUETA</div>
+            <div style="width:100%; max-width:280px; border:1.5px solid var(--ink-900); border-radius:4px; padding:14px; font-family:var(--font-mono);" id="label-preview">
+              <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid var(--ink-900); padding-bottom:6px; margin-bottom:6px;">
+                <span>HLEV · BANCO DE SANGRE</span><span>ISBT 128</span>
+              </div>
+              <div style="height:34px; background:repeating-linear-gradient(90deg,#12161F 0 2px, transparent 2px 4px, #12161F 4px 6px, transparent 6px 9px); margin-bottom:6px;"></div>
+              <div style="font-size:11px; letter-spacing:.03em; margin-bottom:8px;" id="label-din-text">=W1237250171238</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; font-size:10.5px;">
+                <div><div style="color:var(--ink-400);">PRODUCTO</div><div style="font-weight:700;" id="label-code">E0387V00</div></div>
+                <div><div style="color:var(--ink-400);">GRUPO</div><div style="font-weight:700; color:var(--red-700);" id="label-abo">O NEG</div></div>
+                <div><div style="color:var(--ink-400);">COLECTA</div><div style="font-weight:700;" id="label-colecta">12/09/26</div></div>
+                <div><div style="color:var(--ink-400);">VENCE</div><div style="font-weight:700;" id="label-vence">11/10/26</div></div>
+              </div>
+              <div style="margin-top:10px; height:22px; background:repeating-linear-gradient(90deg,#12161F 0 1px, transparent 1px 3px);"></div>
+            </div>
+          </div>
+        </div>
+  </section>
+<section class="vista" data-vista="solicitudes" hidden>
+        <div class="tabs">
+          <button class="tab active" data-tab="sol:nueva">Nueva solicitud</button>
+          <button class="tab" data-tab="sol:compat">Pruebas de compatibilidad</button>
+        </div>
+
+        <div data-tabpanel="sol:nueva" class="card">
+          <div class="card-title-row"><div><div class="card-title">Nueva solicitud de sangre</div>
+          <div class="card-desc">UCI · Emergencia · Centro Quirúrgico · Gineco-Obstetricia</div></div>
+          <button class="btn btn-ghost btn-sm" onclick="importarHIS()">Importar orden desde HIS/SIS</button>
+          </div>
+          <div class="field" style="max-width:280px; margin-bottom:14px;">
+            <label>Tipo de solicitud</label>
+            <select class="input" id="sol-tipo" onchange="toggleTipoSolicitud()">
+              <option value="transfusional">Solicitud transfusional</option>
+              <option value="reserva">Reserva para cirugía programada</option>
+            </select>
+          </div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Paciente</label><input class="input" id="sol-paciente" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Nombres y apellidos del receptor"></div>
+            <div class="field"><label>Historia clínica</label><input class="input mono" id="sol-hc" data-val="hc" data-req="1" maxlength="13" autocomplete="off" placeholder="HC-2026-00000"></div>
+            <div class="field"><label>Servicio solicitante</label>
+              <select class="input" id="sol-servicio"><option>Emergencia</option><option>UCI</option><option>Centro Quirúrgico</option><option>Gineco-Obstetricia</option></select>
+            </div>
+            <div class="field"><label>Diagnóstico (CIE-10)</label><input class="input mono" id="sol-cie10" data-val="cie10" data-req="1" maxlength="90" autocomplete="off" placeholder="Ej. O72.1 — Hemorragia posparto"></div>
+            <div class="field"><label>Hemocomponente y cantidad</label><input class="input" id="sol-componente" data-val="componente" data-req="1" maxlength="80" autocomplete="off" placeholder="2 unidades — Concentrado de Hematíes"></div>
+            <div class="field"><label>Prioridad clínica</label>
+              <select class="input" id="sol-prioridad"><option>Urgente (&lt;15 min)</option><option>Programada</option><option>Diferible</option></select>
+            </div>
+          </div>
+          <div class="field" id="sol-reserva-field" style="display:none; max-width:280px; margin-bottom:14px;">
+            <label>Fecha límite de la reserva</label>
+            <input class="input" id="sol-reserva-fecha" data-val="fechaFutura" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa — liberación automática al vencer">
+          </div>
+          <div style="display:flex; justify-content:flex-end;"><button class="btn btn-primary btn-sm" onclick="enviarSolicitud()">Enviar solicitud</button></div>
+
+          <div class="divider" style="margin:20px 0;"></div>
+          <div class="card-title" style="margin-bottom:10px;">Solicitudes activas</div>
+          <table>
+            <thead><tr><th>Paciente</th><th>Servicio</th><th>CIE-10</th><th>Prioridad</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="solicitudes-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="sol:compat" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Pruebas de compatibilidad</div>
+          <div class="card-desc">Se cruza la sangre del paciente con la unidad antes de entregarla</div></div></div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Solicitud a validar</label>
+              <select class="input" id="compat-solicitud" onchange="renderPruebas()"></select></div>
+            <div class="field"><label>Unidad a cruzar</label>
+              <select class="input" id="compat-unidad"></select></div>
+            <div class="field"><label>Grupo ABO/Rh del paciente</label>
+              <select class="input" id="compat-grupo">
+                <option>O POS</option><option>O NEG</option><option>A POS</option><option>A NEG</option>
+                <option>B POS</option><option>B NEG</option><option>AB POS</option><option>AB NEG</option>
+              </select></div>
+            <div class="field"><label>N.º de muestra del paciente</label>
+              <input class="input mono" id="compat-muestra" data-val="muestra" data-req="1" maxlength="7" autocomplete="off" placeholder="S-00000"></div>
+            <div class="field"><label>Prueba mayor (plasma del paciente + hematíes de la unidad)</label>
+              <select class="input" id="compat-mayor"><option>Sin aglutinación</option><option>Aglutinación</option><option>Hemólisis</option></select></div>
+            <div class="field"><label>Prueba menor (hematíes del paciente + plasma de la unidad)</label>
+              <select class="input" id="compat-menor"><option>Sin aglutinación</option><option>Aglutinación</option><option>Hemólisis</option></select></div>
+            <div class="field"><label>Rastreo de anticuerpos irregulares (RAI)</label>
+              <select class="input" id="compat-rai"><option>Negativo</option><option>Positivo</option></select></div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-bottom:6px;">
+            <button class="btn btn-primary btn-sm" onclick="validarCompatibilidad()">Registrar pruebas</button>
+          </div>
+          <div class="divider" style="margin:16px 0;"></div>
+          <div class="card-title" style="margin-bottom:10px;">Pruebas registradas de la solicitud</div>
+          <table>
+            <thead><tr><th>Prueba</th><th>Muestra</th><th>Unidad</th><th>Resultado</th><th>Validado por</th><th>Estado</th></tr></thead>
+            <tbody id="pruebas-rows"></tbody>
+          </table>
+        </div>
+  </section>
+<section class="vista" data-vista="despacho" hidden>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Verificación antes de entregar</div>
+            <div class="card-desc">Se escanea la unidad y la pulsera del paciente, y deben coincidir</div></div></div>
+            <div class="scan-box" style="margin-bottom:14px; cursor:pointer;" onclick="escanearHemocomponente()">
+              <div class="scan-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:2px;">Escanear código del hemocomponente</div>
+              <div style="font-size:12px; color:var(--ink-600);">DIN escaneado: <span class="mono" id="scan-din">—</span></div>
+            </div>
+            <div class="scan-box" style="cursor:pointer;" onclick="escanearPulsera()">
+              <div class="scan-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:2px;">Escanear pulsera del receptor</div>
+              <div style="font-size:12px; color:var(--ink-600);">ID paciente: <span class="mono" id="scan-hc">—</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Resultado de verificación</div></div></div>
+            <div style="display:flex; flex-direction:column; gap:10px;" id="verif-rows">
+              <div class="cell-muted" style="font-size:12.5px;">Escanea ambos códigos para ejecutar la doble verificación electrónica.</div>
+            </div>
+            <div class="divider" style="margin:16px 0;"></div>
+            <div class="checkline" style="margin-bottom:14px;">
+              <input type="checkbox" id="despacho-firma" onchange="evaluarVerificacion()">
+              <label for="despacho-firma" style="font-weight:400;">Firma electrónica del responsable validada</label>
+            </div>
+            <button class="btn btn-primary" id="despacho-btn" style="width:100%; justify-content:center; opacity:.5;" disabled onclick="autorizarDespacho()">Autorizar y registrar entrega</button>
+            <div style="text-align:center; font-size:11px; color:var(--ink-400); margin-top:8px;">Toda entrega queda registrada en la auditoría</div>
+          </div>
+        </div>
+  </section>
+<section class="vista" data-vista="interhospitalario" hidden>
+        <div class="tabs">
+          <button class="tab active" data-tab="red:panel">Panel de red</button>
+          <button class="tab" data-tab="red:solicitudes">Solicitudes de intercambio</button>
+          <button class="tab" data-tab="red:convenios">Convenios</button>
+        </div>
+
+        <div data-tabpanel="red:panel" class="card">
+          <div class="card-title-row"><div><div class="card-title">Stock en otros establecimientos</div>
+          <div class="card-desc">Unidades disponibles por grupo sanguíneo en cada hospital</div></div></div>
+          <table>
+            <thead><tr><th>Establecimiento</th><th>O+</th><th>O−</th><th>A+</th><th>A−</th><th>B+</th><th>B−</th><th>AB+</th><th>AB−</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">HLEV (sede local)</td><td class="mono">312</td><td class="mono" style="color:var(--red-700); font-weight:700;">6</td><td class="mono">264</td><td class="mono">41</td><td class="mono">198</td><td class="mono">22</td><td class="mono">88</td><td class="mono" style="color:var(--red-700); font-weight:700;">9</td></tr>
+              <tr><td class="cell-strong">Hospital Vitarte II</td><td class="mono">180</td><td class="mono">14</td><td class="mono">120</td><td class="mono">18</td><td class="mono">95</td><td class="mono">11</td><td class="mono">40</td><td class="mono">6</td></tr>
+              <tr><td class="cell-strong">Hospital de la Solidaridad ATE</td><td class="mono">95</td><td class="mono">4</td><td class="mono">70</td><td class="mono">9</td><td class="mono">51</td><td class="mono">3</td><td class="mono">22</td><td class="mono">2</td></tr>
+              <tr><td class="cell-strong">PRONAHEBAS Central</td><td class="mono">610</td><td class="mono">48</td><td class="mono">420</td><td class="mono">70</td><td class="mono">310</td><td class="mono">40</td><td class="mono">150</td><td class="mono">28</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="red:solicitudes" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Intercambio de unidades</div>
+          <div class="card-desc">Envío, respuesta y devolución de unidades entre establecimientos</div></div>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalIntercambio()">+ Nueva solicitud de intercambio</button>
+          </div>
+          <table>
+            <thead><tr><th>Establecimiento</th><th>Hemocomponente</th><th>Cantidad</th><th>Dirección</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="intercambio-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="red:convenios" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Convenios vigentes</div></div></div>
+          <table>
+            <thead><tr><th>Establecimiento</th><th>Tipo de convenio</th><th>Vigente hasta</th><th>Estado</th></tr></thead>
+            <tbody id="convenios-rows"></tbody>
+          </table>
+        </div>
+  </section>
+<section class="vista" data-vista="movil" hidden>
+        <div class="two-col" style="grid-template-columns:auto 1fr;">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen embed">
+              <div id="mv-push" class="phone-push"></div>
+              <!-- Dentro del celular corre el mismo sistema, con su menu completo -->
+              <div class="app app-movil" id="mv-pantalla">
+                <aside class="sidebar">
+                  <div class="brand">
+                    <img class="brand-mark" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkJhbmNvU2FuZ3JlIEhMRVYiPgogIDwhLS0gR290YSBkZSBzYW5ncmU6IGlkZW50aWRhZCBkZWwgYmFuY28gZGUgc2FuZ3JlIC0tPgogIDxwYXRoIGQ9Ik0zMiAzLjVDMzIgMy41IDUyIDI2LjQgNTIgMzkuMiA1MiA1MC4zIDQzLjAgNTkuMyAzMiA1OS4zUzEyIDUwLjMgMTIgMzkuMkMxMiAyNi40IDMyIDMuNSAzMiAzLjVaIgogICAgICAgIGZpbGw9IiM4QTE2MjIiLz4KICA8cGF0aCBkPSJNMzIgMy41QzMyIDMuNSA1MiAyNi40IDUyIDM5LjIgNTIgNTAuMyA0My4wIDU5LjMgMzIgNTkuM1MxMiA1MC4zIDEyIDM5LjJDMTIgMjYuNCAzMiAzLjUgMzIgMy41WiIKICAgICAgICBmaWxsPSJ1cmwoI2JyaWxsbykiIG9wYWNpdHk9Ii41NSIvPgogIDwhLS0gQ3J1eiBzYW5pdGFyaWEgLS0+CiAgPHBhdGggZD0iTTI4LjYgMjYuNWg2Ljh2Ny4yaDcuMnY2LjhoLTcuMnY3LjJoLTYuOHYtNy4yaC03LjJ2LTYuOGg3LjJ6IiBmaWxsPSIjRkZGRkZGIi8+CiAgPCEtLSBDw7NkaWdvIGRlIGJhcnJhczogdHJhemFiaWxpZGFkIGRlIGNhZGEgdW5pZGFkIC0tPgogIDxnIGZpbGw9IiNGRkZGRkYiIG9wYWNpdHk9Ii45MiI+CiAgICA8cmVjdCB4PSIyMy40IiB5PSI1MS4yIiB3aWR0aD0iMS42IiBoZWlnaHQ9IjUuMiIgcng9Ii40Ii8+CiAgICA8cmVjdCB4PSIyNi42IiB5PSI1MS4yIiB3aWR0aD0iMSIgaGVpZ2h0PSI1LjIiIHJ4PSIuMyIvPgogICAgPHJlY3QgeD0iMjkuMiIgeT0iNTEuMiIgd2lkdGg9IjIiIGhlaWdodD0iNS4yIiByeD0iLjQiLz4KICAgIDxyZWN0IHg9IjMyLjgiIHk9IjUxLjIiIHdpZHRoPSIxIiBoZWlnaHQ9IjUuMiIgcng9Ii4zIi8+CiAgICA8cmVjdCB4PSIzNS40IiB5PSI1MS4yIiB3aWR0aD0iMS42IiBoZWlnaHQ9IjUuMiIgcng9Ii40Ii8+CiAgICA8cmVjdCB4PSIzOC42IiB5PSI1MS4yIiB3aWR0aD0iMSIgaGVpZ2h0PSI1LjIiIHJ4PSIuMyIvPgogIDwvZz4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYnJpbGxvIiB4MT0iMTYiIHkxPSI4IiB4Mj0iNTAiIHkyPSI1NiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNDNjIwMzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNkUwRjFBIiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgo8L3N2Zz4K" width="30" height="30" alt="">
+                    <div>
+                      <div class="brand-name">BancoSangre HLEV</div>
+                      <div class="brand-sub">Tipo II &middot; ISBT 128</div>
+                    </div>
+                  </div>
+                  <nav class="nav" id="mv-nav"></nav>
+                  <div class="sidebar-spacer"></div>
+                  <div class="user-card">
+                    <div class="user-name" id="mv-usuario">Usuario</div>
+                    <div class="user-role" id="mv-rol">Rol</div>
+                  </div>
+                </aside>
+                <div class="main">
+                  <div class="topbar">
+                    <button class="menu-btn" type="button" onclick="alternarMenuCelular()" aria-label="Men&uacute;">
+                      <span></span><span></span><span></span>
+                    </button>
+                    <div style="flex:1; min-width:0;"><h1 id="mv-titulo">Panel general</h1></div>
+                  </div>
+                  <div class="content" id="mv-contenido"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Aplicaci&oacute;n m&oacute;vil para personal asistencial</div>
+            <div class="card-desc">Dentro del celular corre el mismo sistema, en versi&oacute;n m&oacute;vil: los mismos m&oacute;dulos, la misma sesi&oacute;n y los mismos datos</div></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--blue-700);"></div><div><div class="timeline-title">Todo el sistema en el celular</div><div class="timeline-meta">Abre el men&uacute; con el bot&oacute;n de tres rayas y entra a cualquier m&oacute;dulo</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--red-700);"></div><div><div class="timeline-title">Notificaciones push</div><div class="timeline-meta">Las alertas del sistema aparecen sobre la pantalla del celular</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--green-700);"></div><div><div class="timeline-title">Registro de solicitudes</div><div class="timeline-meta">Una solicitud enviada desde el celular queda guardada y se ve luego en el panel web</div></div></div>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="margin-top:12px;" onclick="simularPushMovil()">Simular notificaci&oacute;n push</button>
+          </div>
+        </div>
+</section>
+<section class="vista" data-vista="hemovigilancia" hidden>
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Reacciones después de una transfusión</div>
+          <div class="card-desc">Cada caso queda ligado a la unidad que se transfundió</div></div>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalHemovigilancia()">+ Registrar evento</button>
+          </div>
+          <table>
+            <thead><tr><th>Fecha</th><th>Paciente</th><th>Reacción</th><th>DIN origen</th><th>Severidad</th><th>Estado</th></tr></thead>
+            <tbody id="hemovigilancia-rows"></tbody>
+          </table>
+        </div>
+  </section>
+<section class="vista" data-vista="reportes" hidden>
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Reportes del servicio</div>
+          <div class="card-desc">Consolidados listos para descargar o enviar</div></div></div>
+          <div class="grid-4" id="reports-grid"></div>
+        </div>
+  </section>
+<section class="vista" data-vista="auditoria" hidden>
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Registro de auditoría</div>
+          <div class="card-desc">Quién hizo cada acción, cuándo y desde qué equipo</div></div></div>
+          <table>
+            <thead><tr><th>Fecha / hora</th><th>Usuario</th><th>Acción</th><th>Recurso</th><th>IP terminal</th></tr></thead>
+            <tbody id="audit-rows"></tbody>
+          </table>
+        </div>
+  </section>
+<section class="vista" data-vista="administracion" hidden>
+
+        <div data-tabpanel="admin:usuarios" class="card">
+          <div class="card-title-row"><div><div class="card-title">Gestión de usuarios y roles</div>
+          <div class="card-desc">Crear cuentas, cambiar su rol o desactivarlas</div></div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="restablecerDatos()">Restablecer datos de ejemplo</button>
+            <button class="btn btn-primary btn-sm" onclick="abrirModalUsuario()">+ Nuevo usuario</button>
+          </div>
+          </div>
+          <table>
+            <thead><tr><th>Usuario</th><th>Correo</th><th>Rol</th><th>Último acceso</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="usuarios-rows"></tbody>
+          </table>
+        </div>
+
+  </section>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-overlay"><div class="modal-box" id="modal-box"></div></div>
+  <div class="toast-wrap" id="toast-wrap"></div>
+</div>
+
+<script>
+/* =====================================================================
+   Validaciones y máscaras de entrada del Sistema Web de Gestión de Banco
+   de Sangre. Se cargan en TODAS las pantallas (layout) y en el login.
+
+   Cómo se usa:
+     1) En el HTML, cada campo lleva data-val="tipo" (dni, nombre, fecha...).
+        Mientras se escribe, la máscara corrige el texto: el DNI solo admite
+        8 dígitos, el nombre solo letras, la fecha agrega las "/" sola, etc.
+     2) Al salir del campo se valida y aparece el mensaje debajo.
+     3) Al guardar, cada función llama a VAL.formulario([...]) que revisa
+        todos los campos, marca los que están mal y avisa del primero.
+   El servidor vuelve a validar (ValidadorDatos.java): la validación del
+   navegador ayuda al usuario, la del servidor es la que protege la base.
+   ===================================================================== */
+const VAL = (function () {
+  const L = 'A-Za-zÁÉÍÓÚÜÑáéíóúüñ';
+  const DIAS_MS = 86400000;
+
+  const hoy = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+
+  /** "dd/mm/aaaa" -> Date si es una fecha real del calendario; si no, null */
+  function fechaReal(txt) {
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(txt || '');
+    if (!m) return null;
+    const d = +m[1], mo = +m[2], y = +m[3];
+    const f = new Date(y, mo - 1, d);
+    if (f.getFullYear() !== y || f.getMonth() !== mo - 1 || f.getDate() !== d || y < 1900) return null;
+    return f;
+  }
+  function edadEn(f) {
+    const h = hoy();
+    let e = h.getFullYear() - f.getFullYear();
+    if (h.getMonth() < f.getMonth() || (h.getMonth() === f.getMonth() && h.getDate() < f.getDate())) e--;
+    return e;
+  }
+  const titulo = s => s.toLowerCase().replace(/(^|\s)([a-záéíóúüñ])/g, (m, a, b) => a + b.toUpperCase());
+  const num = s => parseFloat(String(s).replace(',', '.'));
+  const opt = (el, k, def) => (el && el.dataset && el.dataset[k] !== undefined) ? el.dataset[k] : def;
+
+  /* Cada tipo: mask(valor, elemento, evento) -> texto corregido mientras se escribe
+                permite: regex de UN carácter aceptado (bloquea teclas inválidas)
+                normaliza(valor) -> texto final al salir del campo
+                check(valor, elemento) -> true o el mensaje de error */
+  const tipos = {
+    dni: {
+      permite: /^\d$/,
+      mask: v => v.replace(/\D/g, '').slice(0, 8),
+      check: v => /^\d{8}$/.test(v) || 'El DNI debe tener exactamente 8 dígitos',
+    },
+    nombre: {
+      permite: new RegExp('^[' + L + ' ]$'),
+      mask: v => v.replace(new RegExp('[^' + L + ' ]', 'g'), '').replace(/^\s+/, '').replace(/\s{2,}/g, ' ').slice(0, 60),
+      normaliza: v => titulo(v.trim().replace(/\s{2,}/g, ' ')),
+      check: v => {
+        const p = v.trim().split(/\s+/).filter(Boolean);
+        if (p.length < 2) return 'Escribe nombres y apellidos completos (solo letras)';
+        if (p.some(x => x.length < 2)) return 'Cada nombre o apellido debe tener al menos 2 letras';
+        return true;
+      },
+    },
+    fecha: {
+      permite: /^\d$/,
+      mask: (v, el, ev) => {
+        const d = v.replace(/\D/g, '').slice(0, 8);
+        const borrando = ev && ev.inputType && ev.inputType.startsWith('delete');
+        let o = d.slice(0, 2);
+        if (d.length > 2) o += '/' + d.slice(2, 4);
+        if (d.length > 4) o += '/' + d.slice(4);
+        // las "/" aparecen solas al completar día y mes (pero se puede borrar hacia atrás)
+        if (!borrando && (d.length === 2 || d.length === 4)) o += '/';
+        return o;
+      },
+      check: v => fechaReal(v) ? true : 'Escribe una fecha válida con el formato dd/mm/aaaa',
+    },
+    fechaNacimiento: {
+      permite: /^\d$/,
+      mask: (v, el, ev) => tipos.fecha.mask(v, el, ev),
+      check: v => {
+        const f = fechaReal(v);
+        if (!f) return 'Escribe una fecha válida con el formato dd/mm/aaaa';
+        if (f > hoy()) return 'La fecha de nacimiento no puede ser futura';
+        const e = edadEn(f);
+        if (e < 18) return 'El donante debe ser mayor de 18 años (tiene ' + e + ')';
+        if (e > 65) return 'El donante no puede superar los 65 años (tiene ' + e + ')';
+        return true;
+      },
+    },
+    fechaFutura: {
+      permite: /^\d$/,
+      mask: (v, el, ev) => tipos.fecha.mask(v, el, ev),
+      check: v => {
+        const f = fechaReal(v);
+        if (!f) return 'Escribe una fecha válida con el formato dd/mm/aaaa';
+        if (f < hoy()) return 'La fecha límite no puede ser anterior a hoy';
+        if (f - hoy() > 365 * DIAS_MS) return 'La reserva no puede pasar de 1 año';
+        return true;
+      },
+    },
+    hc: {
+      permite: /^[A-Za-z0-9-]$/,
+      mask: v => {
+        const t = v.toUpperCase();
+        if (/^H?C?-?$/.test(t)) return t.slice(0, 3);
+        const d = t.replace(/^HC-?/, '').replace(/\D/g, '').slice(0, 9);
+        return 'HC-' + d.slice(0, 4) + (d.length > 4 ? '-' + d.slice(4) : '');
+      },
+      check: v => /^HC-\d{4}-\d{5}$/.test(v) || 'La historia clínica debe tener el formato HC-AAAA-00000',
+    },
+    muestra: {
+      permite: /^[A-Za-z0-9-]$/,
+      mask: v => {
+        const t = v.toUpperCase();
+        if (/^S?-?$/.test(t)) return t.slice(0, 2);
+        return 'S-' + t.replace(/^S-?/, '').replace(/\D/g, '').slice(0, 5);
+      },
+      check: v => /^S-\d{5}$/.test(v) || 'El número de muestra debe tener el formato S-00000',
+    },
+    cie10: {
+      mask: v => v.replace(new RegExp('[^' + L + '0-9 .,()—–-]', 'g'), '').replace(/^\s+/, '').replace(/\s{2,}/g, ' ').slice(0, 90)
+                  .replace(/^([a-z])/, m => m.toUpperCase()),
+      normaliza: v => v.trim().replace(/\s[-–]\s/, ' — ').replace(/^([a-z])/, m => m.toUpperCase()),
+      check: v => /^[A-Z]\d{2}(\.\d{1,2})?(\s[—–-]\s\S.{2,})?$/.test(v.trim()) ||
+        'Usa un código CIE-10 válido, por ejemplo K92.2 — Hemorragia digestiva alta',
+    },
+    componente: {
+      mask: v => v.replace(new RegExp('[^' + L + '0-9 .,()—–-]', 'g'), '').replace(/^\s+/, '').replace(/\s{2,}/g, ' ').slice(0, 80),
+      normaliza: v => v.trim().replace(/\s[-–]\s/, ' — '),
+      check: v => /^([1-9]|1\d|20)\s+unidad(es)?\s+[—–-]\s+\S.{3,}$/i.test(v.trim()) ||
+        'Usa el formato: 2 unidades — Concentrado de Hematíes (de 1 a 20 unidades)',
+    },
+    correo: {
+      permite: /^[A-Za-z0-9._@-]$/,
+      mask: v => v.toLowerCase().replace(/[^a-z0-9._@-]/g, '').slice(0, 60),
+      check: v => /^[a-z0-9._-]+@hlev\.gob\.pe$/.test(v) || 'Usa el correo institucional (usuario@hlev.gob.pe)',
+    },
+    usuarioLogin: {
+      mask: v => /^\d/.test(v) ? v.replace(/\D/g, '').slice(0, 8) : v.toLowerCase().replace(/[^a-z0-9._@-]/g, '').slice(0, 60),
+      check: v => (/^\d{8}$/.test(v) || /^[a-z0-9._-]+@hlev\.gob\.pe$/.test(v)) ||
+        'Ingresa tu DNI (8 dígitos) o tu correo institucional @hlev.gob.pe',
+    },
+    clave: {
+      mask: v => v.replace(/\s/g, '').slice(0, 40),
+      check: v => v.length >= 6 || 'La contraseña debe tener al menos 6 caracteres',
+    },
+    peso: {
+      permite: /^[\d.,]$/,
+      mask: v => {
+        let t = v.replace(',', '.').replace(/[^\d.]/g, '');
+        const p = t.split('.');
+        t = p[0].slice(0, 3) + (p.length > 1 ? '.' + p.slice(1).join('').slice(0, 1) : '');
+        return t;
+      },
+      check: v => { const n = num(v); return (n >= 30 && n <= 250) || 'El peso debe estar entre 30 y 250 kg'; },
+    },
+    hemoglobina: {
+      permite: /^[\d.,]$/,
+      mask: v => {
+        let t = v.replace(',', '.').replace(/[^\d.]/g, '');
+        const p = t.split('.');
+        t = p[0].slice(0, 2) + (p.length > 1 ? '.' + p.slice(1).join('').slice(0, 1) : '');
+        return t;
+      },
+      check: v => { const n = num(v); return (n >= 5 && n <= 22) || 'La hemoglobina debe estar entre 5.0 y 22.0 g/dL'; },
+    },
+    entero: {
+      permite: /^\d$/,
+      mask: v => v.replace(/\D/g, '').slice(0, 3),
+      check: (v, el) => {
+        const n = parseInt(v, 10), min = +opt(el, 'min', 1), max = +opt(el, 'max', 99);
+        return (n >= min && n <= max) || 'Ingresa un número entero entre ' + min + ' y ' + max;
+      },
+    },
+    texto: {
+      mask: (v, el) => v.replace(/[<>{}[\]\\`^|~\u0000-\u001f]/g, '').replace(/^\s+/, '').replace(/\s{2,}/g, ' ')
+                        .slice(0, +opt(el, 'max', 120)),
+      normaliza: v => v.trim(),
+      check: (v, el) => {
+        const min = +opt(el, 'min', 3);
+        if (v.trim().length < min) return 'Escribe al menos ' + min + ' caracteres';
+        if (!new RegExp('[' + L + ']{3}').test(v)) return 'Describe el dato con palabras (debe contener letras)';
+        return true;
+      },
+    },
+    buscar: {
+      mask: v => v.replace(/[<>{}[\]\\`^|~\u0000-\u001f]/g, '').replace(/^\s+/, '').slice(0, 40),
+      check: () => true,
+    },
+  };
+
+  /* ---------- mensajes y marcas visuales ---------- */
+  function marcar(el, msg) {
+    el.classList.toggle('input-error', !!msg);
+    el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    let aviso = el.parentElement && el.parentElement.querySelector('.field-error[data-for="' + (el.id || el.name) + '"]');
+    if (msg) {
+      if (!aviso && el.parentElement) {
+        aviso = document.createElement('div');
+        aviso.className = 'field-error';
+        aviso.dataset.for = el.id || el.name;
+        el.insertAdjacentElement('afterend', aviso);
+      }
+      if (aviso) aviso.textContent = msg;
+    } else if (aviso) {
+      aviso.remove();
+    }
+  }
+
+  /** Valida un campo. Devuelve el mensaje de error o null. */
+  function campo(el, tipo, o) {
+    o = o || {};
+    if (!el) return null;
+    tipo = tipo || el.dataset.val;
+    const t = tipos[tipo];
+    let v = (el.value || '').toString();
+    if (t && t.normaliza && v && !o.escribiendo) { const n = t.normaliza(v); if (n !== v) { el.value = n; v = n; } }
+    const obligatorio = o.req !== undefined ? o.req : el.dataset.req === '1';
+    let msg = null;
+    if (!v.trim()) {
+      if (obligatorio) msg = 'Este campo es obligatorio';
+    } else if (t) {
+      const r = t.check(v, el);
+      if (r !== true) msg = r;
+    }
+    marcar(el, msg);
+    return msg;
+  }
+
+  /**
+   * Valida varios campos: specs = [[id, tipo, {label, req}], ...]
+   * Marca todos los erróneos, enfoca el primero y avisa con un mensaje.
+   * Devuelve true si todo está bien.
+   */
+  function formulario(specs) {
+    let primero = null;
+    specs.forEach(s => {
+      const el = typeof s[0] === 'string' ? document.getElementById(s[0]) : s[0];
+      if (!el) return;
+      const msg = campo(el, s[1], Object.assign({ req: true }, s[2] || {}));
+      if (msg && !primero) primero = { el, msg, label: (s[2] && s[2].label) || '' };
+    });
+    if (primero) {
+      const txt = (primero.label ? primero.label + ': ' : '') + primero.msg;
+      if (typeof toast === 'function') toast(txt, true);
+      try { primero.el.focus(); } catch (e) { /* sin foco */ }
+      return false;
+    }
+    return true;
+  }
+
+  function limpiar(ids) {
+    ids.forEach(id => { const el = document.getElementById(id); if (el) marcar(el, null); });
+  }
+
+  /* ---------- eventos globales: funcionan también en ventanas (modales) ---------- */
+  document.addEventListener('beforeinput', e => {
+    const el = e.target;
+    const tipo = el && el.dataset && el.dataset.val;
+    const t = tipo && tipos[tipo];
+    if (!t || !t.permite || e.inputType !== 'insertText' || !e.data) return;
+    if ([...e.data].some(c => !t.permite.test(c))) {
+      e.preventDefault();            // la tecla inválida ni siquiera aparece
+      el.classList.add('input-rechazo');
+      setTimeout(() => el.classList.remove('input-rechazo'), 250);
+    }
+  });
+
+  document.addEventListener('input', e => {
+    const el = e.target;
+    const tipo = el && el.dataset && el.dataset.val;
+    const t = tipo && tipos[tipo];
+    if (!t || typeof el.value !== 'string') return;
+    const antes = el.value;
+    const despues = t.mask(antes, el, e);
+    if (despues !== antes) {
+      const pos = el.selectionStart;
+      el.value = despues;
+      try {
+        const nueva = (tipo.startsWith('fecha') || tipo === 'hc' || tipo === 'muestra')
+          ? despues.length : Math.max(0, (pos || 0) - (antes.length - despues.length));
+        el.setSelectionRange(nueva, nueva);
+      } catch (err) { /* el tipo de campo no permite cursor */ }
+    }
+    if (el.classList.contains('input-error')) campo(el, tipo, { escribiendo: true });
+  });
+
+  document.addEventListener('focusout', e => {
+    const el = e.target;
+    const tipo = el && el.dataset && el.dataset.val;
+    if (!tipo || !tipos[tipo] || tipo === 'buscar') return;
+    if (!el.value.trim() && el.dataset.req !== '1') { marcar(el, null); return; }
+    campo(el, tipo);
+  });
+
+  return { tipos, campo, formulario, limpiar, marcar, fechaReal, edadEn };
+})();
+
+/* =========================================================
+   ESTADO CENTRAL DE LA APLICACIÓN (solo en memoria del navegador)
+   Todas las acciones mutan este objeto y disparan re-render +
+   un asiento en el log de auditoría, simulando el
+   comportamiento de un sistema transaccional real.
+
+   Los arreglos empiezan VACÍOS a propósito: los datos de ejemplo ya
+   NO viven aquí, viven en el servidor (ver BaseDatosDemo.java) y el
+   Controlador se los entrega a cada Vista, que los usa para llenar
+   este mismo "state" apenas carga la página (ver el <script> al
+   final de cada plantilla). Este objeto sigue existiendo para que
+   las acciones interactivas (filtrar, agregar, cambiar estado, etc.)
+   sigan funcionando en el navegador sin recargar la página.
+========================================================= */
+const state = {
+  currentUser: "",
+  currentRole: "",
+
+  aboGroups: [],
+  alerts: [],
+
+  // { din, producto, abo, camara, exp, status }
+  inventory: [],
+
+  donantes: [],
+  // { din, marcador, dig1, dig2, resultado, digitador, fecha }
+  serologia: [],
+
+  solicitudes: [],
+  // { solicitudId, prueba, muestra, unidad, grupoPaciente, resultado, estado, validadoPor, fecha }
+  pruebas: [],
+  hemovigilancia: [],
+
+  auditLog: [],
+
+  // Pantallas que el rol de la sesion puede ver (las entrega el servidor)
+  vistasPermitidas: [],
+
+  despachoScan: { din:null, hc:null },
+  reqCounter: 340,
+};
+
+/* =========================================================
+   "BASE DE DATOS" LOCAL DEL NAVEGADOR (localStorage)
+   Esta etapa del proyecto no tiene un backend con base de datos real:
+   cada carga de pagina recibe de nuevo los datos de ejemplo del
+   servidor (BaseDatosDemo). Para que la aplicacion se sienta realmente
+   conectada -que una solicitud creada desde la app movil aparezca
+   tambien en el panel web, y que los cambios sobrevivan a navegar
+   entre pantallas- usamos localStorage como una "base de datos" local:
+   cada vez que ocurre una accion (ver logAudit, el punto donde TODAS
+   las acciones del sistema quedan registradas) se guarda una foto de
+   las colecciones mutables; cada vez que una pagina carga sus datos
+   del servidor, si ya existe una version guardada en este navegador,
+   esa es la que se usa (porque refleja lo que el usuario hizo antes).
+========================================================= */
+const LOCAL_DB_KEY = 'bancosangre_local_db';
+
+/* MODO SERVIDOR: cuando la aplicacion corre en Spring Boot (layout.html activa
+   window.PERSISTENCIA = 'servidor'), cada cambio se guarda en la base de datos
+   PostgreSQL con POST /api/sincronizar y el navegador NO guarda nada por su
+   cuenta. Sin esa marca (por ejemplo la version de demostracion que se abre
+   sola en un navegador) los cambios se guardan en localStorage. */
+const MODO_SERVIDOR = (typeof window !== 'undefined' && window.PERSISTENCIA === 'servidor');
+
+/* Colecciones que la pantalla actual recibió del servidor. Solo esas se
+   guardan: si se guardaran todas, una pantalla que no carga (por ejemplo)
+   las solicitudes escribiría una lista vacía encima de las que sí existen. */
+let clavesCargadas = [];
+
+/* Colecciones que se envian a la base (el resto se lee y no se edita aqui) */
+const COLECCIONES_GUARDABLES = ['usuarios','donantes','inventory','serologia','solicitudes','pruebas','hemovigilancia','intercambios'];
+
+/* Novedades que solo se agregan (bitacora, alertas, despachos): se envian una
+   vez y se vacian. */
+function colasVacias(){ return { auditNuevos: [], alertasNuevas: [], despachosNuevos: [] }; }
+let pendientes = colasVacias();
+
+function leerLocal(){
+  if (MODO_SERVIDOR) return {};
+  try {
+    const raw = localStorage.getItem(LOCAL_DB_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) { return {}; }
+}
+
+let envioProgramado = false;
+let colaEnvio = Promise.resolve();
+
+function persistirEstado(){
+  if (MODO_SERVIDOR) {
+    // Se junta todo lo que cambio en este mismo instante y se manda una sola vez
+    if (envioProgramado) return;
+    envioProgramado = true;
+    setTimeout(() => { envioProgramado = false; enviarAlServidor(); }, 0);
+    return;
+  }
+  try {
+    const guardado = leerLocal();
+    clavesCargadas.forEach(clave => { guardado[clave] = state[clave]; });
+    localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(guardado));
+  } catch (e) { /* localStorage no disponible: la app sigue funcionando solo con datos del servidor */ }
+}
+
+function enviarAlServidor(){
+  const cambios = Object.assign({}, pendientes);
+  pendientes = colasVacias();
+  clavesCargadas.forEach(clave => {
+    if (COLECCIONES_GUARDABLES.includes(clave)) cambios[clave] = state[clave];
+  });
+  const cuerpo = JSON.stringify(cambios);
+  colaEnvio = colaEnvio
+    .then(() => fetch('/api/sincronizar', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: cuerpo, keepalive: cuerpo.length < 60000,
+    }))
+    .then(r => r.json().catch(() => ({ ok: false, error: 'Respuesta invalida del servidor' })))
+    .then(j => {
+      if (!j.ok) throw new Error(j.error || 'Error desconocido');
+      // Avisa a otras pestanas abiertas (por ejemplo la app movil) que hay novedades
+      try { localStorage.setItem('bancosangre_evento', String(Date.now())); } catch (e) { /* sin almacenamiento */ }
+    })
+    .catch(e => {
+      toast('No se pudo guardar en la base de datos: ' + e.message, true);
+      // La pantalla queda distinta a la base: se recarga para mostrar lo que realmente hay guardado
+      setTimeout(() => location.reload(), 3500);
+    });
+}
+
+/** Vuelve a pedir al servidor colecciones ya guardadas (nombre en pantalla -> nombre en la base). */
+function recargarDelServidor(mapa){
+  return Promise.all(Object.entries(mapa).map(([clave, coleccion]) =>
+    fetch('/api/listar/' + coleccion, { credentials: 'same-origin' })
+      .then(r => r.json()).then(datos => { state[clave] = datos; })
+  ));
+}
+
+/**
+ * Se llama en cada pantalla con el nombre de las colecciones que acaba de
+ * recibir del servidor. En modo local (demo), si el navegador ya guardó una
+ * versión de alguna de ellas, esa es la que vale. En modo servidor la base
+ * de datos siempre manda.
+ */
+function sincronizarLocal(...claves){
+  clavesCargadas = claves;
+  if (MODO_SERVIDOR) return;
+  const guardado = leerLocal();
+  claves.forEach(clave => {
+    if (guardado[clave] !== undefined) state[clave] = guardado[clave];
+  });
+}
+
+/** Vuelve a los datos de ejemplo: borra lo guardado en este navegador. */
+function reiniciarDatosLocales(){
+  try { localStorage.removeItem(LOCAL_DB_KEY); } catch (e) { /* sin almacenamiento */ }
+}
+
+/** Identificador unico para registros creados en pantalla (eventos, intercambios) */
+function nuevoId(){
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+  });
+}
+
+const statusMeta = {
+  disponible:["green","Disponible"], reservado:["amber","Reservado"], cuarentena:["purple","Cuarentena"],
+  bloqueado:["red","Bloqueado"], vencido:["slate","Vencido"], despachado:["blue","Despachado"], incinerado:["char","Incinerado"], fraccionado:["slate","Fraccionado"],
+};
+const serologyMarkers = ["VIH 1/2","Hepatitis B (HBsAg)","Hepatitis C","Sífilis (VDRL/RPR)","Chagas","HTLV I/II"];
+
+/* ---------------- Utilidades ---------------- */
+function pill(colorClass, label){ return `<span class="pill ${colorClass}"><span class="dot"></span>${label}</span>`; }
+function nowStr(){
+  const d = new Date();
+  const p = n => String(n).padStart(2,'0');
+  return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+function parseFecha(txt){
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})/.exec(txt || '');
+  return m ? new Date(+m[3], +m[2]-1, +m[1]) : null;
+}
+function formatoFecha(d){
+  const p = n => String(n).padStart(2,'0');
+  return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()}`;
+}
+function sumarDias(fecha, dias){ const d = new Date(fecha.getTime()); d.setDate(d.getDate() + dias); return d; }
+function nombreDonante(dni){
+  const d = state.donantes.find(x => x.dni === dni);
+  return d ? d.nombre : null;
+}
+/* Código DIN de una donación nueva: centro + año + correlativo */
+function siguienteDIN(){
+  const mayor = state.inventory.reduce((m, u) => {
+    const n = parseInt(u.din.split('-')[0].slice(7), 10);
+    return isNaN(n) ? m : Math.max(m, n);
+  }, 0);
+  return 'W1237' + String(new Date().getFullYear()).slice(2) + String(mayor + 1).padStart(7, '0');
+}
+function randomIp(){ return `10.20.4.${Math.floor(Math.random()*250)+2}`; }
+
+function logAudit(action, resource){
+  const ip = randomIp();
+  const quien = `${state.currentUser} (${state.currentRole})`;
+  state.auditLog.unshift([nowStr(), quien, action, resource, ip]);
+  pendientes.auditNuevos.push({ usuario: quien, accion: action, recurso: String(resource), ip });
+  // En la versión SPA original solo volvia a pintar la tabla si la vista de
+  // Auditoria estaba activa en la misma pagina; ahora cada vista es una ruta
+  // real, asi que solo re-renderiza si el contenedor de esta pagina existe.
+  if(document.getElementById('audit-rows')) renderAudit();
+  // Toda accion registrada aqui es, por diseño, el punto donde algo cambio
+  // de verdad en el sistema: aprovechamos ese mismo punto para guardar la
+  // "base de datos" local (ver arriba) y que el cambio persista.
+  persistirEstado();
+}
+
+/* ---------------- Menú lateral ----------------
+   En pantallas grandes el menú está siempre a la vista (el botón ni aparece).
+   En el celular se desliza sobre el contenido: arranca cerrado y se abre con
+   el botón, igual que en cualquier aplicación móvil. */
+function alternarMenu(){
+  document.querySelector('.app')?.classList.toggle('menu-oculto');
+}
+
+function cerrarMenuEnCelular(){
+  if(window.matchMedia('(max-width: 560px)').matches){
+    document.querySelector('.app')?.classList.add('menu-oculto');
+  }
+}
+
+function prepararMenu(){
+  const app = document.querySelector('.app');
+  if(!app) return;
+  app.classList.toggle('menu-oculto', window.matchMedia('(max-width: 560px)').matches);
+  // Tocar el velo o elegir un módulo cierra el menú
+  app.addEventListener('click', e => {
+    if(e.target === app) cerrarMenuEnCelular();
+    if(e.target.closest('.nav-item')) cerrarMenuEnCelular();
+  });
+}
+document.addEventListener('DOMContentLoaded', prepararMenu);
+
+function toast(message, isError){
+  const wrap = document.getElementById('toast-wrap');
+  const el = document.createElement('div');
+  el.className = 'toast' + (isError ? ' err' : '');
+  el.textContent = message;
+  wrap.appendChild(el);
+  requestAnimationFrame(()=> el.classList.add('show'));
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(), 250); }, 3200);
+}
+
+function openModal(html){
+  document.getElementById('modal-box').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
+document.getElementById('modal-overlay').addEventListener('click', e=>{ if(e.target.id==='modal-overlay') closeModal(); });
+
+/* Suma de verificación ISBT 128 (módulo 37-2, simplificada para esta versión) */
+function computeChecksum37(digits){
+  const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let sum = 0;
+  for(let i=0;i<digits.length;i++){ sum += (alphabet.indexOf(digits[i])+1) * (i+1); }
+  return alphabet[sum % 37];
+}
+function generarDIN(){
+  const base = "1237250" + String(Math.floor(100000 + Math.random()*899999));
+  const check = computeChecksum37(base);
+  return "W" + base + check;
+}
+
+/* ---------------- Render: Dashboard ---------------- */
+function renderAbo(){
+  document.getElementById('abo-grid').innerHTML = state.aboGroups.map(([grp,units,cap,critical])=>{
+    const pct = Math.max(6, Math.min(100, (units/cap)*100));
+    return `<div style="padding:12px 14px; border-radius:10px; background:${critical?'var(--red-50)':'var(--bg)'};">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <span style="font-weight:700; font-size:16px;">${grp}</span>
+        <span style="font-weight:600; font-size:14px; color:${critical?'var(--red-700)':'var(--ink-900)'};">${units}</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%; background:${critical?'var(--red-700)':'var(--green-700)'};"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderAlerts(){
+  // pushAlert() se llama desde acciones que pueden ocurrir en cualquier
+  // pantalla (no solo el Dashboard, que es la unica con #alerts-list);
+  // sin esta guarda, la linea de abajo lanzaba un error en cualquier otra
+  // vista y cortaba en seco el resto de la funcion que la llamó (por eso
+  // "no pasaba nada" al enviar una solicitud o simular un push movil).
+  const el = document.getElementById('alerts-list');
+  if(!el) return;
+  el.innerHTML = state.alerts.map(([color,title,meta])=>{
+    const dotColor = {red:'var(--red-700)',amber:'var(--amber-700)',blue:'var(--blue-700)',purple:'var(--purple-700)'}[color];
+    return `<div class="timeline-item"><div class="timeline-dot" style="background:${dotColor};"></div>
+      <div><div class="timeline-title">${title}</div><div class="timeline-meta">${meta}</div></div></div>`;
+  }).join('');
+}
+
+function pushAlert(color, title, meta){
+  state.alerts.unshift([color, title, meta]);
+  state.alerts = state.alerts.slice(0, 6);
+  pendientes.alertasNuevas.push({ color, titulo: title, detalle: meta });
+  persistirEstado();
+  renderAlerts();
+  // La app móvil espeja las mismas alertas del Dashboard: si esta pagina
+  // define su propio render (ver movil.html), lo refrescamos tambien.
+  if (typeof renderMovil === 'function') renderMovil(true);
+}
+
+/* Accesos rapidos posibles, en orden de prioridad. Cada uno apunta a una
+   pantalla: al dibujarlos se filtran contra las pantallas que el rol de la
+   sesion tiene permitidas (state.vistasPermitidas, que viene del servidor
+   desde Rol.java), asi que un Medico Solicitante nunca ve "Despachar una
+   unidad" y un Administrador no ve accesos que no le tocan. */
+const quickAccessData = [
+  ["Nueva solicitud de sangre","solicitudes"], ["Registrar un donante","donantes"],
+  ["Etiquetar una unidad","etiquetado"], ["Despachar una unidad","despacho"],
+  ["Ver el inventario","inventario"], ["Registrar una reacción","hemovigilancia"],
+  ["Pedir a otro hospital","interhospitalario"], ["Abrir la app móvil","movil"],
+  ["Generar un reporte","reportes"], ["Administrar usuarios","administracion"],
+  ["Revisar la auditoría","auditoria"],
+];
+/* Si esta pagina se esta dibujando en modo movil (dentro del celular de la
+   pantalla "Aplicacion movil"), los enlaces internos deben seguir en modo
+   movil; si no, el celular saltaria a la version de escritorio. */
+function rutaVista(vista){
+  const enMovil = document.querySelector('.app-movil') !== null;
+  return '/' + vista + (enMovil ? '?movil=1' : '');
+}
+function renderQuickAccess(){
+  const permitidas = state.vistasPermitidas || [];
+  const accesos = quickAccessData
+    .filter(([, view]) => !permitidas.length || permitidas.includes(view))
+    .slice(0, 4);
+  document.getElementById('quick-access').innerHTML = accesos.map(([title,view])=>{
+    return `<button class="card" style="cursor:pointer; text-align:left; padding:16px; border-radius:12px;" onclick="location.href=rutaVista('${view}')">
+      <div style="font-weight:600; font-size:13.5px;">${title}</div>
+    </button>`;
+  }).join('');
+}
+
+/* ---------------- Render + acciones: Inventario (RF-09, RF-10) ---------------- */
+function renderInventory(){
+  const q = (document.getElementById('inv-search')?.value || '').trim().toLowerCase();
+  const filter = document.getElementById('inv-filter')?.value || '';
+  const rows = state.inventory
+    .filter(u => !filter || u.status === filter)
+    .filter(u => !q || u.din.toLowerCase().includes(q) || u.abo.toLowerCase().includes(q));
+
+  const tabla = document.getElementById('inventory-rows');
+  if(tabla) tabla.innerHTML = rows.map(u=>{
+    const [color,label] = statusMeta[u.status];
+    return `<tr>
+      <td class="mono">${u.din}</td>
+      <td class="cell-strong">${u.producto}</td>
+      <td class="mono">${u.abo}</td>
+      <td class="cell-muted">${u.camara}</td>
+      <td class="mono">${u.exp}</td>
+      <td>${pill(color,label)}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="verUnidad('${u.din}')">Ver</button></td>
+    </tr>`;
+  }).join('');
+  const countEl = document.getElementById('inv-count');
+  if(countEl) countEl.textContent = `${rows.length} de ${state.inventory.length} unidades mostradas · ordenadas por fecha de vencimiento`;
+
+  // refresh selects que dependen del inventario
+  fillFractSelect(); fillSerologiaSelect(); fillDespachoContext();
+  renderDonaciones();
+}
+
+/* Donaciones recibidas: una fila por bolsa que llegó de un donante, con su
+   tamizaje y los hemocomponentes que salieron de ella. Se ve aparte de la
+   lista de hemocomponentes para no mezclar datos del donante con el stock. */
+function renderDonaciones(){
+  const body = document.getElementById('donaciones-rows');
+  if(!body) return;
+  const q = (document.getElementById('don-inv-buscar')?.value || '').trim().toLowerCase();
+  const bolsas = state.inventory.filter(u => !u.din.includes('-') && u.donante && u.donante !== '—');
+  const filas = bolsas.filter(u => {
+    const nombre = (nombreDonante(u.donante) || '').toLowerCase();
+    return !q || nombre.includes(q) || u.donante.includes(q) || u.din.toLowerCase().includes(q);
+  });
+  body.innerHTML = filas.length ? filas.map(u => {
+    const sero = state.serologia.filter(r => r.din === u.din);
+    const malos = sero.filter(r => r.resultado !== 'No reactivo');
+    let tamizaje;
+    if(malos.length) tamizaje = pill('red', 'No conforme: ' + malos.map(r => r.marcador).join(', '));
+    else if(sero.length) tamizaje = pill('green', 'Conforme');
+    else if(u.status === 'cuarentena' || u.status === 'fraccionado') tamizaje = pill('purple', 'Pendiente');
+    else tamizaje = pill('slate', 'Anterior al sistema');
+    const hijos = state.inventory.filter(h => h.din.startsWith(u.din + '-'));
+    const obtenidos = hijos.length
+      ? hijos.map(h => `<div>${h.producto} <span class="cell-muted mono">${h.din.split('-')[1]}</span></div>`).join('')
+      : `<span class="cell-muted">${u.producto === 'Sangre Total' ? 'Sin fraccionar' : u.producto}</span>`;
+    return `<tr>
+      <td class="mono">${u.din}</td>
+      <td class="cell-strong">${nombreDonante(u.donante) || '—'}</td>
+      <td class="mono">${u.donante}</td>
+      <td class="mono">${u.abo}</td>
+      <td>${tamizaje}</td>
+      <td>${obtenidos}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="6" class="cell-muted">No hay donaciones que coincidan.</td></tr>`;
+  const total = document.getElementById('donaciones-count');
+  if(total) total.textContent = `${filas.length} de ${bolsas.length} donaciones registradas`;
+}
+
+/* ---------------- Exportacion del inventario a CSV ----------------
+   Exporta exactamente las unidades que se estan viendo (respeta el buscador
+   y el filtro por estado). Se abre una ventana con la vista previa del
+   archivo y dos acciones: descargarlo o copiarlo al portapapeles. */
+function filasInventarioVisibles(){
+  const q = (document.getElementById('inv-search')?.value || '').trim().toLowerCase();
+  const filtro = document.getElementById('inv-filter')?.value || '';
+  return state.inventory
+    .filter(u => !filtro || u.status === filtro)
+    .filter(u => !q || u.din.toLowerCase().includes(q) || u.abo.toLowerCase().includes(q));
+}
+
+function inventarioComoCSV(filas){
+  const cabecera = ['DIN (ISBT 128)', 'Hemocomponente', 'ABO/Rh', 'Camara', 'Vence', 'Estado'];
+  const cuerpo = filas.map(u => [u.din, u.producto, u.abo, u.camara, u.exp, statusMeta[u.status][1]]);
+  // Separador ";" y comillas dobles: es lo que abre bien Excel en configuracion regional peruana.
+  return [cabecera, ...cuerpo]
+    .map(fila => fila.map(celda => `"${String(celda).replace(/"/g, '""')}"`).join(';'))
+    .join('\r\n');
+}
+
+function exportarInventario(){
+  const filas = filasInventarioVisibles();
+  if(!filas.length){ toast('No hay unidades que exportar con el filtro actual', true); return; }
+  const csv = inventarioComoCSV(filas);
+  const vistaPrevia = csv.split('\r\n').slice(0, 6).join('\n');
+  const resto = filas.length > 5 ? `\n… y ${filas.length - 5} unidades más` : '';
+  window.csvInventario = csv;
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Exportar inventario</div>
+      <div class="card-desc">${filas.length} ${filas.length === 1 ? 'unidad' : 'unidades'} · archivo CSV compatible con Excel</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <pre class="csv-preview">${vistaPrevia.replace(/</g, '&lt;')}${resto}</pre>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
+      <button class="btn btn-primary btn-sm" onclick="descargarInventarioCSV()">Descargar CSV</button>
+      <button class="btn btn-ghost btn-sm" onclick="copiarInventarioCSV()">Copiar al portapapeles</button>
+    </div>
+  `);
+}
+
+function nombreArchivoInventario(){
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  return `inventario-hlev-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}.csv`;
+}
+
+function descargarInventarioCSV(){
+  const nombre = nombreArchivoInventario();
+  // El "﻿" es la marca que necesita Excel para respetar las tildes.
+  const blob = new Blob(['﻿' + window.csvInventario], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const enlace = document.createElement('a');
+  enlace.href = url;
+  enlace.download = nombre;
+  document.body.appendChild(enlace);
+  enlace.click();
+  enlace.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  logAudit('Exportó el inventario a CSV', nombre);
+  toast(`Inventario exportado: ${nombre}`);
+  closeModal();
+}
+
+function copiarInventarioCSV(){
+  const texto = window.csvInventario;
+  const listo = () => { logAudit('Copió el inventario en formato CSV', `${texto.split('\r\n').length - 1} unidades`);
+                        toast('Inventario copiado al portapapeles'); closeModal(); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(texto).then(listo).catch(() => seleccionarVistaPrevia());
+  } else {
+    seleccionarVistaPrevia();
+  }
+}
+
+function seleccionarVistaPrevia(){
+  const pre = document.querySelector('.csv-preview');
+  if(!pre){ toast('No se pudo copiar automáticamente', true); return; }
+  const rango = document.createRange();
+  rango.selectNodeContents(pre);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(rango);
+  toast('Texto seleccionado: copia con Ctrl+C', true);
+}
+
+function verUnidad(din){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  const [color,label] = statusMeta[u.status];
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Unidad ${u.din}</div><div class="card-desc">${u.producto} · ${u.abo}</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+      <div class="match-row"><span>Cámara</span><strong>${u.camara}</strong></div>
+      <div class="match-row"><span>Vencimiento</span><strong>${u.exp}</strong></div>
+      <div class="match-row"><span>Estado actual</span>${pill(color,label)}</div>
+    </div>
+    <div class="divider" style="margin:16px 0;"></div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-ghost btn-sm" onclick="cambiarEstadoUnidad('${u.din}','reservado')">Reservar</button>
+      <button class="btn btn-ghost btn-sm" onclick="cambiarEstadoUnidad('${u.din}','disponible')">Liberar a disponible</button>
+      <button class="btn btn-ghost btn-sm" onclick="cambiarEstadoUnidad('${u.din}','bloqueado')">Bloquear</button>
+      <button class="btn btn-ghost btn-sm" onclick="descartarUnidad('${u.din}')">Descartar</button>
+      <button class="btn btn-ghost btn-sm" onclick="verTrazabilidad('${u.din}')">Ver trazabilidad</button>
+    </div>
+  `);
+}
+
+/* El descarte pide el motivo en una ventana propia del sistema: los cuadros
+   nativos del navegador (prompt) estan bloqueados en muchos navegadores y
+   dejaban el boton sin efecto. */
+function descartarUnidad(din){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Descartar unidad</div><div class="card-desc">DIN ${u.din} · ${u.producto}</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="field" style="margin-bottom:14px;">
+      <label>Motivo del descarte</label>
+      <select class="input" id="descarte-motivo">
+        <option>Caducidad</option>
+        <option>Rotura de la bolsa</option>
+        <option>Contaminación</option>
+        <option>Ruptura de la cadena de frío</option>
+        <option>Reactividad serológica confirmada</option>
+      </select>
+    </div>
+    <div class="checkline" style="margin-bottom:14px;">
+      <input type="checkbox" id="descarte-evidencia" checked>
+      <label for="descarte-evidencia" style="font-weight:400;">Se adjuntó evidencia fotográfica del descarte</label>
+    </div>
+    <div style="display:flex; gap:8px; justify-content:flex-end;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="confirmarDescarte('${u.din}')">Confirmar descarte</button>
+    </div>
+  `);
+}
+
+function confirmarDescarte(din){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  const motivo = document.getElementById('descarte-motivo').value;
+  const conEvidencia = document.getElementById('descarte-evidencia').checked;
+  u.status = 'incinerado';
+  logAudit(`Descartó unidad — motivo: ${motivo}${conEvidencia ? ' (con evidencia fotográfica adjunta)' : ''}`, `DIN ${din}`);
+  toast(`Unidad ${din} descartada e incinerada`, true);
+  closeModal();
+  renderInventory();
+}
+
+function verTrazabilidad(din){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  const raiz = u.din.split('-')[0];
+  const don = state.donantes.find(x=>x.dni===u.donante);
+  const sero = state.serologia.filter(x=>x.din===raiz);
+  let tamizaje;
+  if(sero.length){
+    const malos = sero.filter(x=>x.resultado!=='No reactivo');
+    tamizaje = malos.length
+      ? [ 'var(--red-700)', 'Tamizaje serológico: no conforme', `${malos.map(x=>x.marcador+' — '+x.resultado).join(', ')} · ${sero[0].digitador} · ${sero[0].fecha}` ]
+      : [ 'var(--green-700)', 'Tamizaje serológico: conforme', `${sero.length} marcadores no reactivos · ${sero[0].digitador} · ${sero[0].fecha}` ];
+  } else if(u.status==='cuarentena' || u.status==='fraccionado'){
+    tamizaje = [ 'var(--purple-700)', 'Tamizaje serológico pendiente', 'La unidad sigue en cuarentena hasta registrar los resultados' ];
+  } else {
+    tamizaje = [ 'var(--slate-500)', 'Tamizaje serológico', 'Realizado antes de este sistema (sin detalle registrado)' ];
+  }
+  const pasos = [
+    [ 'var(--green-700)', 'Donación', don ? `${don.nombre} · DNI ${don.dni}` : 'Donante no registrado (unidad anterior a este sistema)' ],
+    tamizaje,
+  ];
+  if(u.din.includes('-')) pasos.push([ 'var(--blue-700)', 'Fraccionamiento', `Componente obtenido de la bolsa ${raiz}` ]);
+  pasos.push([ 'var(--amber-700)', 'Ingreso al inventario', u.camara ]);
+  pasos.push([ 'var(--red-700)', `Estado actual: ${statusMeta[u.status][1]}`, `Vence ${u.exp}` ]);
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Trazabilidad completa</div><div class="card-desc">DIN ${din} — ciclo de vida</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="timeline">
+      ${pasos.map(([color, titulo, detalle]) => `<div class="timeline-item"><div class="timeline-dot" style="background:${color};"></div><div><div class="timeline-title">${titulo}</div><div class="timeline-meta">${detalle}</div></div></div>`).join('')}
+    </div>
+  `);
+}
+
+function cambiarEstadoUnidad(din, nuevoEstado){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  const liberar = nuevoEstado === 'disponible' || nuevoEstado === 'reservado';
+  if(liberar && u.status === 'cuarentena'){
+    toast('La unidad sigue en cuarentena: registra primero su tamizaje serológico (Donantes)', true); return;
+  }
+  const raiz = u.din.split('-')[0];
+  if(liberar && u.status === 'bloqueado' && state.serologia.some(x=>x.din===raiz && x.resultado!=='No reactivo')){
+    toast('Esta unidad fue bloqueada por su tamizaje serológico y no puede liberarse', true); return;
+  }
+  u.status = nuevoEstado;
+  logAudit(`Cambió estado de unidad a "${statusMeta[nuevoEstado][1]}"`, `DIN ${din}`);
+  toast(`Unidad ${din} → ${statusMeta[nuevoEstado][1]}`);
+  closeModal();
+  renderInventory();
+}
+
+/* Fraccionamiento (RF-06) */
+function fillFractSelect(){
+  const sel = document.getElementById('fract-din');
+  if(!sel) return;
+  const current = sel.value;
+  const bolsas = state.inventory.filter(u=>u.producto==='Sangre Total' && (u.status==='disponible' || u.status==='cuarentena'));
+  sel.innerHTML = bolsas.map(u=>`<option value="${u.din}">${u.din} · ${u.abo} · ${statusMeta[u.status][1]}</option>`).join('')
+    || '<option value="">Sin bolsas de sangre total por fraccionar</option>';
+  if(current && bolsas.some(u=>u.din===current)) sel.value = current;
+}
+function fraccionarUnidad(){
+  const din = document.getElementById('fract-din').value;
+  if(!din){ toast('No hay una bolsa de sangre total para fraccionar', true); return; }
+  const matriz = state.inventory.find(u=>u.din===din);
+  const children = [
+    {suffix:"CH", producto:"Concentrado de Hematíes"},
+    {suffix:"PFC", producto:"Plasma Fresco Congelado"},
+    {suffix:"CRIO1", producto:"Crioprecipitado"},
+    {suffix:"CP", producto:"Concentrado de Plaquetas"},
+  ];
+  // Los componentes salen con el mismo estado de la bolsa (si aún está en
+  // cuarentena, siguen en cuarentena hasta que se registre el tamizaje) y
+  // conservan el donante de origen.
+  children.forEach(c=>{
+    state.inventory.push({
+      din: din + "-" + c.suffix, producto: c.producto, abo: matriz.abo,
+      camara: matriz.camara, exp: matriz.exp, status: matriz.status, donante: matriz.donante,
+    });
+  });
+  matriz.status = 'fraccionado';
+  logAudit(`Fraccionó bolsa de sangre total en 4 hemocomponentes`, `DIN matriz ${din}`);
+  toast(`Se generaron 4 hemocomponentes a partir de ${din}`);
+  renderInventory();
+}
+
+/* ---------------- Donantes (RF-03, RF-04) ---------------- */
+function evaluarAptitud(){
+  const peso = parseFloat(document.getElementById('don-peso').value);
+  const hb = parseFloat(document.getElementById('don-hb').value);
+  const antecedentes = document.getElementById('don-antecedentes').value.toLowerCase();
+  const pill = document.getElementById('aptitud-pill');
+
+  let motivo = null;
+  if(!isNaN(peso) && peso < 50) motivo = `Peso bajo el mínimo para donar (${peso} kg < 50 kg)`;
+  else if(!isNaN(hb) && hb < 12.5) motivo = `Hemoglobina bajo el mínimo (${hb} g/dL < 12.5 g/dL)`;
+  else if(antecedentes.includes('viaje') || antecedentes.includes('malaria') || antecedentes.includes('riesgo')) motivo = `Antecedente epidemiológico declarado`;
+
+  if(motivo){
+    pill.className = 'pill amber'; pill.innerHTML = `<span class="dot"></span>Aptitud automática: DIFERIDO — ${motivo}`;
+  } else {
+    pill.className = 'pill green'; pill.innerHTML = `<span class="dot"></span>Evaluación: APTO para donar`;
+  }
+  return motivo;
+}
+
+/* ---------------- Registro de donantes ---------------- */
+function renderDonantes(){
+  const body = document.getElementById('donantes-rows');
+  if(!body) return;
+  const q = (document.getElementById('don-buscar')?.value || '').trim().toLowerCase();
+  const filas = state.donantes.filter(d =>
+    !q || d.nombre.toLowerCase().includes(q) || d.dni.includes(q));
+  body.innerHTML = filas.length ? filas.map(d => {
+    const [color, etiqueta] = d.estado.split(':');
+    return `<tr>
+      <td class="cell-strong">${d.nombre}</td>
+      <td class="mono">${d.dni}</td>
+      <td class="mono">${d.abo}</td>
+      <td class="cell-muted">${d.tipo}</td>
+      <td class="mono">${d.ultimaDonacion}</td>
+      <td class="mono">${d.donaciones}</td>
+      <td>${pill(color, etiqueta)}</td>
+      <td>${color === 'green' ? `<button class="btn btn-ghost btn-sm" onclick="abrirModalDonacion('${d.dni}')">Registrar donación</button>` : ''}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="8" class="cell-muted">Ningún donante coincide con la búsqueda.</td></tr>`;
+  const total = document.getElementById('don-count');
+  if(total) total.textContent = `${filas.length} de ${state.donantes.length} donantes registrados`;
+}
+
+function registrarDonante(){
+  if(!VAL.formulario([
+    ['don-nombre','nombre',{label:'Nombres y apellidos'}],
+    ['don-dni','dni',{label:'DNI'}],
+    ['don-fecnac','fechaNacimiento',{label:'Fecha de nacimiento'}],
+    ['don-peso','peso',{label:'Peso'}],
+    ['don-hb','hemoglobina',{label:'Hemoglobina'}],
+    ['don-antecedentes','texto',{label:'Antecedentes',req:false}]
+  ])) return;
+  const nombre = document.getElementById('don-nombre').value.trim();
+  const dni = document.getElementById('don-dni').value.trim();
+  if(state.donantes.some(d => d.dni === dni)){ toast('Ya existe un donante registrado con ese DNI', true); return; }
+  if(!document.getElementById('don-consentimiento').checked){
+    toast('Falta registrar el consentimiento informado firmado', true);
+    return;
+  }
+  const motivo = evaluarAptitud();
+  const donante = {
+    nombre, dni,
+    abo: document.getElementById('don-abo').value || 'Por confirmar',
+    tipo: document.getElementById('don-tipo').selectedOptions[0].textContent,
+    ultimaDonacion: '—',
+    donaciones: 0,
+    estado: motivo ? 'amber:Diferido' : 'green:Apto',
+    fechaNacimiento: document.getElementById('don-fecnac').value.trim(),
+    pesoKg: parseFloat(document.getElementById('don-peso').value) || null,
+    antecedentes: document.getElementById('don-antecedentes').value.trim(),
+    consentimiento: true,
+    motivoDiferimiento: motivo || null,
+    tipoDiferimiento: motivo ? 'Temporal' : null,
+    vigenciaDiferimiento: '—',
+  };
+  state.donantes.unshift(donante);
+  renderDonantes();
+
+  if(motivo){
+    renderDiferimientos();
+    logAudit('Registró donante — diferido automáticamente', nombre);
+    toast(`${nombre} quedó diferido: ${motivo}`, true);
+  } else {
+    logAudit('Registró la ficha de un donante — APTO', nombre);
+    toast(`${nombre} quedó registrado como apto. Ya puede registrar su donación`);
+  }
+  // El formulario queda listo para el siguiente donante
+  ['don-nombre','don-dni','don-fecnac','don-peso','don-hb','don-abo','don-antecedentes'].forEach(id => {
+    const campo = document.getElementById(id);
+    if(campo) campo.value = '';
+  });
+  VAL.limpiar(['don-nombre','don-dni','don-fecnac','don-peso','don-hb','don-antecedentes']);
+  document.getElementById('don-consentimiento').checked = false;
+  switchTab('donantes','donantes:registro');
+}
+
+/* ---------------- Donación: del donante a la unidad ---------------- */
+const INTERVALO_DONACION_DIAS = 90;
+const GRUPOS_ABO = ['O POS','O NEG','A POS','A NEG','B POS','B NEG','AB POS','AB NEG'];
+
+function motivoNoDonar(d){
+  const etiqueta = d.estado.split(':')[1];
+  if(!d.estado.startsWith('green')) return `${d.nombre} está ${etiqueta.toLowerCase()} y no puede donar`;
+  const ultima = parseFecha(d.ultimaDonacion);
+  if(ultima){
+    const dias = Math.floor((Date.now() - ultima.getTime()) / 86400000);
+    if(dias >= 0 && dias < INTERVALO_DONACION_DIAS){
+      return `${d.nombre} donó hace ${dias} días; podrá volver a donar desde el ${formatoFecha(sumarDias(ultima, INTERVALO_DONACION_DIAS))}`;
+    }
+  }
+  return null;
+}
+function abrirModalDonacion(dni){
+  const d = state.donantes.find(x => x.dni === dni);
+  if(!d) return;
+  const motivo = motivoNoDonar(d);
+  if(motivo){ toast(motivo, true); return; }
+  openModal(`
+    <div class="modal-head"><div><div class="modal-title">Registrar donación</div>
+    <div class="card-desc">${d.nombre} · DNI ${d.dni}</div></div>
+    <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="field"><label>Grupo sanguíneo confirmado en laboratorio</label>
+        <select class="input" id="dn-grupo">
+          ${GRUPOS_ABO.map(g => `<option ${g === d.abo ? 'selected' : ''}>${g}</option>`).join('')}
+        </select>
+      </div>
+      <div class="cell-muted" style="font-size:12.5px;">
+        Se generará una bolsa de <strong>sangre total</strong> con su código DIN. Entra al inventario
+        <strong>en cuarentena</strong> y solo pasa a disponible cuando su tamizaje serológico sale conforme.
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="confirmarDonacion('${d.dni}')">Registrar donación</button>
+    </div>`);
+}
+function confirmarDonacion(dni){
+  const d = state.donantes.find(x => x.dni === dni);
+  if(!d) return;
+  const motivo = motivoNoDonar(d);
+  if(motivo){ toast(motivo, true); return; }
+  const grupo = document.getElementById('dn-grupo').value;
+  const din = siguienteDIN();
+  const hoy = new Date();
+  state.inventory.push({
+    din, producto: 'Sangre Total', abo: grupo, camara: 'Cámara 1 · Refrig.',
+    exp: formatoFecha(sumarDias(hoy, 35)), status: 'cuarentena', donante: d.dni,
+  });
+  d.donaciones += 1;
+  d.ultimaDonacion = formatoFecha(hoy);
+  d.abo = grupo;
+  logAudit('Registró una donación — unidad en cuarentena', `DIN ${din} · ${d.nombre}`);
+  toast(`Donación registrada: unidad ${din} en cuarentena, pendiente de tamizaje`);
+  closeModal();
+  renderDonantes();
+  fillSerologiaSelect();
+}
+
+function renderDiferimientos(){
+  const tabla = document.getElementById('diferimiento-rows');
+  if(!tabla) return;
+  // Los diferidos se calculan de los propios donantes: un solo dato, sin lista aparte
+  const diferidos = state.donantes.filter(d => !d.estado.startsWith('green'))
+    .map(d => [d.nombre, d.motivoDiferimiento || 'Sin motivo registrado',
+               d.estado.startsWith('red') ? 'red' : 'amber',
+               d.tipoDiferimiento || (d.estado.startsWith('red') ? 'Permanente' : 'Temporal'),
+               d.vigenciaDiferimiento || '—']);
+  tabla.innerHTML = diferidos.map(([nombre,motivo,color,tipo,vigencia])=>{
+    const tipoColor = tipo==='Permanente' ? 'red' : 'amber';
+    const estado = tipo==='Permanente' ? pill('red','Excluido') : pill('amber','Diferido');
+    return `<tr><td class="cell-strong">${nombre}</td><td class="cell-muted">${motivo}</td><td>${pill(tipoColor,tipo)}</td><td class="mono">${vigencia}</td><td>${estado}</td></tr>`;
+  }).join('');
+}
+
+/* ---------------- Serología (RF-07, RF-08) ----------------
+   Cada marcador se digita dos veces por separado (Digitación 1 y 2).
+   Solo se acepta el resultado si las dos coinciden; así un error de tipeo no
+   deja pasar una unidad contaminada. Un resultado reactivo o indeterminado
+   bloquea la bolsa (y todos sus hemocomponentes) y difiere al donante. */
+function unidadesPorTamizar(){
+  return state.inventory.filter(u => !u.din.includes('-') && (u.status === 'cuarentena' ||
+    (u.status === 'fraccionado' && state.inventory.some(h => h.din.startsWith(u.din + '-') && h.status === 'cuarentena'))));
+}
+function fillSerologiaSelect(){
+  const sel = document.getElementById('serologia-din');
+  if(!sel) return;
+  const current = sel.value;
+  const pendientes = unidadesPorTamizar();
+  sel.innerHTML = pendientes.map(u=>`<option value="${u.din}">${u.din} · ${u.producto} · ${nombreDonante(u.donante) || 'donante no registrado'}</option>`).join('')
+    || '<option value="">Sin unidades en cuarentena</option>';
+  if(current && pendientes.some(u=>u.din===current)) sel.value = current;
+  renderSerologia();
+  renderTamizajes();
+}
+const OPCIONES_SERO = '<option value="">Seleccionar…</option><option>No reactivo</option><option>Reactivo</option><option>Indeterminado</option>';
+function renderSerologia(){
+  const din = document.getElementById('serologia-din')?.value;
+  const body = document.getElementById('serologia-rows');
+  if(!body) return;
+  if(!din){ body.innerHTML = `<tr><td colspan="4" class="cell-muted">No hay unidades pendientes de tamizaje.</td></tr>`; return; }
+  body.innerHTML = serologyMarkers.map((m,i)=>`
+    <tr>
+      <td class="cell-strong">${m}</td>
+      <td><select class="select-inline" id="sero-1-${i}" onchange="actualizarEstadoSerologia(${i})">${OPCIONES_SERO}</select></td>
+      <td><select class="select-inline" id="sero-2-${i}" onchange="actualizarEstadoSerologia(${i})">${OPCIONES_SERO}</select></td>
+      <td id="sero-estado-${i}">${pill('slate','Pendiente')}</td>
+    </tr>`).join('');
+  document.getElementById('serologia-alert').innerHTML = '';
+}
+function actualizarEstadoSerologia(i){
+  const v1 = document.getElementById(`sero-1-${i}`).value;
+  const v2 = document.getElementById(`sero-2-${i}`).value;
+  document.getElementById(`sero-estado-${i}`).innerHTML =
+    !v1 || !v2 ? pill('slate','Pendiente') : v1 === v2 ? pill('green','Coinciden') : pill('red','No coinciden');
+}
+function renderTamizajes(){
+  const body = document.getElementById('tamizajes-rows');
+  if(!body) return;
+  const grupos = [];
+  state.serologia.forEach(r => {
+    let g = grupos.find(x => x.din === r.din);
+    if(!g){ g = { din: r.din, filas: [] }; grupos.push(g); }
+    g.filas.push(r);
+  });
+  body.innerHTML = grupos.length ? grupos.reverse().map(g => {
+    const unidad = state.inventory.find(u => u.din === g.din);
+    const malos = g.filas.filter(r => r.resultado !== 'No reactivo');
+    const resultado = malos.length
+      ? pill('red', malos.map(r => `${r.marcador}: ${r.resultado}`).join(', '))
+      : pill('green', 'Conforme — todos no reactivos');
+    return `<tr><td class="mono">${g.din}</td><td class="cell-muted">${nombreDonante(unidad?.donante) || '—'}</td>
+      <td>${resultado}</td><td class="cell-muted">${g.filas[0].digitador}<div>${g.filas[0].fecha}</div></td></tr>`;
+  }).join('') : `<tr><td colspan="4" class="cell-muted">Todavía no se registran tamizajes.</td></tr>`;
+}
+function guardarSerologia(){
+  const din = document.getElementById('serologia-din')?.value;
+  if(!din){ toast('Selecciona una unidad para registrar el tamizaje', true); return; }
+  const lecturas = serologyMarkers.map((m,i) => ({
+    m, d1: document.getElementById(`sero-1-${i}`).value, d2: document.getElementById(`sero-2-${i}`).value,
+  }));
+  if(lecturas.some(l => !l.d1 || !l.d2)){
+    toast('Completa las dos digitaciones de todos los marcadores', true); return;
+  }
+  const alerta = document.getElementById('serologia-alert');
+  const difieren = lecturas.filter(l => l.d1 !== l.d2);
+  if(difieren.length){
+    const lista = difieren.map(l => l.m).join(', ');
+    logAudit('Detectó discrepancia en la doble digitación serológica', `DIN ${din} · ${lista}`);
+    toast('Las dos digitaciones no coinciden: repite la lectura', true);
+    alerta.innerHTML = `
+      <div style="margin-top:14px; padding:12px 14px; background:var(--amber-50); border-radius:10px; font-size:12.5px; color:var(--amber-700);">
+        <strong>No se guardó el tamizaje.</strong> Las dos digitaciones no coinciden en: ${lista}. Repite la lectura de esos marcadores y vuelve a digitarlos.
+      </div>`;
+    return;
+  }
+  const por = `${state.currentUser} (${state.currentRole})`;
+  const fecha = nowStr().slice(0, 16);
+  state.serologia = state.serologia.filter(r => r.din !== din);
+  lecturas.forEach(l => state.serologia.push({ din, marcador: l.m, dig1: l.d1, dig2: l.d2, resultado: l.d1, digitador: por, fecha }));
+
+  const reactivos = lecturas.filter(l => l.d1 === 'Reactivo');
+  const indeterminados = lecturas.filter(l => l.d1 === 'Indeterminado');
+  const afectadas = state.inventory.filter(u => u.din === din || u.din.startsWith(din + '-'));
+  const raiz = state.inventory.find(u => u.din === din);
+  let mensajeAlerta = '';
+
+  if(reactivos.length || indeterminados.length){
+    const lista = [...reactivos, ...indeterminados].map(l => l.m).join(', ');
+    afectadas.forEach(u => { if(u.status !== 'fraccionado') u.status = 'bloqueado'; });
+    const donante = state.donantes.find(d => d.dni === raiz?.donante);
+    if(donante){
+      if(reactivos.length){
+        donante.estado = 'red:Excluido';
+        donante.motivoDiferimiento = `Tamizaje reactivo a ${lista} (DIN ${din}) — derivar a prueba confirmatoria`;
+        donante.tipoDiferimiento = 'Permanente'; donante.vigenciaDiferimiento = '—';
+      } else {
+        donante.estado = 'amber:Diferido';
+        donante.motivoDiferimiento = `Tamizaje indeterminado en ${lista} (DIN ${din}) — repetir la muestra`;
+        donante.tipoDiferimiento = 'Temporal'; donante.vigenciaDiferimiento = '—';
+      }
+    }
+    logAudit(`Bloqueó unidad automáticamente por resultado no conforme en ${lista}`, `DIN ${din}`);
+    pushAlert('red', 'Unidad bloqueada por tamizaje serológico', `DIN ${din} · ${lista}`);
+    toast(`Unidad ${din} bloqueada automáticamente (${lista})`, true);
+    mensajeAlerta = `
+      <div style="margin-top:14px; padding:12px 14px; background:var(--red-50); border-radius:10px; font-size:12.5px; color:var(--red-700);">
+        <strong>Bloqueo automático:</strong> la unidad DIN ${din}${afectadas.length > 1 ? ' y sus hemocomponentes' : ''} quedó bloqueada por ${lista}. No puede distribuirse ni despacharse.${donante ? ` El donante ${donante.nombre} quedó ${reactivos.length ? 'excluido hasta la prueba confirmatoria' : 'diferido'}.` : ''}
+      </div>`;
+  } else {
+    afectadas.forEach(u => { if(u.status === 'cuarentena') u.status = 'disponible'; });
+    logAudit('Registró tamizaje serológico conforme — unidad liberada', `DIN ${din}`);
+    toast(`Unidad ${din} conforme — liberada a inventario disponible`);
+  }
+  renderInventory();
+  renderDonantes();
+  renderDiferimientos();
+  fillSerologiaSelect();
+  alerta.innerHTML = mensajeAlerta;
+}
+
+/* ---------------- Etiquetado ISBT 128 (RF-05) ---------------- */
+function updateEtiquetaPreview(){
+  const abo = document.getElementById('et-abo').value;
+  const [code, nombre] = document.getElementById('et-producto').value.split('|');
+  document.getElementById('et-code').value = code;
+  document.getElementById('label-abo').textContent = abo;
+  document.getElementById('label-code').textContent = code;
+}
+function generarNuevoDIN(){
+  const din = generarDIN();
+  const now = new Date();
+  const p = n=>String(n).padStart(2,'0');
+  const colecta = `${p(now.getDate())}/${p(now.getMonth()+1)}/${now.getFullYear()} ${p(now.getHours())}:${p(now.getMinutes())}`;
+  const vence = new Date(now.getTime() + 30*24*3600*1000);
+  const venceStr = `${p(vence.getDate())}/${p(vence.getMonth()+1)}/${vence.getFullYear()}`;
+
+  document.getElementById('et-din').value = "=" + din;
+  document.getElementById('et-colecta').value = colecta;
+  document.getElementById('et-vence').value = venceStr;
+  document.getElementById('label-din-text').textContent = "=" + din;
+  document.getElementById('label-colecta').textContent = `${p(now.getDate())}/${p(now.getMonth()+1)}/${String(now.getFullYear()).slice(2)}`;
+  document.getElementById('label-vence').textContent = `${p(vence.getDate())}/${p(vence.getMonth()+1)}/${String(vence.getFullYear()).slice(2)}`;
+  updateEtiquetaPreview();
+
+  const abo = document.getElementById('et-abo').value;
+  const [code, nombre] = document.getElementById('et-producto').value.split('|');
+  state.inventory.unshift({din, producto: nombre, abo, camara:"Recepción · Sin asignar", exp: venceStr, status:"cuarentena"});
+  logAudit('Generó el código de una nueva donación', `DIN ${din}`);
+  toast(`Nuevo DIN generado: ${din}`);
+  renderInventory();
+}
+function imprimirEtiqueta(){
+  logAudit('Imprimió etiqueta ISBT 128', document.getElementById('et-din').value);
+  toast('Enviando etiqueta a la impresora térmica…');
+}
+function leerCodigo(){
+  toast('Escáner listo — apunte al código de barras 2D');
+}
+function generarCertificado(){
+  const din = document.getElementById('et-din').value;
+  logAudit('Generó certificado de calidad con código QR de verificación', din);
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Certificado de calidad</div><div class="card-desc">${din}</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:10px 0;">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <rect width="140" height="140" fill="#fff" stroke="#12161F" stroke-width="2"/>
+        ${Array.from({length:9}).map((_,r)=>Array.from({length:9}).map((_,c)=>((r*7+c*13)%3===0)?`<rect x="${8+c*14}" y="${8+r*14}" width="12" height="12" fill="#12161F"/>`:'').join('')).join('')}
+      </svg>
+      <div class="cell-muted" style="text-align:center;">Escanee para verificar que la unidad es auténtica</div>
+    </div>
+  `);
+  toast('Certificado de calidad generado con código QR');
+}
+
+/* ---------------- Solicitudes (RF-11, RF-12) ---------------- */
+function toggleTipoSolicitud(){
+  const esReserva = document.getElementById('sol-tipo').value === 'reserva';
+  document.getElementById('sol-reserva-field').style.display = esReserva ? '' : 'none';
+}
+function importarHIS(){
+  document.getElementById('sol-paciente').value = 'Marcos Effio Bravo';
+  document.getElementById('sol-hc').value = `HC-2026-${String(Math.floor(Math.random()*99999)+1).padStart(5,'0')}`;
+  document.getElementById('sol-cie10').value = 'K92.2 — Hemorragia digestiva alta';
+  document.getElementById('sol-componente').value = '2 unidades — Concentrado de Hematíes';
+  VAL.limpiar(['sol-paciente','sol-hc','sol-cie10','sol-componente']);
+  toast('Orden importada automáticamente desde el HIS/SIS hospitalario');
+}
+function enviarSolicitud(){
+  const tipo = document.getElementById('sol-tipo').value;
+  if(!VAL.formulario([
+    ['sol-paciente','nombre',{label:'Paciente'}],
+    ['sol-hc','hc',{label:'Historia clínica'}],
+    ['sol-cie10','cie10',{label:'Diagnóstico CIE-10'}],
+    ['sol-componente','componente',{label:'Hemocomponente'}],
+    ['sol-reserva-fecha','fechaFutura',{label:'Fecha límite de la reserva',req:tipo==='reserva'}]
+  ])) return;
+  const paciente = document.getElementById('sol-paciente').value.trim();
+  const req = {
+    id: siguienteIdSolicitud(),
+    paciente,
+    hc: document.getElementById('sol-hc').value.trim() || `HC-2026-${Math.floor(Math.random()*90000+10000)}`,
+    servicio: document.getElementById('sol-servicio').value,
+    cie10: document.getElementById('sol-cie10').value.trim() || '—',
+    componente: document.getElementById('sol-componente').value.trim() || '1 unidad',
+    prioridad: document.getElementById('sol-prioridad').value,
+    tipo, reservaFecha: tipo==='reserva' ? (document.getElementById('sol-reserva-fecha').value.trim() || 'Sin fecha límite') : null,
+    estado: 'pendiente',
+  };
+  state.solicitudes.unshift(req);
+  logAudit(tipo==='reserva' ? `Registró reserva quirúrgica programada` : `Registró solicitud transfusional`, `${req.id} · ${req.servicio}`);
+  toast(`Solicitud ${req.id} enviada al Banco de Sangre`);
+  pushAlert('blue', `Nueva solicitud — ${req.servicio}`, `${req.componente} · ${req.cie10} · ${paciente}`);
+  document.getElementById('sol-paciente').value=''; document.getElementById('sol-hc').value='';
+  document.getElementById('sol-cie10').value=''; document.getElementById('sol-componente').value='';
+  document.getElementById('sol-reserva-fecha').value='';
+  VAL.limpiar(['sol-paciente','sol-hc','sol-cie10','sol-componente','sol-reserva-fecha']);
+  renderSolicitudes();
+}
+function siguienteIdSolicitud(){
+  // Continúa la numeración a partir de la solicitud más alta que exista
+  const mayor = state.solicitudes.reduce((m, r) => {
+    const n = parseInt(String(r.id).split('-').pop(), 10);
+    return isNaN(n) ? m : Math.max(m, n);
+  }, state.reqCounter);
+  return 'SOL-2026-' + String(mayor + 1).padStart(4, '0');
+}
+const ESTADOS_SOLICITUD = {
+  pendiente:['amber','Pendiente'], compatible:['green','Compatible'], incompatible:['red','Incompatible']
+};
+function puedeProbarCompatibilidad(){ return state.currentRole !== 'Médico Solicitante'; }
+function renderSolicitudes(){
+  const body = document.getElementById('solicitudes-rows');
+  if(!body) return;
+  const puede = puedeProbarCompatibilidad();
+  const tabCompat = document.querySelector('.tab[data-tab="sol:compat"]');
+  if(tabCompat) tabCompat.style.display = puede ? '' : 'none';
+  body.innerHTML = state.solicitudes.length ? state.solicitudes.map(r=>{
+    const prColor = r.prioridad.startsWith('Urgente') ? 'red' : r.prioridad==='Programada' ? 'blue' : 'slate';
+    const [colE, txtE] = ESTADOS_SOLICITUD[r.estado] || ESTADOS_SOLICITUD.pendiente;
+    const tipoTag = r.tipo==='reserva' ? `<div class="cell-muted">Reserva hasta ${r.reservaFecha}</div>` : '';
+    const accion = puede && r.estado!=='compatible'
+      ? `<button class="btn btn-ghost btn-sm" onclick="validarSolicitud('${r.id}')">${r.estado==='incompatible' ? 'Repetir pruebas' : 'Validar'}</button>` : '';
+    return `<tr>
+      <td class="cell-strong">${r.paciente}${tipoTag}</td><td class="cell-muted">${r.servicio}</td><td class="mono">${r.cie10}</td>
+      <td>${pill(prColor, r.prioridad)}</td><td>${pill(colE, txtE)}</td><td>${accion}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="6" class="cell-muted">Aún no se registran solicitudes en esta sesión.</td></tr>`;
+  fillCompatSelect();
+}
+function validarSolicitud(id){
+  switchTab('sol','sol:compat');
+  const sel = document.getElementById('compat-solicitud');
+  if(sel){ sel.value = id; renderPruebas(); }
+}
+function fillCompatSelect(){
+  const sel = document.getElementById('compat-solicitud');
+  if(!sel) return;
+  const previo = sel.value;
+  const abiertas = state.solicitudes.filter(r=>r.estado!=='compatible');
+  sel.innerHTML = abiertas.length ? abiertas.map(r=>`<option value="${r.id}">${r.id} · ${r.paciente}</option>`).join('')
+    : '<option value="">No hay solicitudes por validar</option>';
+  if(previo && abiertas.some(r=>r.id===previo)) sel.value = previo;
+  const uni = document.getElementById('compat-unidad');
+  if(uni){
+    const libres = state.inventory.filter(u=>u.status==='disponible' || u.status==='reservado');
+    const uPrevia = uni.value;
+    uni.innerHTML = libres.length ? libres.map(u=>`<option value="${u.din}">${u.din} · ${u.producto} · ${u.abo}</option>`).join('')
+      : '<option value="">No hay unidades disponibles</option>';
+    if(uPrevia && libres.some(u=>u.din===uPrevia)) uni.value = uPrevia;
+  }
+  renderPruebas();
+}
+function renderPruebas(){
+  const body = document.getElementById('pruebas-rows');
+  if(!body) return;
+  const id = document.getElementById('compat-solicitud').value;
+  const filas = state.pruebas.filter(p=>p.solicitudId===id);
+  body.innerHTML = filas.length ? filas.map(p=>{
+    const [col, txt] = p.estado.split(':');
+    return `<tr><td class="cell-strong">${p.prueba}</td><td class="mono">${p.muestra}</td><td class="mono">${p.unidad}</td>
+      <td class="mono">${p.resultado}</td><td class="cell-muted">${p.validadoPor}<div>${p.fecha}</div></td><td>${pill(col, txt)}</td></tr>`;
+  }).join('') : `<tr><td colspan="6" class="cell-muted">${id ? 'Esta solicitud todavía no tiene pruebas registradas.' : 'Selecciona una solicitud.'}</td></tr>`;
+}
+/* Compatibilidad ABO/Rh entre el paciente y la unidad. Hematíes: el paciente
+   debe poder recibir los antígenos de la unidad. Plasma: se invierte la regla
+   ABO y el Rh no se considera. */
+function abo_rh(txt){
+  const partes = txt.trim().split(' ');
+  return { abo: partes[0], rh: partes[1] === 'POS' ? '+' : '-' };
+}
+function compatibleAboRh(paciente, unidad, producto){
+  const p = abo_rh(paciente), u = abo_rh(unidad);
+  const esPlasma = /plasma|crioprecipitado/i.test(producto);
+  if(esPlasma){
+    // Plasma donante AB sirve a todos; A a receptores A u O; B a B u O; O solo a O
+    const tablaPlasma = { AB:['AB','A','B','O'], A:['A','O'], B:['B','O'], O:['O'] };
+    return tablaPlasma[u.abo].includes(p.abo);
+  }
+  const tabla = { O:['O','A','B','AB'], A:['A','AB'], B:['B','AB'], AB:['AB'] };
+  const aboOk = tabla[u.abo].includes(p.abo);
+  const rhOk = !(u.rh === '+' && p.rh === '-');
+  return aboOk && rhOk;
+}
+function validarCompatibilidad(){
+  const id = document.getElementById('compat-solicitud').value;
+  const req = state.solicitudes.find(r=>r.id===id);
+  if(!req){ toast('Selecciona una solicitud a validar', true); return; }
+  const din = document.getElementById('compat-unidad').value;
+  const unidad = state.inventory.find(u=>u.din===din);
+  if(!unidad){ toast('Selecciona la unidad a cruzar', true); return; }
+  if(!VAL.formulario([['compat-muestra','muestra',{label:'Muestra del paciente'}]])) return;
+  const muestra = document.getElementById('compat-muestra').value.trim();
+  const grupo = document.getElementById('compat-grupo').value;
+  const mayor = document.getElementById('compat-mayor').value;
+  const menor = document.getElementById('compat-menor').value;
+  const rai   = document.getElementById('compat-rai').value;
+
+  // Antes de cruzar sangre se verifica el grupo: una unidad de grupo
+  // incompatible se rechaza y no se registra ninguna prueba.
+  if(!compatibleAboRh(grupo, unidad.abo, unidad.producto)){
+    logAudit('Rechazó unidad por incompatibilidad ABO/Rh', `${req.id} · ${din}`);
+    toast(`La unidad ${unidad.abo} no es compatible con un paciente ${grupo}. Elige otra unidad`, true);
+    pushAlert('red', `Incompatibilidad ABO/Rh — ${req.id}`, `Unidad ${din} (${unidad.abo}) no es compatible con ${grupo}`);
+    return;
+  }
+  const resultados = [
+    ['Prueba mayor', mayor, mayor === 'Sin aglutinación'],
+    ['Prueba menor', menor, menor === 'Sin aglutinación'],
+    ['Rastreo de anticuerpos (RAI)', rai, rai === 'Negativo'],
+  ];
+  const todoOk = resultados.every(r=>r[2]);
+  const por = `${state.currentUser} (${state.currentRole})`;
+  const fecha = nowStr().slice(0, 16);
+  // Las pruebas anteriores de esta solicitud se reemplazan por las nuevas
+  state.pruebas = state.pruebas.filter(p=>p.solicitudId!==req.id);
+  resultados.forEach(([prueba, resultado, ok])=>{
+    const etiqueta = prueba.startsWith('Rastreo') ? (ok ? 'Negativo' : 'Positivo') : (ok ? 'Compatible' : 'Incompatible');
+    state.pruebas.push({ solicitudId:req.id, prueba, muestra, unidad:din, grupoPaciente:grupo, resultado,
+      estado:`${ok ? 'green' : 'red'}:${etiqueta}`, validadoPor:por, fecha });
+  });
+  req.estado = todoOk ? 'compatible' : 'incompatible';
+  if(todoOk && unidad.status === 'disponible') unidad.status = 'reservado';
+  logAudit(todoOk ? 'Validó compatibilidad cruzada — mayor, menor y RAI'
+                  : 'Registró pruebas de compatibilidad con resultado incompatible', `${req.id} · ${din}`);
+  if(todoOk){
+    toast(`Solicitud ${req.id} compatible: unidad ${din} reservada para el paciente`);
+  } else {
+    toast(`Solicitud ${req.id} incompatible: revisa las pruebas y elige otra unidad`, true);
+    pushAlert('red', `Pruebas incompatibles — ${req.id}`, `Unidad ${din} rechazada para ${req.paciente}`);
+  }
+  document.getElementById('compat-muestra').value = '';
+  renderSolicitudes();
+  renderPruebas();
+}
+function switchTab(group, tabKey){
+  const tabBtn = [...document.querySelectorAll('.tab')].find(t=>t.dataset.tab===tabKey);
+  if(tabBtn) tabBtn.click();
+}
+
+/* ---------------- Despacho (RF-13) ---------------- */
+function fillDespachoContext(){ /* placeholder para futura sincronización con solicitudes */ }
+function escanearHemocomponente(){
+  const candidatos = state.inventory.filter(u=>u.status==='disponible' || u.status==='reservado');
+  if(!candidatos.length){ toast('No hay unidades disponibles para despacho', true); return; }
+  const u = candidatos[0];
+  state.despachoScan.din = u.din;
+  document.getElementById('scan-din').textContent = "=" + u.din;
+  toast(`Hemocomponente escaneado: ${u.din}`);
+  evaluarVerificacion();
+}
+function escanearPulsera(){
+  const req = state.solicitudes[0];
+  const hc = req ? req.hc : `HC-2026-${Math.floor(Math.random()*90000+10000)}`;
+  state.despachoScan.hc = hc;
+  state.despachoScan.paciente = req ? req.paciente : 'Paciente sin solicitud vinculada';
+  document.getElementById('scan-hc').textContent = hc;
+  toast(`Pulsera escaneada: ${hc}`);
+  evaluarVerificacion();
+}
+function evaluarVerificacion(){
+  const { din, hc } = state.despachoScan;
+  const box = document.getElementById('verif-rows');
+  const btn = document.getElementById('despacho-btn');
+  if(!din || !hc){
+    box.innerHTML = `<div class="cell-muted" style="font-size:12.5px;">Escanea ambos códigos para ejecutar la doble verificación electrónica.</div>`;
+    btn.disabled = true; btn.style.opacity = .5;
+    return;
+  }
+  const u = state.inventory.find(x=>x.din===din);
+  const bloqueada = u.status === 'bloqueado' || u.status === 'vencido';
+  box.innerHTML = `
+    <div class="match-row ${bloqueada?'mismatch':''}"><span>Estado de la unidad</span><strong>${statusMeta[u.status][1]}</strong></div>
+    <div class="match-row"><span>Grupo ABO/Rh</span><strong>${u.abo}</strong></div>
+    <div class="match-row"><span>N° de historia clínica</span><strong>${hc}</strong></div>
+    <div class="match-row"><span>Vigencia de la unidad</span><strong>${u.exp}</strong></div>
+  `;
+  if(bloqueada){
+    btn.disabled = true; btn.style.opacity = .5;
+    toast(`La unidad ${din} está ${statusMeta[u.status][1].toLowerCase()} y no puede despacharse`, true);
+    return;
+  }
+  const firmaOk = document.getElementById('despacho-firma')?.checked;
+  btn.disabled = !firmaOk; btn.style.opacity = firmaOk ? 1 : .5;
+}
+function autorizarDespacho(){
+  const { din, hc, paciente } = state.despachoScan;
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  u.status = 'despachado';
+  pendientes.despachosNuevos.push({ din, hc });
+  logAudit(`Autorizó despacho tras doble verificación electrónica y firma electrónica`, `DIN ${din} → ${hc}`);
+  toast(`Entrega registrada: ${din} → ${paciente || hc}`);
+  state.despachoScan = { din:null, hc:null };
+  document.getElementById('scan-din').textContent = '—';
+  document.getElementById('scan-hc').textContent = '—';
+  document.getElementById('despacho-firma').checked = false;
+  renderInventory();
+  evaluarVerificacion();
+}
+
+/* ---------------- Hemovigilancia (RF-15) ---------------- */
+function renderHemovigilancia(){
+  document.getElementById('hemovigilancia-rows').innerHTML = state.hemovigilancia.map(e=>{
+    const [sColor,sLabel] = e.severidad.split(':');
+    const [eColor,eLabel] = e.estado.split(':');
+    return `<tr><td class="mono">${e.fecha}</td><td class="cell-strong">${e.paciente}</td><td class="cell-muted">${e.reaccion}</td>
+      <td class="mono">${e.din}</td><td>${pill(sColor,sLabel)}</td><td>${pill(eColor,eLabel)}</td></tr>`;
+  }).join('');
+}
+function abrirModalHemovigilancia(){
+  const dinOptions = state.inventory.filter(u=>u.status==='despachado').map(u=>`<option value="${u.din}">${u.din}</option>`).join('') || '<option value="">Sin unidades despachadas</option>';
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Registrar evento de hemovigilancia</div><div class="card-desc">Trazabilidad hacia la donación origen</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="field"><label>Paciente</label><input class="input" id="hv-paciente" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Nombres y apellidos"></div>
+      <div class="field"><label>DIN origen</label><select class="input mono" id="hv-din">${dinOptions}</select></div>
+      <div class="field"><label>Reacción observada</label><input class="input" id="hv-reaccion" data-val="texto" data-req="1" data-min="4" data-max="100" maxlength="100" autocomplete="off" placeholder="Ej. Reacción febril no hemolítica"></div>
+      <div class="field"><label>Severidad</label>
+        <select class="input" id="hv-severidad"><option value="amber:Leve">Leve</option><option value="red:Grave">Grave</option></select>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="guardarEventoHemovigilancia()">Registrar evento</button>
+    </div>
+  `);
+}
+function guardarEventoHemovigilancia(){
+  const dinSel = document.getElementById('hv-din').value;
+  if(!dinSel){ toast('No hay unidades despachadas: no se puede asociar el evento a una donación', true); return; }
+  if(!VAL.formulario([
+    ['hv-paciente','nombre',{label:'Paciente'}],
+    ['hv-reaccion','texto',{label:'Reacción observada'}]
+  ])) return;
+  const paciente = document.getElementById('hv-paciente').value.trim();
+  const evento = {
+    id: nuevoId(),
+    fecha: nowStr().split(' ')[0], paciente,
+    din: document.getElementById('hv-din').value || '—',
+    reaccion: document.getElementById('hv-reaccion').value.trim() || 'Reacción no especificada',
+    severidad: document.getElementById('hv-severidad').value,
+    estado: 'amber:En investigación',
+  };
+  state.hemovigilancia.unshift(evento);
+  logAudit('Registró evento adverso transfusional', `DIN ${evento.din} · ${paciente}`);
+  toast('Evento de hemovigilancia registrado');
+  closeModal();
+  renderHemovigilancia();
+}
+
+/* ---------------- Reportes (RF-16) ---------------- */
+const reportsData = [
+  ["Reporte operacional mensual","Movimientos de inventario, captación y despacho","PRONAHEBAS"],
+  ["Reporte epidemiológico","Prevalencia de marcadores serológicos reactivos","DIGDOT"],
+  ["Unidades perdidas y vencidas","Unidades que vencieron o se descartaron","MINSA"],
+  ["Auditoría de hemovigilancia","Eventos adversos transfusionales del periodo","PRONAHEBAS"],
+  ["Reporte normativo automático","Generación periódica programada para MINSA","PRONAHEBAS"],
+  ["Datos para investigación","Exportación sin datos que identifiquen a las personas","MINSA"],
+];
+function renderReports(){
+  document.getElementById('reports-grid').innerHTML = reportsData.map(([title,desc,org],i)=>{
+    return `<div class="kpi" style="display:flex; flex-direction:column; gap:8px;">
+      <span class="badge-rf" style="align-self:flex-start;">${org}</span>
+      <div style="font-weight:600; font-size:13.5px;">${title}</div>
+      <div class="hint" style="line-height:1.4;">${desc}</div>
+      <div style="display:flex; gap:6px; margin-top:4px;">
+        <button class="btn btn-ghost btn-sm" onclick="generarReporte('${title.replace(/'/g,"")}','PDF')">PDF</button>
+        <button class="btn btn-ghost btn-sm" onclick="generarReporte('${title.replace(/'/g,"")}','Excel')">Excel</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+/* ---------------- Contenido real de cada reporte ----------------
+   Cada reporte se arma en el momento a partir de los datos que tiene el
+   sistema (inventario, donantes, solicitudes, hemovigilancia y auditoría),
+   no con cifras escritas a mano: si cambian los datos, cambia el reporte. */
+function contarPor(lista, clave){
+  return lista.reduce((acc, item) => {
+    const k = typeof clave === 'function' ? clave(item) : item[clave];
+    acc[k] = (acc[k] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+function filasDesdeConteo(conteo, total){
+  return Object.entries(conteo)
+    .sort((a, b) => b[1] - a[1])
+    .map(([etiqueta, n]) => [etiqueta, n, total ? ((n / total) * 100).toFixed(1) + '%' : '—']);
+}
+
+const generadoresDeReporte = {
+  'Reporte operacional mensual': () => {
+    const inv = state.inventory;
+    const estados = contarPor(inv, 'status');
+    const disponibles = estados.disponible || 0;
+    return {
+      columnas: ['Indicador', 'Unidades', 'Participación'],
+      filas: [
+        ...filasDesdeConteo(estados, inv.length).map(([e, n, p]) => [`Unidades en estado "${statusMeta[e] ? statusMeta[e][1] : e}"`, n, p]),
+        ['Donantes registrados', state.donantes.length, '—'],
+        ['Solicitudes atendidas o en curso', state.solicitudes.length, '—'],
+      ],
+      resumen: `${inv.length} unidades en total · ${disponibles} disponibles para despacho`,
+    };
+  },
+  'Reporte epidemiológico': () => {
+    const enCuarentena = state.inventory.filter(u => u.status === 'cuarentena').length;
+    const bloqueadas = state.inventory.filter(u => u.status === 'bloqueado').length;
+    const porGrupo = contarPor(state.donantes, 'abo');
+    return {
+      columnas: ['Grupo sanguíneo', 'Donantes', 'Participación'],
+      filas: filasDesdeConteo(porGrupo, state.donantes.length),
+      resumen: `${enCuarentena} unidades en cuarentena a la espera de resultados · ${bloqueadas} bloqueadas por reactividad`,
+    };
+  },
+  'Unidades perdidas y vencidas': () => {
+    const perdidas = state.inventory.filter(u => u.status === 'vencido' || u.status === 'incinerado');
+    return {
+      columnas: ['Código de la donación', 'Hemocomponente', 'Vence', 'Situación'],
+      filas: perdidas.map(u => [u.din, u.producto, u.exp, statusMeta[u.status][1]]),
+      resumen: perdidas.length
+        ? `${perdidas.length} unidades perdidas de ${state.inventory.length} (${((perdidas.length / state.inventory.length) * 100).toFixed(1)}% de merma)`
+        : 'Sin unidades perdidas en el periodo',
+    };
+  },
+  'Auditoría de hemovigilancia': () => ({
+    columnas: ['Fecha', 'Paciente', 'Reacción', 'Severidad', 'Estado'],
+    filas: state.hemovigilancia.map(e => [e.fecha, e.paciente, e.reaccion,
+      e.severidad.split(':')[1], e.estado.split(':')[1]]),
+    resumen: `${state.hemovigilancia.length} eventos registrados · ` +
+      `${state.hemovigilancia.filter(e => e.severidad.startsWith('red')).length} de severidad grave`,
+  }),
+  'Reporte normativo automático': () => {
+    const acciones = contarPor(state.auditLog, fila => fila[1]);
+    return {
+      columnas: ['Usuario responsable', 'Acciones registradas', 'Participación'],
+      filas: filasDesdeConteo(acciones, state.auditLog.length),
+      resumen: `${state.auditLog.length} acciones registradas en la bitácora del sistema`,
+    };
+  },
+  'Datos para investigación': () => {
+    const porProducto = contarPor(state.inventory, 'producto');
+    return {
+      columnas: ['Hemocomponente', 'Unidades', 'Participación'],
+      filas: filasDesdeConteo(porProducto, state.inventory.length),
+      resumen: 'Conjunto sin nombres, documentos ni historias clínicas',
+    };
+  },
+};
+
+function generarReporte(title, formato){
+  const generador = generadoresDeReporte[title];
+  if(!generador){ toast('Ese reporte todavía no está disponible', true); return; }
+  const reporte = generador();
+  const fecha = nowStr();
+  const entidad = (reportsData.find(r => r[0] === title) || [,, 'MINSA'])[2];
+  const codigo = 'RPT-' + String(Math.floor(Math.random() * 9000) + 1000) + '-2026';
+  window.reporteActual = { title, fecha, entidad, codigo, ...reporte };
+  logAudit(`Generó el reporte "${title}" en formato ${formato}`, `${reporte.filas.length} filas`);
+
+  if(formato === 'Excel'){ descargarReporte(); return; }
+
+  // Vista del documento, con la forma de un reporte oficial impreso
+  const cuerpo = reporte.filas.length
+    ? reporte.filas.map(fila => `<tr>${fila.map((c, i) =>
+        i === 0 ? `<td class="cell-strong">${c}</td>` : `<td class="mono">${c}</td>`).join('')}</tr>`).join('')
+    : `<tr><td colspan="${reporte.columnas.length}" class="cell-muted">Sin datos en el periodo</td></tr>`;
+
+  openModal(`
+    <div class="modal-head no-print">
+      <div><div class="modal-title">Vista previa del reporte</div>
+      <div class="card-desc">Así se imprime o se guarda en PDF</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="doc-reporte">
+      <div class="doc-membrete">
+        <div>
+          <div class="doc-institucion">Hospital de Lima Este Vitarte</div>
+          <div class="doc-area">Servicio de Hemoterapia y Banco de Sangre — Tipo II</div>
+        </div>
+        <div class="doc-codigo">${codigo}</div>
+      </div>
+      <h2 class="doc-titulo">${title}</h2>
+      <div class="doc-datos">
+        <div><span>Dirigido a</span><strong>${entidad}</strong></div>
+        <div><span>Fecha de emisión</span><strong>${fecha}</strong></div>
+        <div><span>Responsable</span><strong>${state.currentUser}</strong></div>
+        <div><span>Cargo</span><strong>${state.currentRole}</strong></div>
+      </div>
+      <p class="doc-resumen"><strong>Resumen:</strong> ${reporte.resumen}</p>
+      <table>
+        <thead><tr>${reporte.columnas.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+        <tbody>${cuerpo}</tbody>
+      </table>
+      <div class="doc-firma">
+        <div class="doc-linea"></div>
+        <div>${state.currentUser}</div>
+        <div class="doc-cargo">${state.currentRole} · Hospital de Lima Este Vitarte</div>
+      </div>
+    </div>
+    <div class="no-print" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
+      <button class="btn btn-primary btn-sm" onclick="imprimirReporte()">Imprimir o guardar en PDF</button>
+      <button class="btn btn-ghost btn-sm" onclick="descargarReporte()">Descargar en Excel (CSV)</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cerrar</button>
+    </div>
+  `);
+}
+
+function imprimirReporte(){
+  logAudit(`Imprimió el reporte "${window.reporteActual.title}"`, window.reporteActual.codigo);
+  window.print();
+}
+
+function descargarReporte(){
+  const r = window.reporteActual;
+  if(!r) return;
+  const lineas = [
+    ['Hospital de Lima Este Vitarte — Servicio de Hemoterapia y Banco de Sangre'],
+    [r.title], [`Documento ${r.codigo} · dirigido a ${r.entidad}`],
+    [`Emitido el ${r.fecha} por ${state.currentUser} (${state.currentRole})`],
+    [r.resumen], [], r.columnas, ...r.filas];
+  window.csvInventario = lineas
+    .map(fila => fila.map(celda => `"${String(celda).replace(/"/g, '""')}"`).join(';'))
+    .join('\r\n');
+  const nombre = r.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.csv';
+  const blob = new Blob(['﻿' + window.csvInventario], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const enlace = document.createElement('a');
+  enlace.href = url; enlace.download = nombre;
+  document.body.appendChild(enlace); enlace.click(); enlace.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  logAudit(`Descargó el reporte "${r.title}"`, nombre);
+  toast(`Reporte descargado: ${nombre}`);
+  closeModal();
+}
+
+/* ---------------- Auditoría (RF-17) ---------------- */
+function renderAudit(){
+  document.getElementById('audit-rows').innerHTML = state.auditLog.slice(0,50).map(([ts,user,action,resource,ip])=>{
+    return `<tr><td class="mono">${ts}</td><td class="cell-strong">${user}</td><td class="cell-muted">${action}</td><td class="mono">${resource}</td><td class="mono">${ip}</td></tr>`;
+  }).join('');
+}
+
+/* ---------------- RF-23 Monitoreo de temperatura ---------------- */
+state.temps = [];
+function renderTemps(){
+  const el = document.getElementById('temp-grid');
+  if(!el) return;
+  el.innerHTML = state.temps.map(t=>`
+    <div style="padding:12px 14px; border-radius:10px; background:${t.ok?'var(--bg)':'var(--red-50)'};">
+      <div class="cell-muted" style="margin-bottom:4px;">${t.camara}</div>
+      <div style="font-weight:700; font-size:20px; color:${t.ok?'var(--ink-900)':'var(--red-700)'};">${t.actual}°C</div>
+      <div class="cell-muted" style="margin-top:4px;">Rango: ${t.rango}</div>
+      ${t.ok ? '' : `<div style="margin-top:6px;">${pill('red','Fuera de rango')}</div>`}
+    </div>`).join('');
+}
+
+/* ---------------- RF-18/19/40/45 Red interhospitalaria ---------------- */
+state.establecimientos = [];
+function renderConvenios(){
+  const body = document.getElementById('convenios-rows');
+  if(!body) return;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  body.innerHTML = state.establecimientos.map(e => {
+    let estado = pill('blue','Indefinido');
+    if(e.hasta && e.hasta !== '—'){
+      const [d,m,a] = e.hasta.split('/').map(Number);
+      estado = new Date(a, m-1, d) < hoy ? pill('red','Vencido') : pill('green','Vigente');
+    }
+    return `<tr><td class="cell-strong">${e.nombre}</td><td class="cell-muted">${e.convenio}</td><td class="mono">${e.hasta || '—'}</td><td>${estado}</td></tr>`;
+  }).join('');
+}
+
+/** Solo Administrador: borra todo y vuelve a cargar los datos de ejemplo de la base */
+function restablecerDatos(){
+  if(!MODO_SERVIDOR){ reiniciarDatosLocales(); location.reload(); return; }
+  if(!confirm('Se borrarán todos los datos guardados y se cargarán de nuevo los datos de ejemplo. ¿Continuar?')) return;
+  fetch('/api/restablecer', { method: 'POST', credentials: 'same-origin' })
+    .then(r => r.json())
+    .then(j => { if(!j.ok) throw new Error(j.error); location.reload(); })
+    .catch(e => toast('No se pudo restablecer: ' + e.message, true));
+}
+
+state.intercambios = [];
+function renderIntercambios(){
+  const body = document.getElementById('intercambio-rows');
+  if(!body) return;
+  body.innerHTML = state.intercambios.map((x,i)=>{
+    const [c,l] = x.estado.split(':');
+    return `<tr><td class="cell-strong">${x.establecimiento}</td><td class="cell-muted">${x.producto}</td><td class="mono">${x.cantidad}</td>
+      <td>${pill(x.direccion==='Saliente'?'blue':'purple', x.direccion)}</td><td>${pill(c,l)}</td>
+      <td>${x.estado.startsWith('amber')?`<button class="btn btn-ghost btn-sm" onclick="responderIntercambio(${i})">Responder</button>`:x.estado.startsWith('green')?`<button class="btn btn-ghost btn-sm" onclick="devolverIntercambio(${i})">Registrar devolución</button>`:''}</td></tr>`;
+  }).join('');
+}
+function abrirModalIntercambio(){
+  openModal(`
+    <div class="modal-head"><div><div class="modal-title">Nueva solicitud de intercambio</div>
+    <div class="card-desc">Pedido de unidades a otro establecimiento de la red</div></div>
+    <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="field"><label>Establecimiento</label>
+        <select class="input" id="ix-est"><option>Hospital Vitarte II</option><option>Hospital de la Solidaridad ATE</option><option>PRONAHEBAS Central</option></select>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Hemocomponente</label>
+          <select class="input" id="ix-comp">
+            <option>Concentrado de Hematíes</option>
+            <option>Plasma Fresco Congelado</option>
+            <option>Concentrado de Plaquetas</option>
+            <option>Crioprecipitado</option>
+          </select>
+        </div>
+        <div class="field"><label>Grupo sanguíneo</label>
+          <select class="input" id="ix-abo">
+            <option>O NEG</option><option>O POS</option><option>A NEG</option><option>A POS</option>
+            <option>B NEG</option><option>B POS</option><option>AB NEG</option><option>AB POS</option>
+          </select>
+        </div>
+        <div class="field"><label>Cantidad (unidades)</label>
+          <input class="input" id="ix-cant" data-val="entero" data-req="1" data-min="1" data-max="50" inputmode="numeric" maxlength="2" autocomplete="off" value="2">
+        </div>
+        <div class="field"><label>Dirección</label>
+          <select class="input" id="ix-dir"><option>Saliente</option><option>Entrante</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Motivo del pedido</label>
+        <input class="input" id="ix-motivo" data-val="texto" data-req="1" data-min="5" data-max="100" maxlength="100" autocomplete="off" placeholder="Ej. stock crítico de O− en emergencia">
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="guardarIntercambio()">Enviar solicitud</button>
+    </div>`);
+}
+function guardarIntercambio(){
+  const est = document.getElementById('ix-est').value;
+  const comp = document.getElementById('ix-comp').value;
+  const abo = document.getElementById('ix-abo').value;
+  if(!VAL.formulario([
+    ['ix-cant','entero',{label:'Cantidad'}],
+    ['ix-motivo','texto',{label:'Motivo del pedido'}]
+  ])) return;
+  const cantidad = parseInt(document.getElementById('ix-cant').value, 10);
+  const direccion = document.getElementById('ix-dir').value;
+  const motivo = document.getElementById('ix-motivo').value.trim();
+  state.intercambios.unshift({
+    id: nuevoId(),
+    establecimiento: est,
+    producto: `${comp} ${abo}`,
+    componente: comp, grupo: abo, unidades: cantidad, motivo,
+    cantidad: `${cantidad} un.`,
+    direccion,
+    estado: 'amber:Pendiente',
+  });
+  logAudit(`Envió solicitud de intercambio${motivo ? ' — ' + motivo : ''}`,
+           `${est} · ${cantidad} un. de ${comp} ${abo}`);
+  toast(`Solicitud enviada a ${est}: ${cantidad} unidades de ${comp} ${abo}`);
+  closeModal();
+  renderIntercambios();
+}
+function responderIntercambio(i){
+  state.intercambios[i].estado = 'green:Aceptada';
+  logAudit('Registró respuesta a solicitud de intercambio', state.intercambios[i].establecimiento);
+  toast('Intercambio aceptado');
+  renderIntercambios();
+}
+function devolverIntercambio(i){
+  logAudit('Registró devolución de unidades prestadas', state.intercambios[i].establecimiento);
+  toast('Devolución registrada — inventario de origen actualizado');
+  state.intercambios[i].estado = 'blue:Devuelta';
+  renderIntercambios();
+}
+
+/* ---------------- RF-20/21 App móvil ---------------- */
+function simularPushMovil(){
+  pushAlert('blue', 'Notificación push enviada', 'Personal asistencial notificado desde app móvil');
+  logAudit('Envió notificación push a la aplicación móvil', 'App móvil');
+  toast('Notificación push simulada enviada al personal');
+}
+
+
+/* ---------------- Administración: Usuarios (RF-26) ---------------- */
+state.usuarios = [];
+function renderUsuarios(){
+  const body = document.getElementById('usuarios-rows');
+  if(!body) return;
+  body.innerHTML = state.usuarios.map((u,i)=>`
+    <tr><td class="cell-strong">${u.nombre}</td><td class="cell-muted">${u.correo || '—'}</td><td class="cell-muted">${u.rol}</td><td class="mono">${u.ultimo}</td>
+    <td>${u.activo?pill('green','Activo'):pill('slate','Desactivado')}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="toggleUsuario(${i})">${u.activo?'Desactivar':'Reactivar'}</button></td></tr>`).join('');
+}
+function abrirModalUsuario(){
+  openModal(`
+    <div class="modal-head"><div><div class="modal-title">Nuevo usuario</div>
+    <div class="card-desc">La cuenta verá solo los módulos que su rol permite</div></div>
+    <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="field"><label>Nombres y apellidos</label>
+        <input class="input" id="us-nombre" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Ej. José William Palomino Camarena">
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>DNI</label>
+          <input class="input" id="us-dni" data-val="dni" data-req="1" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="8 dígitos">
+        </div>
+        <div class="field"><label>Correo institucional</label>
+          <input class="input" id="us-correo" data-val="correo" data-req="1" maxlength="60" autocomplete="off" placeholder="usuario@hlev.gob.pe">
+        </div>
+        <div class="field"><label>Rol</label>
+          <select class="input" id="us-rol">
+            <option>Médico Solicitante</option>
+            <option>Tecnólogo Médico</option>
+            <option>Jefe de Banco de Sangre</option>
+            <option>Administrador</option>
+          </select>
+        </div>
+      </div>
+      <div class="checkline">
+        <input type="checkbox" id="us-activo" checked>
+        <label for="us-activo" style="font-weight:400;">La cuenta queda activa desde ahora</label>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="guardarUsuario()">Crear cuenta</button>
+    </div>`);
+}
+
+function guardarUsuario(){
+  if(!VAL.formulario([
+    ['us-nombre','nombre',{label:'Nombres y apellidos'}],
+    ['us-dni','dni',{label:'DNI'}],
+    ['us-correo','correo',{label:'Correo institucional'}]
+  ])) return;
+  const nombre = document.getElementById('us-nombre').value.trim();
+  const dni = document.getElementById('us-dni').value.trim();
+  const correo = document.getElementById('us-correo').value.trim().toLowerCase();
+  if(state.usuarios.some(u => u.correo === correo || u.dni === dni)){ toast('Ya existe una cuenta con ese DNI o correo', true); return; }
+  const rol = document.getElementById('us-rol').value;
+  const activo = document.getElementById('us-activo').checked;
+  state.usuarios.unshift({ nombre, rol, dni, correo, ultimo: 'Sin ingresar aún', activo });
+  logAudit(`Creó la cuenta de un usuario con rol ${rol}`, nombre);
+  toast(`${nombre} quedó registrado como ${rol}`);
+  closeModal();
+  renderUsuarios();
+}
+
+function toggleUsuario(i){
+  state.usuarios[i].activo = !state.usuarios[i].activo;
+  logAudit(`${state.usuarios[i].activo?'Reactivó':'Desactivó'} cuenta de usuario`, state.usuarios[i].nombre);
+  toast(`${state.usuarios[i].nombre} ${state.usuarios[i].activo?'reactivado':'desactivado'}`);
+  renderUsuarios();
+}
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    const [group, name] = tab.dataset.tab.split(':');
+    document.querySelectorAll(`.tab`).forEach(t=>{
+      if(t.dataset.tab.startsWith(group+':')) t.classList.toggle('active', t===tab);
+    });
+    document.querySelectorAll(`[data-tabpanel^="${group}:"]`).forEach(p=>{
+      p.style.display = (p.dataset.tabpanel===tab.dataset.tab) ? '' : 'none';
+    });
+    if(tab.dataset.tab === 'sol:compat') fillCompatSelect();
+  });
+});
+</script>
+
+<script>
+/* =========================================================
+   Enrutador de esta version de revision: hace del lado del
+   navegador lo mismo que AppController hace en el servidor
+   (rutas, RBAC segun el rol y modo movil).
+========================================================= */
+const CATALOGO = [{"clave": "dashboard", "titulo": "Panel general", "subtitulo": "Hospital de Lima Este Vitarte · Banco de Sangre"}, {"clave": "inventario", "titulo": "Inventario", "subtitulo": "Unidades guardadas en las cámaras de refrigeración y congeladoras"}, {"clave": "donantes", "titulo": "Donantes", "subtitulo": "Registro del donante, diferimientos y resultados de laboratorio"}, {"clave": "etiquetado", "titulo": "Etiquetado", "subtitulo": "Generación de la etiqueta de cada unidad"}, {"clave": "solicitudes", "titulo": "Solicitudes", "subtitulo": "Pedidos de sangre de los servicios del hospital"}, {"clave": "despacho", "titulo": "Despacho", "subtitulo": "Verificación y entrega de la unidad al servicio"}, {"clave": "interhospitalario", "titulo": "Red de hospitales", "subtitulo": "Stock e intercambio de unidades con otros establecimientos"}, {"clave": "movil", "titulo": "Aplicación móvil", "subtitulo": "El mismo sistema, en versión para celular"}, {"clave": "hemovigilancia", "titulo": "Hemovigilancia", "subtitulo": "Reacciones presentadas después de una transfusión"}, {"clave": "reportes", "titulo": "Reportes", "subtitulo": "Consolidados del servicio para descargar o enviar"}, {"clave": "auditoria", "titulo": "Auditoría", "subtitulo": "Qué hizo cada usuario dentro del sistema"}, {"clave": "administracion", "titulo": "Administración", "subtitulo": "Usuarios del sistema y el rol de cada uno"}];
+const VISTAS_POR_ROL = {"Médico Solicitante": ["dashboard", "solicitudes", "movil"], "Tecnólogo Médico": ["dashboard", "inventario", "donantes", "etiquetado", "solicitudes", "hemovigilancia"], "Jefe de Banco de Sangre": ["dashboard", "inventario", "donantes", "etiquetado", "solicitudes", "hemovigilancia", "despacho", "interhospitalario", "movil", "reportes"], "Administrador": ["dashboard", "inventario", "donantes", "etiquetado", "solicitudes", "despacho", "interhospitalario", "movil", "hemovigilancia", "reportes", "auditoria", "administracion"]};
+const DATOS_DEMO = {"aboGroups": [["O+", 312, 800, false], ["O-", 6, 40, true], ["A+", 264, 700, false], ["A-", 41, 150, false], ["B+", 198, 600, false], ["B-", 22, 100, false], ["AB+", 88, 300, false], ["AB-", 9, 60, true]], "inventory": [{"abo": "A NEG", "din": "W1237250149310", "exp": "01/09/2026", "camara": "Cámara 1 · Refrig.", "status": "vencido", "donante": "70123456", "producto": "Concentrado de Hematíes"}, {"abo": "AB NEG", "din": "W1237250169901", "exp": "15/09/2026", "camara": "Cámara 2 · Refrig.", "status": "bloqueado", "donante": "—", "producto": "Concentrado de Hematíes"}, {"abo": "B NEG", "din": "W1237250165530", "exp": "16/09/2026", "camara": "Cámara 3 · Agitador", "status": "cuarentena", "donante": "—", "producto": "Concentrado de Plaquetas"}, {"abo": "B POS", "din": "W1237250171400", "exp": "20/09/2026", "camara": "Cámara 2 · Refrig.", "status": "despachado", "donante": "09876543", "producto": "Concentrado de Hematíes"}, {"abo": "O POS", "din": "W1237250171012", "exp": "28/09/2026", "camara": "Cámara 1 · Refrig.", "status": "reservado", "donante": "72345891", "producto": "Concentrado de Hematíes"}, {"abo": "O NEG", "din": "W1237260000101", "exp": "06/10/2026", "camara": "Cámara 1 · Refrig.", "status": "cuarentena", "donante": "46801357", "producto": "Sangre Total"}, {"abo": "O NEG", "din": "W1237250171238", "exp": "11/10/2026", "camara": "Cámara 2 · Refrig.", "status": "disponible", "donante": "45678912", "producto": "Concentrado de Hematíes"}, {"abo": "O POS", "din": "W1237250158820", "exp": "30/04/2027", "camara": "Congelador 2", "status": "disponible", "donante": "—", "producto": "Crioprecipitado"}, {"abo": "A POS", "din": "W1237250169887", "exp": "30/09/2027", "camara": "Congelador 1", "status": "disponible", "donante": "41235678", "producto": "Plasma Fresco Congelado"}], "temps": [{"ok": true, "rango": "2°C – 6°C", "actual": 4.1, "camara": "Cámara 1 · Refrigeración"}, {"ok": false, "rango": "2°C – 6°C", "actual": 6.8, "camara": "Cámara 2 · Refrigeración"}, {"ok": true, "rango": "-30°C a -18°C", "actual": -24.3, "camara": "Congelador 1"}], "donantes": [{"abo": "O NEG", "dni": "45678912", "tipo": "Voluntaria", "estado": "green:Apto", "nombre": "Quispe Rojas, María Fernanda", "donaciones": 7, "ultimaDonacion": "12/09/2026", "tipoDiferimiento": null, "motivoDiferimiento": null, "vigenciaDiferimiento": "—"}, {"abo": "A POS", "dni": "41235678", "tipo": "Reposición", "estado": "amber:Diferido", "nombre": "Ramírez Soto, Carlos Alberto", "donaciones": 3, "ultimaDonacion": "02/08/2026", "tipoDiferimiento": "Temporal", "motivoDiferimiento": "Viaje a zona endémica de malaria", "vigenciaDiferimiento": "12/12/2026"}, {"abo": "O POS", "dni": "72345891", "tipo": "Voluntaria", "estado": "amber:Diferido", "nombre": "Fernández Luna, Ana Lucía", "donaciones": 12, "ultimaDonacion": "28/08/2026", "tipoDiferimiento": "Temporal", "motivoDiferimiento": "Hemoglobina bajo el mínimo (11.2 g/dL)", "vigenciaDiferimiento": "30/10/2026"}, {"abo": "B POS", "dni": "09876543", "tipo": "Voluntaria", "estado": "green:Apto", "nombre": "Huamán Castro, Luis Miguel", "donaciones": 5, "ultimaDonacion": "05/06/2026", "tipoDiferimiento": null, "motivoDiferimiento": null, "vigenciaDiferimiento": "—"}, {"abo": "AB POS", "dni": "43219876", "tipo": "Reposición", "estado": "red:Excluido", "nombre": "Vega Mamani, Jorge Antonio", "donaciones": 1, "ultimaDonacion": "17/06/2026", "tipoDiferimiento": "Permanente", "motivoDiferimiento": "Antecedente de conducta de riesgo declarada", "vigenciaDiferimiento": "—"}, {"abo": "A NEG", "dni": "70123456", "tipo": "Voluntaria", "estado": "green:Apto", "nombre": "Torres Aliaga, Rosa Elena", "donaciones": 9, "ultimaDonacion": "10/06/2026", "tipoDiferimiento": null, "motivoDiferimiento": null, "vigenciaDiferimiento": "—"}, {"abo": "O NEG", "dni": "46801357", "tipo": "Autóloga", "estado": "green:Apto", "nombre": "Chávez Ibarra, Pedro Luis", "donaciones": 2, "ultimaDonacion": "01/09/2026", "tipoDiferimiento": null, "motivoDiferimiento": null, "vigenciaDiferimiento": "—"}], "serologia": [], "solicitudes": [{"hc": "HC-2026-00381", "id": "SOL-2026-0341", "tipo": "transfusional", "cie10": "K92.2 — Hemorragia digestiva alta", "estado": "pendiente", "paciente": "Effio Bravo, Marcos", "servicio": "Emergencia", "prioridad": "Urgente (<15 min)", "componente": "2 unidades — Concentrado de Hematíes", "reservaFecha": null}, {"hc": "HC-2026-00355", "id": "SOL-2026-0338", "tipo": "reserva", "cie10": "O72.1 — Hemorragia posparto", "estado": "compatible", "paciente": "Quinteros Farfán, Rosa", "servicio": "Centro Quirúrgico", "prioridad": "Programada", "componente": "3 unidades — Concentrado de Hematíes", "reservaFecha": "30/09/2026"}, {"hc": "HC-2026-00312", "id": "SOL-2026-0333", "tipo": "transfusional", "cie10": "D62 — Hemorragia aguda, anemia", "estado": "pendiente", "paciente": "Ibarra León, Denis", "servicio": "UCI", "prioridad": "Diferible", "componente": "1 unidad — Plasma Fresco Congelado", "reservaFecha": null}], "pruebas": [{"fecha": "28/09/2026 16:30", "estado": "green:Compatible", "prueba": "Prueba mayor", "unidad": "W1237250171012", "muestra": "S-88213", "resultado": "Sin aglutinación", "solicitudId": "SOL-2026-0338", "validadoPor": "Palomino Camarena, José William (Tecnólogo Médico)", "grupoPaciente": "O POS"}, {"fecha": "28/09/2026 16:30", "estado": "green:Compatible", "prueba": "Prueba menor", "unidad": "W1237250171012", "muestra": "S-88213", "resultado": "Sin aglutinación", "solicitudId": "SOL-2026-0338", "validadoPor": "Palomino Camarena, José William (Tecnólogo Médico)", "grupoPaciente": "O POS"}, {"fecha": "28/09/2026 16:30", "estado": "green:Negativo", "prueba": "Rastreo de anticuerpos (RAI)", "unidad": "W1237250171012", "muestra": "S-88213", "resultado": "Negativo", "solicitudId": "SOL-2026-0338", "validadoPor": "Palomino Camarena, José William (Tecnólogo Médico)", "grupoPaciente": "O POS"}], "hemovigilancia": [{"id": "20ae41e9-ba5f-40dc-89cf-b2d650e1bfb5", "din": "W1237250171012", "fecha": "10/09/2026", "estado": "green:Resuelto", "paciente": "Torres Huamán, L.", "reaccion": "Reacción febril no hemolítica", "severidad": "amber:Leve"}, {"id": "869a1e7d-92a2-407c-9529-bd826158d562", "din": "W1237250169887", "fecha": "03/09/2026", "estado": "green:Resuelto", "paciente": "Quiroz Vera, D.", "reaccion": "Reacción alérgica (urticaria)", "severidad": "amber:Leve"}, {"id": "bbd6cfd9-0ae8-43c0-8640-352f17914c18", "din": "W1237250165530", "fecha": "27/08/2026", "estado": "amber:En investigación", "paciente": "Salazar Ponce, R.", "reaccion": "Sospecha de reacción hemolítica", "severidad": "red:Grave"}], "intercambios": [{"id": "6618bf5b-de67-496c-9f1d-d20b9f29d50f", "grupo": "O NEG", "estado": "amber:Pendiente", "cantidad": "4 un.", "producto": "Concentrado de Hematíes O NEG", "unidades": 4, "direccion": "Saliente", "componente": "Concentrado de Hematíes", "establecimiento": "Hospital Vitarte II"}, {"id": "e3f1f424-dda3-433f-bdfb-8e6e5b3ef08f", "grupo": "AB POS", "estado": "green:Aceptada", "cantidad": "10 un.", "producto": "Plasma Fresco Congelado AB POS", "unidades": 10, "direccion": "Entrante", "componente": "Plasma Fresco Congelado", "establecimiento": "PRONAHEBAS Central"}], "usuarios": [{"dni": "70000001", "rol": "Jefe de Banco de Sangre", "activo": true, "correo": "jcangana@hlev.gob.pe", "nombre": "Cangana Salcedo, José Leonel", "ultimo": "29/09/2026 09:12"}, {"dni": "70000002", "rol": "Tecnólogo Médico", "activo": true, "correo": "jpalomino@hlev.gob.pe", "nombre": "Palomino Camarena, José William", "ultimo": "29/09/2026 08:55"}, {"dni": "70000003", "rol": "Administrador", "activo": true, "correo": "jjaimes@hlev.gob.pe", "nombre": "Jaimes Daza, Julibeth Antonela", "ultimo": "28/09/2026 17:40"}, {"dni": "70000004", "rol": "Médico Solicitante", "activo": false, "correo": "dbatallanos@hlev.gob.pe", "nombre": "Batallanos Ibarra, Daniel Enrique", "ultimo": "12/09/2026 11:20"}, {"dni": "70000005", "rol": "Administrador", "activo": true, "correo": "acamones@hlev.gob.pe", "nombre": "Camones Chávez, Anthony David", "ultimo": "29/09/2026 10:20"}, {"dni": "70000006", "rol": "Administrador", "activo": true, "correo": "jyangali@hlev.gob.pe", "nombre": "Yangali Saravia, Jesús Alberto", "ultimo": "29/09/2026 07:30"}, {"dni": "70000007", "rol": "Tecnólogo Médico", "activo": true, "correo": "aaylas@hlev.gob.pe", "nombre": "Aylas Valdez, Alexander Hernan", "ultimo": "29/09/2026 07:05"}], "establecimientos": [{"red": "MINSA - Lima Este", "desde": "01/01/2026", "hasta": "31/12/2026", "nombre": "Hospital Vitarte II", "convenio": "Intercambio recíproco de hemocomponentes"}, {"red": "MINSA - Lima Este", "desde": "16/06/2026", "hasta": "15/06/2027", "nombre": "Hospital de la Solidaridad ATE", "convenio": "Apoyo mutuo ante desabastecimiento crítico"}, {"red": "Red nacional", "desde": "—", "hasta": "—", "nombre": "PRONAHEBAS Central", "convenio": "Convenio marco de red nacional de bancos de sangre"}], "alerts": [["red", "3 unidades O− vencen en menos de 24h", "Priorizar la que vence antes — Cámara 2"], ["amber", "Stock de AB− bajo el mínimo de seguridad", "9 unidades disponibles, mínimo 20"], ["blue", "Solicitud urgente pendiente — Emergencia", "2 un. O− · CIE-10 S72.0 · hace 6 min"], ["purple", "12 unidades en cuarentena serológica", "Resultados pendientes del laboratorio"]], "auditLog": [["15/09/2026 09:41:02", "Jaimes Daza, J. (Jefe BS)", "Autorizó despacho de unidad", "DIN W1237250171238", "10.20.4.18"], ["15/09/2026 09:12:47", "Palomino Camarena, J. (T.M.)", "Validó prueba de compatibilidad", "Solicitud SOL-2026-0341", "10.20.4.09"], ["15/09/2026 08:55:10", "Cangana Salcedo, J. (T.M.)", "Generó la etiqueta de una unidad", "DIN W1237250171238", "10.20.4.09"], ["14/09/2026 22:03:38", "Sistema (automático)", "Bloqueó unidad por reactividad serológica", "DIN W1237250169901", "—"], ["14/09/2026 18:20:15", "Camones Chávez, A. (Backend)", "Reordenó el inventario por vencimiento", "Cámara 2", "10.20.4.03"]]};
+const INICIO_VISTA = {"dashboard": ["renderAbo", "renderAlerts", "renderQuickAccess"], "inventario": ["renderInventory", "renderTemps", "fillFractSelect", "renderDonaciones"], "donantes": ["renderDonantes", "renderDiferimientos", "fillSerologiaSelect"], "etiquetado": ["updateEtiquetaPreview"], "solicitudes": ["renderSolicitudes"], "despacho": ["evaluarVerificacion"], "interhospitalario": ["renderIntercambios", "renderConvenios"], "serologia": [], "pruebas": [{"solicitudId": "SOL-2026-0338", "prueba": "Prueba mayor", "muestra": "S-88213", "unidad": "W1237250171012", "grupoPaciente": "O POS", "resultado": "Sin aglutinación", "estado": "green:Compatible", "validadoPor": "Palomino Camarena, J. (T.M.)", "fecha": "14/09/2026 16:30"}, {"solicitudId": "SOL-2026-0338", "prueba": "Prueba menor", "muestra": "S-88213", "unidad": "W1237250171012", "grupoPaciente": "O POS", "resultado": "Sin aglutinación", "estado": "green:Compatible", "validadoPor": "Palomino Camarena, J. (T.M.)", "fecha": "14/09/2026 16:30"}, {"solicitudId": "SOL-2026-0338", "prueba": "Rastreo de anticuerpos (RAI)", "muestra": "S-88213", "unidad": "W1237250171012", "grupoPaciente": "O POS", "resultado": "Negativo", "estado": "green:Negativo", "validadoPor": "Palomino Camarena, J. (T.M.)", "fecha": "14/09/2026 16:30"}], "hemovigilancia": ["renderHemovigilancia"], "reportes": ["renderReports"], "auditoria": ["renderAudit"], "administracion": ["renderUsuarios"], "movil": []};
+
+function infoVista(clave) { return CATALOGO.find(v => v.clave === clave); }
+function puedeVer(clave) { return (VISTAS_POR_ROL[state.currentRole] || []).includes(clave); }
+
+function cargarDatos() {
+  Object.keys(DATOS_DEMO).forEach(k => { state[k] = JSON.parse(JSON.stringify(DATOS_DEMO[k])); });
+  // Pantallas permitidas para el rol (en el proyecto Spring las entrega Rol.java)
+  state.vistasPermitidas = VISTAS_POR_ROL[state.currentRole] || [];
+  sincronizarLocal();
+}
+
+function iniciarVista(clave) {
+  (INICIO_VISTA[clave] || []).forEach(fn => { if (typeof window[fn] === 'function') window[fn](); });
+}
+
+function pintarMenu() {
+  document.getElementById('nav').innerHTML = CATALOGO.filter(v => puedeVer(v.clave)).map(v =>
+    `<a class="nav-item" href="#" data-vista="${v.clave}" style="text-decoration:none; display:flex;">
+       <span class="dot"></span><span>${v.titulo}</span></a>`).join('');
+  document.querySelectorAll('#nav .nav-item').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); mostrarVista(a.dataset.vista); });
+  });
+}
+
+function mostrarVista(clave) {
+  if (!puedeVer(clave)) { toast('Tu rol (' + state.currentRole + ') no tiene acceso a esa vista', true); return; }
+  devolverDelCelular();
+  document.querySelectorAll('.vista').forEach(s => { s.hidden = s.dataset.vista !== clave; });
+  document.querySelectorAll('#nav .nav-item').forEach(a => a.classList.toggle('active', a.dataset.vista === clave));
+  const info = infoVista(clave);
+  document.getElementById('topbar-titulo').textContent = info.titulo;
+  document.getElementById('topbar-subtitulo').textContent = info.subtitulo;
+  iniciarVista(clave);
+  if (clave === 'movil') prepararCelular();
+  window.scrollTo(0, 0);
+}
+
+/* ---- El celular: la aplicacion real, dentro de la pantalla ----
+   En el proyecto Spring esto es un <iframe> que pide la misma ruta con
+   ?movil=1. Aqui, al ser un solo archivo, movemos la propia pantalla
+   dentro del celular (es el mismo nodo, no una copia con otros datos). */
+function prepararCelular() {
+  // El celular lleva dentro el mismo menú del sistema, con las pantallas que
+  // el rol tiene permitidas (todas menos la propia pantalla del celular).
+  const nav = document.getElementById('mv-nav');
+  nav.innerHTML = CATALOGO.filter(v => v.clave !== 'movil' && puedeVer(v.clave)).map((v, i) =>
+    `<a class="nav-item${i === 0 ? ' active' : ''}" href="#" data-vista="${v.clave}"
+        style="text-decoration:none; display:flex;"><span class="dot"></span><span>${v.titulo}</span></a>`).join('');
+  nav.querySelectorAll('.nav-item').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); mostrarEnCelular(a.dataset.vista); });
+  });
+  document.getElementById('mv-usuario').textContent = state.currentUser;
+  document.getElementById('mv-rol').textContent = state.currentRole;
+  document.getElementById('mv-pantalla').classList.add('menu-oculto');
+  const primera = nav.querySelector('.nav-item');
+  if (primera) mostrarEnCelular(primera.dataset.vista);
+}
+
+function alternarMenuCelular() {
+  document.getElementById('mv-pantalla').classList.toggle('menu-oculto');
+}
+
+function mostrarEnCelular(clave) {
+  devolverDelCelular();
+  const sec = document.querySelector(`.vista[data-vista="${clave}"]`);
+  sec.dataset.enCelular = '1';
+  sec.hidden = false;
+  document.getElementById('mv-contenido').appendChild(sec);
+  document.getElementById('mv-titulo').textContent = infoVista(clave).titulo;
+  document.querySelectorAll('#mv-nav .nav-item').forEach(a => a.classList.toggle('active', a.dataset.vista === clave));
+  document.getElementById('mv-pantalla').classList.add('menu-oculto');
+  document.getElementById('mv-contenido').scrollTop = 0;
+  iniciarVista(clave);
+}
+
+function devolverDelCelular() {
+  const sec = document.querySelector('.vista[data-en-celular="1"]');
+  if (!sec) return;
+  delete sec.dataset.enCelular;
+  sec.hidden = true;
+  document.getElementById('content').appendChild(sec);
+}
+
+/* Notificacion push sobre la pantalla del celular (ultima alerta real). */
+function renderMovil(mostrarAviso) {
+  const box = document.getElementById('mv-push');
+  if (!box) return;
+  const ultima = state.alerts[0];
+  if (!mostrarAviso || !ultima) { box.innerHTML = ''; return; }
+  const [, titulo, detalle] = ultima;
+  box.innerHTML = `<div class="push-note">&#128276; ${titulo}<div style="font-size:10.5px; color:var(--ink-600); margin-top:2px;">${detalle}</div></div>`;
+  clearTimeout(window.pushTimer);
+  window.pushTimer = setTimeout(() => { box.innerHTML = ''; }, 6000);
+}
+
+/* ---- Sesion ---- */
+document.getElementById('login-form').addEventListener('submit', e => {
+  e.preventDefault();
+  if(!VAL.formulario([['login-usuario','usuarioLogin',{label:'Usuario'}],['login-clave','clave',{label:'Contraseña'}]])) return;
+  state.currentUser = document.getElementById('login-usuario').value.trim() || 'jcangana@hlev.gob.pe';
+  state.currentRole = document.getElementById('login-rol').value;
+  document.getElementById('user-name').textContent = state.currentUser;
+  document.getElementById('user-role').textContent = state.currentRole;
+  reiniciarDatosLocales();   // se arranca siempre con los datos de ejemplo
+  cargarDatos();
+  pintarMenu();
+  prepararMenu();
+  document.getElementById('view-login').style.display = 'none';
+  document.getElementById('app-shell').hidden = false;
+  mostrarVista('dashboard');
+});
+
+/* Solo en esta version publicada: la pagina corre dentro de un visor que no
+   permite descargas directas, asi que el boton "Descargar CSV" entrega el
+   archivo por la via que si funciona aqui. En el proyecto Spring el mismo
+   boton descarga normal, sin este agregado. */
+(async () => {
+  const descargas = await (window.claude?.use?.('downloads') ?? Promise.resolve(null));
+  if (!descargas) return;
+  window.descargarInventarioCSV = async function () {
+    const nombre = nombreArchivoInventario();
+    try {
+      await descargas.save({ filename: nombre, data: '\uFEFF' + window.csvInventario });
+      logAudit('Exportó el inventario a CSV', nombre);
+      toast(`Inventario exportado: ${nombre}`);
+      closeModal();
+    } catch (err) {
+      if (err && err.code === 'declined') return;
+      toast('No se pudo descargar el archivo aquí; usa "Copiar al portapapeles"', true);
+    }
+  };
+})();
+
+document.getElementById('logout').addEventListener('click', e => {
+  e.preventDefault();
+  devolverDelCelular();
+  document.getElementById('app-shell').hidden = true;
+  document.getElementById('view-login').style.display = 'flex';
+});
+</script>

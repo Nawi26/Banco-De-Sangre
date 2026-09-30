@@ -1,0 +1,381 @@
+
+:root{
+  --red-800:#7E1414; --red-700:#9E1B1B; --red-600:#B4291F; --red-50:#FBEAEA; --red-100:#F6D6D6;
+  --navy-900:#10152A; --navy-800:#171D38; --navy-700:#232B4D;
+  --ink-900:#12161F; --ink-700:#2B303B; --ink-600:#5B6472; --ink-400:#8B93A1; --ink-200:#C4C9D2;
+  --line:#E3E6EB; --line-soft:#EDEFF3; --bg:#F4F5F7; --surface:#FFFFFF;
+  --green-700:#1E7F3C; --green-50:#E9F6EC;
+  --amber-700:#A9760A; --amber-50:#FBF1DE;
+  --purple-700:#6941C6; --purple-50:#F1ECFC;
+  --slate-700:#475467; --slate-50:#EEF1F4;
+  --blue-700:#1849A9; --blue-50:#E9F0FB;
+  --char-700:#2A2E35; --char-50:#EAEBED;
+  --radius-sm:6px; --radius-md:10px; --radius-lg:16px;
+  --font-ui:'Inter',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  color-scheme: light;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-ui); background:var(--bg); color:var(--ink-900);
+  -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.45;
+}
+::selection{background:var(--red-100);}
+a{color:inherit;}
+button{font-family:inherit; cursor:pointer;}
+
+/* ---------- Layout shell ---------- */
+.app{display:flex; min-height:100vh;}
+.sidebar{
+  width:264px; min-width:264px; color:#fff;
+  background:linear-gradient(180deg, #161B2B 0%, var(--navy-900) 46%, #0D111C 100%);
+  border-right:1px solid rgba(255,255,255,.06);
+  display:flex; flex-direction:column; padding:22px 16px; position:sticky; top:0; height:100vh;
+}
+.brand{display:flex; align-items:center; gap:10px; padding:6px 8px 22px 8px;}
+.brand-mark{width:34px; height:34px; flex:none; display:block;}
+.brand-name{font-weight:700; font-size:14.5px; letter-spacing:-0.01em;}
+.brand-sub{font-size:10.5px; color:#8891A8; margin-top:1px;}
+
+.nav{display:flex; flex-direction:column; gap:2px; margin-top:6px;}
+.nav-item{
+  display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px;
+  color:rgba(255,255,255,.66); background:none; border:none; text-align:left; width:100%;
+  font-size:13.5px; font-weight:500; position:relative;
+  transition:background .15s ease, color .15s ease;
+}
+.nav-item .dot{width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5; flex:none;}
+.nav-item:hover{background:rgba(255,255,255,.06); color:#fff;}
+.nav-item.active{background:var(--red-700); color:#fff; font-weight:600;
+  box-shadow:0 2px 8px rgba(138,22,34,.35);}
+.nav-item.active .dot{opacity:1;}
+.nav-group-label{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#5C6584; padding:16px 12px 6px;}
+
+.sidebar-spacer{flex:1;}
+.user-card{background:rgba(255,255,255,.06); border-radius:10px; padding:11px 12px; margin-top:8px;}
+.user-name{font-size:12.5px; font-weight:600;}
+.user-role{font-size:11px; color:#9AA2BB; margin-top:1px;}
+.logout{margin-top:10px; font-size:11.5px; color:#9AA2BB; background:none; border:none; padding:0 4px; text-decoration:underline; text-underline-offset:2px;}
+
+.main{flex:1; min-width:0; display:flex; flex-direction:column;}
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:20px 40px 18px 40px; background:var(--surface);
+  border-bottom:1px solid var(--line); position:sticky; top:0; z-index:4;
+}
+.topbar h1{font-size:21px; margin:0 0 2px 0; letter-spacing:-0.02em;}
+.topbar .subtitle{font-size:12.5px; color:var(--ink-600);}
+.topbar-right{display:flex; align-items:center; gap:10px;}
+
+.content{padding:22px 40px 48px 40px; display:flex; flex-direction:column; gap:20px;}
+
+/* ---------- Reusable bits ---------- */
+.pill{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:20px; font-size:11.5px; font-weight:600;}
+.pill.red{background:var(--red-50); color:var(--red-700);}
+.pill.green{background:var(--green-50); color:var(--green-700);}
+.pill.amber{background:var(--amber-50); color:var(--amber-700);}
+.pill.purple{background:var(--purple-50); color:var(--purple-700);}
+.pill.slate{background:var(--slate-50); color:var(--slate-700);}
+.pill.blue{background:var(--blue-50); color:var(--blue-700);}
+.pill.char{background:var(--char-50); color:var(--char-700);}
+.pill .dot{width:6px; height:6px; border-radius:50%; background:currentColor;}
+
+.btn{border-radius:8px; font-weight:600; font-size:13px; padding:10px 16px; border:1px solid transparent;
+  display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+  transition:background .15s ease, border-color .15s ease, box-shadow .15s ease, transform .1s ease;}
+.btn:active{transform:translateY(1px);}
+.btn-primary{background:var(--red-700); color:#fff; box-shadow:0 1px 2px rgba(138,22,34,.25);}
+.btn-primary:hover{background:var(--red-800);}
+.btn-ghost{background:#fff; color:var(--ink-700); border-color:var(--line);}
+.btn-ghost:hover{border-color:var(--ink-200);}
+.btn-sm{padding:6px 11px; font-size:12px; border-radius:7px;}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px;
+  box-shadow:0 1px 2px rgba(16,21,42,.04);}
+.card-title-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; gap:12px;}
+.card-title{font-size:15px; font-weight:650; letter-spacing:-0.01em;}
+.card-desc{font-size:12px; color:var(--ink-600); margin-top:2px;}
+
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.kpi{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md); padding:16px 18px;
+  box-shadow:0 1px 2px rgba(16,21,42,.04);}
+.kpi .bar{width:26px; height:4px; border-radius:2px; margin-bottom:10px;}
+.kpi .label{font-size:12px; color:var(--ink-600); font-weight:500;}
+.kpi .value{font-size:25px; font-weight:700; margin:4px 0 3px 0; letter-spacing:-0.01em;}
+.kpi .hint{font-size:11px; color:var(--ink-400);}
+
+table{width:100%; border-collapse:collapse; font-size:13px;}
+thead th{
+  text-align:left; font-size:10.5px; font-weight:700; color:var(--ink-600);
+  text-transform:uppercase; letter-spacing:.045em;
+  padding:0 12px 10px 12px; border-bottom:1px solid var(--line);
+}
+tbody td{padding:12px; border-bottom:1px solid var(--line-soft); vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:#FAFAFB;}
+.mono{font-family:var(--font-mono); font-size:12.5px; color:var(--ink-700);}
+.cell-strong{font-weight:600;}
+.cell-muted{color:var(--ink-600); font-size:12.5px;}
+
+.field{display:flex; flex-direction:column; gap:6px;}
+.field label{font-size:12.5px; font-weight:600; color:var(--ink-900);}
+.field .hint{font-size:11px; color:var(--ink-400); font-weight:400;}
+.input, select.input, textarea.input{
+  border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:13.5px;
+  font-family:var(--font-ui); background:#FCFCFD; color:var(--ink-900); width:100%;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.input::placeholder{color:var(--ink-400);}
+textarea.input{resize:vertical; min-height:64px;}
+.checkline{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-700);}
+.checkline input{accent-color:var(--red-700);}
+
+.tabs{display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:4px;}
+.tab{padding:10px 4px; margin-right:22px; font-size:13.5px; font-weight:600; color:var(--ink-400); border:none; background:none; border-bottom:2px solid transparent; position:relative; top:1px;}
+.tab.active{color:var(--red-700); border-bottom-color:var(--red-700);}
+
+.badge-rf{font-family:var(--font-mono); font-size:10.5px; font-weight:600; color:var(--ink-600); background:var(--slate-50); border-radius:5px; padding:2px 6px;}
+
+.view{display:none;}
+.view.active{display:flex; flex-direction:column; gap:20px;}
+/* Cada Vista entrega su contenido dentro de un <section>: se comporta igual que
+   la antigua .view.active de la versión original (columna con separacion entre tarjetas). */
+.content > section{display:flex; flex-direction:column; gap:20px;}
+.panel-flex{display:flex; flex-direction:column; gap:20px;}
+
+.divider{height:1px; background:var(--line); margin:2px 0;}
+
+.progress-track{height:6px; border-radius:3px; background:var(--line-soft); overflow:hidden;}
+.progress-fill{height:100%; border-radius:3px;}
+
+.timeline{display:flex; flex-direction:column;}
+.timeline-item{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--line-soft);}
+.timeline-item:last-child{border-bottom:none;}
+.timeline-dot{width:9px; height:9px; border-radius:50%; margin-top:4px; flex:none;}
+.timeline-title{font-size:13px; font-weight:600;}
+.timeline-meta{font-size:11.5px; color:var(--ink-400); margin-top:2px;}
+
+.two-col{display:grid; grid-template-columns:1.5fr 1fr; gap:16px; align-items:start;}
+
+/* Login screen */
+.login-shell{display:flex; min-height:100vh; width:100%;}
+.login-left{width:44%; min-width:460px; background:linear-gradient(165deg,var(--red-700),var(--red-800)); color:#fff; padding:60px; display:flex; flex-direction:column; justify-content:center; gap:22px;}
+.login-badge{align-self:flex-start; padding:6px 14px; border-radius:20px; background:rgba(255,255,255,.15); font-size:11.5px; font-weight:600; letter-spacing:.02em;}
+.login-left h1{font-size:32px; line-height:1.2; margin:0; font-weight:700; letter-spacing:-0.01em;}
+.login-left p{font-size:14.5px; color:rgba(255,255,255,.85); line-height:1.6; margin:0; max-width:420px;}
+.login-stats{display:flex; gap:34px; margin-top:8px;}
+.login-stats .num{font-size:23px; font-weight:700;}
+.login-stats .lbl{font-size:10.5px; color:rgba(255,255,255,.7); margin-top:3px; line-height:1.3;}
+.login-right{flex:1; display:flex; align-items:center; justify-content:center; background:#fff; padding:40px;}
+.login-form{width:100%; max-width:400px; display:flex; flex-direction:column; gap:16px;}
+.login-form h2{font-size:24px; margin:0 0 2px 0;}
+.login-form .sub{font-size:13px; color:var(--ink-600); margin-bottom:6px;}
+.login-note{font-size:11px; color:var(--ink-400); text-align:center; margin-top:4px;}
+
+.audit-log-line{display:flex; gap:14px; padding:10px 0; border-bottom:1px solid var(--line-soft); font-size:12.5px;}
+.audit-log-line:last-child{border-bottom:none;}
+
+.scan-box{border:1.5px dashed var(--ink-200); border-radius:12px; padding:26px; text-align:center; background:var(--bg);}
+.scan-icon{width:44px; height:44px; margin:0 auto 10px; border-radius:10px; background:var(--navy-900); display:flex; align-items:center; justify-content:center;}
+
+.match-row{display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:8px; background:var(--green-50); border:1px solid #CFE9D5;}
+.match-row.mismatch{background:var(--red-50); border-color:var(--red-100);}
+
+/* Modal + Toast */
+.modal-overlay{position:fixed; inset:0; background:rgba(16,21,42,.5); display:none; align-items:center; justify-content:center; z-index:100; padding:24px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff; border-radius:16px; width:100%; max-width:520px; max-height:88vh; overflow-y:auto; padding:24px;}
+.modal-head{display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;}
+.modal-title{font-size:16px; font-weight:700;}
+.modal-close{background:none; border:none; font-size:18px; color:var(--ink-400); line-height:1; padding:4px;}
+.toast-wrap{position:fixed; bottom:24px; right:24px; z-index:200; display:flex; flex-direction:column; gap:8px; align-items:flex-end;}
+.toast{background:var(--navy-900); color:#fff; padding:12px 16px; border-radius:10px; font-size:13px; font-weight:500; box-shadow:0 8px 24px rgba(16,21,42,.25); max-width:320px; opacity:0; transform:translateY(6px); transition:opacity .18s ease, transform .18s ease;}
+.toast.show{opacity:1; transform:translateY(0);}
+.toast.err{background:var(--red-700);}
+.select-inline{border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-size:12.5px; font-family:var(--font-mono); background:#FCFCFD;}
+
+/* App móvil mockup */
+.csv-preview{font-family:var(--font-mono); font-size:11.5px; line-height:1.7; background:var(--bg); border:1px solid var(--line);
+  border-radius:8px; padding:12px; margin:0; max-height:220px; overflow:auto; white-space:pre; color:var(--ink-600);}
+
+.phone{width:280px; height:560px; border-radius:36px; border:10px solid var(--navy-900); background:#fff; overflow:hidden; position:relative; box-shadow:0 20px 50px rgba(16,21,42,.25); flex:none;}
+.phone-notch{position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:22px; background:var(--navy-900); border-radius:0 0 14px 14px; z-index:2;}
+.phone-screen{padding:34px 16px 16px 16px; height:100%; overflow-y:auto; background:var(--bg);}
+.phone-topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+.phone-card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px;}
+
+/* --- App movil: la propia aplicacion web corriendo DENTRO del celular --- */
+.phone-screen.embed{padding:30px 0 0 0; display:flex; flex-direction:column; overflow:hidden;}
+.phone-screen.embed .phone-topbar{padding:0 12px; margin-bottom:8px; flex:none;}
+.phone-nav{display:flex; gap:6px; padding:0 10px 8px 10px; overflow-x:auto; scrollbar-width:none; flex:none;}
+.phone-nav::-webkit-scrollbar{display:none;}
+.phone-chip{flex:none; font-family:inherit; font-size:10.5px; font-weight:600; padding:5px 10px; border-radius:999px;
+  border:1px solid var(--line); background:#fff; color:var(--ink-600); cursor:pointer; white-space:nowrap;}
+.phone-chip.active{background:var(--red-700); border-color:var(--red-700); color:#fff;}
+.phone-frame{flex:1; width:100%; border:0; background:var(--bg); display:block;}
+.phone-push{position:absolute; left:12px; right:12px; top:102px; z-index:3;}
+.phone-push .push-note{box-shadow:0 8px 20px rgba(16,21,42,.18);}
+
+/* Modo movil (?movil=1): la MISMA aplicacion sin el menu lateral, porque la
+   navegacion la dan los accesos de arriba del celular. Todo lo demas (una
+   columna, textos mas chicos, tablas desplazables) lo resuelven las reglas
+   responsivas de abajo, que se activan por el ancho de la pantalla: sirven
+   igual dentro del celular de esta pantalla y en un telefono de verdad. */
+.app-movil .phone{display:none;}
+.push-note{background:var(--navy-900); color:#fff; border-radius:10px; padding:10px 12px; font-size:11.5px; margin-bottom:8px;}
+
+/* ================= Diseño responsivo ================= */
+
+/* Tablet y ventanas angostas */
+@media (max-width: 980px){
+  /* El !important vence a los grid-template-columns escritos en el HTML */
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+  .two-col{grid-template-columns:1fr !important;}
+}
+
+/* El menú lateral se mantiene donde siempre; solo se hace más angosto para
+   dejarle sitio al contenido. */
+@media (max-width: 860px){
+  .sidebar{width:212px; min-width:212px; padding:18px 12px;}
+  .nav-item{padding:8px 10px; font-size:12.5px;}
+  .topbar{padding:16px 20px 0 20px;}
+  .content{padding:16px 20px 32px 20px; gap:16px;}
+  .login-shell{flex-direction:column; min-height:0;}
+  .login-left{width:100%; min-width:0; padding:34px 24px;}
+  .login-left h1{font-size:25px;}
+  .login-right{padding:28px 24px 40px 24px;}
+}
+
+/* Telefono (y la pantalla del celular de la vista "Aplicación móvil") */
+@media (max-width: 560px){
+  .sidebar{width:168px; min-width:168px; padding:16px 10px;}
+  .sidebar .brand-name{font-size:12.5px;}
+  .nav-item{padding:7px 9px; font-size:11.5px; gap:7px;}
+  .user-card{padding:9px 10px;}
+  .user-name{font-size:11.5px;}
+  .topbar{padding:12px 14px 0 14px;}
+  .topbar h1{font-size:18px;}
+  .topbar .subtitle{font-size:11.5px;}
+  .content{padding:12px 14px 28px 14px; gap:12px;}
+  .card{padding:14px; border-radius:10px;}
+  .card-title{font-size:13.5px;}
+  .card-desc{font-size:11.5px;}
+  /* Los controles de cada tarjeta (buscador, filtros, botones) se acomodan
+     en varias filas en vez de salirse de la pantalla. */
+  .card-title-row{flex-wrap:wrap; gap:8px;}
+  .card-title-row > div{flex-wrap:wrap; gap:8px; min-width:0;}
+  .card-title-row .input{width:auto !important; flex:1 1 130px; min-width:0;}
+  .card-title-row .btn{flex:0 0 auto;}
+  .field{min-width:0;}
+  .field .input{max-width:100% !important;}
+  .grid-2{grid-template-columns:1fr !important;}
+  .grid-4{gap:8px;}
+  .card, .kpi{min-width:0;}
+  .kpi{padding:12px 13px;}
+  .kpi .value{font-size:20px;}
+  .kpi .label{font-size:11.5px;}
+  .kpi .hint{font-size:10.5px;}
+  /* Las tablas se desplazan de lado en vez de apretar las columnas */
+  table{display:block; width:100%; overflow-x:auto; white-space:nowrap; font-size:11.5px;}
+  th, td{padding:8px 10px;}
+  .tabs{overflow-x:auto; scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{font-size:12px; white-space:nowrap;}
+  .field, .input, .btn{max-width:100%;}
+  .scan-box{padding:18px 14px;}
+  .login-left{padding:26px 18px;}
+  .login-left h1{font-size:22px;}
+  .login-right{padding:22px 18px 34px 18px;}
+  /* Barras de desplazamiento finas, como en un celular */
+  ::-webkit-scrollbar{width:6px; height:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--ink-200); border-radius:3px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+}
+
+/* ---------- Acabado: foco visible y detalles de interacción ---------- */
+.input:focus, select.input:focus, textarea.input:focus{
+  outline:none; border-color:var(--red-700); box-shadow:0 0 0 3px rgba(138,22,34,.10);
+}
+.btn:focus-visible, .nav-item:focus-visible, .tab:focus-visible{
+  outline:2px solid var(--red-700); outline-offset:2px;
+}
+.btn-ghost:hover{background:#FCFCFD;}
+.kpi{transition:box-shadow .15s ease;}
+.kpi:hover{box-shadow:0 2px 10px rgba(16,21,42,.07);}
+.brand{align-items:center;}
+.login-left .login-logo{width:56px; height:56px; display:block; margin-bottom:4px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.28));}
+
+.reporte-resumen{background:var(--bg); border:1px solid var(--line); border-radius:8px;
+  padding:10px 12px; font-size:12.5px; color:var(--ink-700); margin-bottom:14px;}
+
+/* ---------- Menú hamburguesa (solo en celular) ---------- */
+.menu-btn{display:none; width:38px; height:38px; flex:none; flex-direction:column;
+  align-items:center; justify-content:center; gap:4px; border:1px solid var(--line);
+  border-radius:9px; background:var(--surface); cursor:pointer; padding:0;
+  transition:border-color .15s ease, background .15s ease;}
+.menu-btn span{display:block; width:16px; height:2px; border-radius:1px; background:var(--ink-700);
+  transition:transform .18s ease, opacity .18s ease;}
+.menu-btn:hover{border-color:var(--ink-200); background:#FCFCFD;}
+.menu-btn:focus-visible{outline:2px solid var(--red-700); outline-offset:2px;}
+
+/* En el celular el menú se desliza sobre el contenido; en pantallas grandes
+   sigue fijo a la izquierda como siempre, y el botón ni siquiera aparece. */
+@media (max-width: 560px){
+  .menu-btn{display:inline-flex; width:34px; height:34px;}
+  .sidebar{
+    position:fixed; left:0; top:0; height:100%; width:232px; min-width:232px; padding:18px 12px;
+    z-index:30; box-shadow:6px 0 24px rgba(16,21,42,.28);
+    transform:translateX(0); transition:transform .2s ease;
+  }
+  .app.menu-oculto .sidebar{transform:translateX(-100%); box-shadow:none;}
+  /* Velo sobre el contenido mientras el menú está abierto */
+  .app:not(.menu-oculto)::after{
+    content:""; position:fixed; inset:0; background:rgba(10,13,22,.45); z-index:25;
+  }
+  .app.menu-oculto .menu-btn span:nth-child(1){transform:none;}
+  .app:not(.menu-oculto) .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  .app:not(.menu-oculto) .menu-btn span:nth-child(2){opacity:0;}
+  .app:not(.menu-oculto) .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+}
+
+/* ---------- Documento del reporte (vista previa e impresión) ---------- */
+.doc-reporte{background:#fff; border:1px solid var(--line); border-radius:8px; padding:26px 28px;
+  max-height:58vh; overflow:auto;}
+.doc-membrete{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  border-bottom:2px solid var(--red-700); padding-bottom:12px; margin-bottom:18px;}
+.doc-institucion{font-size:14px; font-weight:700; letter-spacing:-0.01em;}
+.doc-area{font-size:11.5px; color:var(--ink-600); margin-top:2px;}
+.doc-codigo{font-family:var(--font-mono); font-size:11px; color:var(--ink-600); white-space:nowrap;}
+.doc-titulo{font-size:17px; margin:0 0 16px 0; text-align:center; letter-spacing:-0.01em;}
+.doc-datos{display:grid; grid-template-columns:repeat(2,1fr); gap:8px 24px; margin-bottom:16px;
+  font-size:12px;}
+.doc-datos > div{display:flex; justify-content:space-between; gap:12px;
+  border-bottom:1px dotted var(--line); padding-bottom:4px;}
+.doc-datos span{color:var(--ink-600);}
+.doc-resumen{font-size:12.5px; color:var(--ink-700); background:var(--bg); border-left:3px solid var(--red-700);
+  padding:10px 12px; margin:0 0 16px 0;}
+.doc-firma{margin-top:34px; text-align:center; font-size:12px;}
+.doc-linea{width:220px; height:1px; background:var(--ink-900); margin:0 auto 6px auto;}
+.doc-cargo{font-size:11px; color:var(--ink-600); margin-top:2px;}
+
+@media print{
+  /* Al imprimir solo sale el documento, sin la aplicación alrededor */
+  body > *{display:none !important;}
+  .modal-overlay{display:block !important; position:static !important; background:#fff !important;
+    padding:0 !important;}
+  .modal-box{box-shadow:none !important; border:none !important; max-width:100% !important;
+    width:100% !important; padding:0 !important;}
+  .doc-reporte{border:none; max-height:none; overflow:visible; padding:0;}
+  .no-print{display:none !important;}
+  table{font-size:11px;}
+}
+
+/* ---- Validación de formularios ---- */
+.input.input-error, select.input.input-error, textarea.input.input-error{
+  border-color:var(--red-600) !important; background:var(--red-50);
+}
+.input.input-rechazo{ animation:rechazo .25s; }
+@keyframes rechazo{ 25%{transform:translateX(-3px);} 75%{transform:translateX(3px);} }
+.field-error{ color:var(--red-700); font-size:11.5px; font-weight:600; margin-top:-2px; }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Verificación antes de entregar</div>
+            <div class="card-desc">Se escanea la unidad y la pulsera del paciente, y deben coincidir</div></div></div>
+            <div class="scan-box" style="margin-bottom:14px; cursor:pointer;" onclick="escanearHemocomponente()">
+              <div class="scan-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:2px;">Escanear código del hemocomponente</div>
+              <div style="font-size:12px; color:var(--ink-600);">DIN escaneado: <span class="mono" id="scan-din">—</span></div>
+            </div>
+            <div class="scan-box" style="cursor:pointer;" onclick="escanearPulsera()">
+              <div class="scan-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:2px;">Escanear pulsera del receptor</div>
+              <div style="font-size:12px; color:var(--ink-600);">ID paciente: <span class="mono" id="scan-hc">—</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Resultado de verificación</div></div></div>
+            <div style="display:flex; flex-direction:column; gap:10px;" id="verif-rows">
+              <div class="cell-muted" style="font-size:12.5px;">Escanea ambos códigos para ejecutar la doble verificación electrónica.</div>
+            </div>
+            <div class="divider" style="margin:16px 0;"></div>
+            <div class="checkline" style="margin-bottom:14px;">
+              <input type="checkbox" id="despacho-firma" onchange="evaluarVerificacion()">
+              <label for="despacho-firma" style="font-weight:400;">Firma electrónica del responsable validada</label>
+            </div>
+            <button class="btn btn-primary" id="despacho-btn" style="width:100%; justify-content:center; opacity:.5;" disabled onclick="autorizarDespacho()">Autorizar y registrar entrega</button>
+            <div style="text-align:center; font-size:11px; color:var(--ink-400); margin-top:8px;">Toda entrega queda registrada en la auditoría</div>
+          </div>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.inventory = /*[[${inventario}]]*/ [];
+    state.solicitudes = /*[[${solicitudes}]]*/ [];
+    sincronizarLocal('inventory', 'solicitudes');
+    document.addEventListener('DOMContentLoaded', function() {
+      evaluarVerificacion();
+    });
+  </script>
+</body>
+</html>

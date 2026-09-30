@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Reportes del servicio</div>
+          <div class="card-desc">Consolidados listos para descargar o enviar</div></div></div>
+          <div class="grid-4" id="reports-grid"></div>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.inventory = /*[[${inventario}]]*/ [];
+    state.donantes = /*[[${donantes}]]*/ [];
+    state.solicitudes = /*[[${solicitudes}]]*/ [];
+    state.hemovigilancia = /*[[${hemovigilancia}]]*/ [];
+    state.auditLog = /*[[${auditLog}]]*/ [];
+    sincronizarLocal('inventory', 'donantes', 'solicitudes', 'hemovigilancia', 'auditLog');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderReports();
+    });
+  </script>
+</body>
+</html>

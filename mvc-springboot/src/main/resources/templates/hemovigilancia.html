@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Reacciones después de una transfusión</div>
+          <div class="card-desc">Cada caso queda ligado a la unidad que se transfundió</div></div>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalHemovigilancia()">+ Registrar evento</button>
+          </div>
+          <table>
+            <thead><tr><th>Fecha</th><th>Paciente</th><th>Reacción</th><th>DIN origen</th><th>Severidad</th><th>Estado</th></tr></thead>
+            <tbody id="hemovigilancia-rows"></tbody>
+          </table>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.hemovigilancia = /*[[${hemovigilancia}]]*/ [];
+    state.inventory = /*[[${inventario}]]*/ [];
+    sincronizarLocal('hemovigilancia', 'inventory');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderHemovigilancia();
+    });
+  </script>
+</body>
+</html>

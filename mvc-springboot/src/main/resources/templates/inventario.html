@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="tabs">
+          <button class="tab active" data-tab="inv:hemo">Hemocomponentes</button>
+          <button class="tab" data-tab="inv:donaciones">Donaciones recibidas</button>
+        </div>
+
+        <div data-tabpanel="inv:hemo" class="panel-flex">
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Cámaras de refrigeración y congeladoras</div>
+              <div class="card-desc">Ordenadas por fecha de vencimiento: primero sale la que vence antes</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <input class="input btn-sm" style="width:180px;" id="inv-search" data-val="buscar" maxlength="40" autocomplete="off" placeholder="Buscar DIN o grupo..." oninput="renderInventory()">
+              <select class="input btn-sm" style="width:auto;" id="inv-filter" onchange="renderInventory()">
+                <option value="">Todos los estados</option>
+                <option value="disponible">Disponible</option>
+                <option value="reservado">Reservado</option>
+                <option value="cuarentena">Cuarentena</option>
+                <option value="bloqueado">Bloqueado</option>
+                <option value="vencido">Vencido</option>
+                <option value="despachado">Despachado</option>
+                <option value="fraccionado">Fraccionado</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="exportarInventario()">Exportar</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr>
+              <th>DIN (ISBT 128)</th><th>Hemocomponente</th><th>ABO/Rh</th><th>Cámara</th><th>Vence</th><th>Estado</th><th></th>
+            </tr></thead>
+            <tbody id="inventory-rows"></tbody>
+          </table>
+          <div class="cell-muted" id="inv-count" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Monitoreo de temperatura de cámaras</div>
+            <div class="card-desc">Avisa cuando una cámara sale de su rango de temperatura</div></div></div>
+            <div id="temp-grid" class="grid-4" style="grid-template-columns:repeat(3,1fr);"></div>
+          </div>
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Vida útil por hemocomponente</div><div class="card-desc">Cuánto dura cada componente</div></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--red-700);"></div><div><div class="timeline-title">Plaquetas</div><div class="timeline-meta">5 días de vida útil</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--amber-700);"></div><div><div class="timeline-title">Glóbulos rojos (CH)</div><div class="timeline-meta">30 días de vida útil</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--blue-700);"></div><div><div class="timeline-title">Plasma Fresco Congelado</div><div class="timeline-meta">Hasta 1 año de vida útil</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div><div class="card-title">Fraccionamiento de hemocomponentes</div>
+            <div class="card-desc">Separación de una bolsa de sangre total en sus componentes</div></div>
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label>Bolsa de sangre total a fraccionar</label>
+            <select class="input mono" id="fract-din"></select>
+          </div>
+          <div class="grid-4" style="grid-template-columns:repeat(4,1fr); margin-bottom:14px;">
+            <div class="kpi" style="padding:12px;"><div class="label">Concentrado de Hematíes</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Plasma Fresco Congelado</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Crioprecipitados</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Concentrado Plaquetas</div><div class="value" style="font-size:18px;">1 por bolsa</div></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fraccionarUnidad()">Fraccionar y generar hemocomponentes</button>
+        </div>
+        </div>
+
+        <div data-tabpanel="inv:donaciones" class="card" style="display:none;">
+          <div class="card-title-row">
+            <div><div class="card-title">Donaciones recibidas</div>
+            <div class="card-desc">Cada bolsa que llegó de un donante, su tamizaje y los hemocomponentes que salieron de ella</div></div>
+            <input class="input btn-sm" style="width:210px;" id="don-inv-buscar" data-val="buscar" maxlength="40" autocomplete="off" placeholder="Buscar donante, DNI o DIN..." oninput="renderDonaciones()">
+          </div>
+          <table>
+            <thead><tr><th>Bolsa (DIN)</th><th>Donante</th><th>DNI</th><th>Grupo</th><th>Tamizaje</th><th>Hemocomponentes obtenidos</th></tr></thead>
+            <tbody id="donaciones-rows"></tbody>
+          </table>
+          <div class="cell-muted" id="donaciones-count" style="margin-top:10px;"></div>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.inventory = /*[[${inventario}]]*/ [];
+    state.temps = /*[[${temperaturas}]]*/ [];
+    state.donantes = /*[[${donantes}]]*/ [];
+    state.serologia = /*[[${serologia}]]*/ [];
+    sincronizarLocal('inventory', 'temps', 'donantes', 'serologia');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderInventory(); renderTemps(); fillFractSelect(); renderDonaciones();
+    });
+  </script>
+</body>
+</html>

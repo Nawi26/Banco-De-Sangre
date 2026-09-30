@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="tabs">
+          <button class="tab active" data-tab="sol:nueva">Nueva solicitud</button>
+          <button class="tab" data-tab="sol:compat">Pruebas de compatibilidad</button>
+        </div>
+
+        <div data-tabpanel="sol:nueva" class="card">
+          <div class="card-title-row"><div><div class="card-title">Nueva solicitud de sangre</div>
+          <div class="card-desc">UCI · Emergencia · Centro Quirúrgico · Gineco-Obstetricia</div></div>
+          <button class="btn btn-ghost btn-sm" onclick="importarHIS()">Importar orden desde HIS/SIS</button>
+          </div>
+          <div class="field" style="max-width:280px; margin-bottom:14px;">
+            <label>Tipo de solicitud</label>
+            <select class="input" id="sol-tipo" onchange="toggleTipoSolicitud()">
+              <option value="transfusional">Solicitud transfusional</option>
+              <option value="reserva">Reserva para cirugía programada</option>
+            </select>
+          </div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Paciente</label><input class="input" id="sol-paciente" data-val="nombre" data-req="1" maxlength="60" autocomplete="off" placeholder="Nombres y apellidos del receptor"></div>
+            <div class="field"><label>Historia clínica</label><input class="input mono" id="sol-hc" data-val="hc" data-req="1" maxlength="13" autocomplete="off" placeholder="HC-2026-00000"></div>
+            <div class="field"><label>Servicio solicitante</label>
+              <select class="input" id="sol-servicio"><option>Emergencia</option><option>UCI</option><option>Centro Quirúrgico</option><option>Gineco-Obstetricia</option></select>
+            </div>
+            <div class="field"><label>Diagnóstico (CIE-10)</label><input class="input mono" id="sol-cie10" data-val="cie10" data-req="1" maxlength="90" autocomplete="off" placeholder="Ej. O72.1 — Hemorragia posparto"></div>
+            <div class="field"><label>Hemocomponente y cantidad</label><input class="input" id="sol-componente" data-val="componente" data-req="1" maxlength="80" autocomplete="off" placeholder="2 unidades — Concentrado de Hematíes"></div>
+            <div class="field"><label>Prioridad clínica</label>
+              <select class="input" id="sol-prioridad"><option>Urgente (&lt;15 min)</option><option>Programada</option><option>Diferible</option></select>
+            </div>
+          </div>
+          <div class="field" id="sol-reserva-field" style="display:none; max-width:280px; margin-bottom:14px;">
+            <label>Fecha límite de la reserva</label>
+            <input class="input" id="sol-reserva-fecha" data-val="fechaFutura" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="dd/mm/aaaa — liberación automática al vencer">
+          </div>
+          <div style="display:flex; justify-content:flex-end;"><button class="btn btn-primary btn-sm" onclick="enviarSolicitud()">Enviar solicitud</button></div>
+
+          <div class="divider" style="margin:20px 0;"></div>
+          <div class="card-title" style="margin-bottom:10px;">Solicitudes activas</div>
+          <table>
+            <thead><tr><th>Paciente</th><th>Servicio</th><th>CIE-10</th><th>Prioridad</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="solicitudes-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="sol:compat" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Pruebas de compatibilidad</div>
+          <div class="card-desc">Se cruza la sangre del paciente con la unidad antes de entregarla</div></div></div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Solicitud a validar</label>
+              <select class="input" id="compat-solicitud" onchange="renderPruebas()"></select></div>
+            <div class="field"><label>Unidad a cruzar</label>
+              <select class="input" id="compat-unidad"></select></div>
+            <div class="field"><label>Grupo ABO/Rh del paciente</label>
+              <select class="input" id="compat-grupo">
+                <option>O POS</option><option>O NEG</option><option>A POS</option><option>A NEG</option>
+                <option>B POS</option><option>B NEG</option><option>AB POS</option><option>AB NEG</option>
+              </select></div>
+            <div class="field"><label>N.º de muestra del paciente</label>
+              <input class="input mono" id="compat-muestra" data-val="muestra" data-req="1" maxlength="7" autocomplete="off" placeholder="S-00000"></div>
+            <div class="field"><label>Prueba mayor (plasma del paciente + hematíes de la unidad)</label>
+              <select class="input" id="compat-mayor"><option>Sin aglutinación</option><option>Aglutinación</option><option>Hemólisis</option></select></div>
+            <div class="field"><label>Prueba menor (hematíes del paciente + plasma de la unidad)</label>
+              <select class="input" id="compat-menor"><option>Sin aglutinación</option><option>Aglutinación</option><option>Hemólisis</option></select></div>
+            <div class="field"><label>Rastreo de anticuerpos irregulares (RAI)</label>
+              <select class="input" id="compat-rai"><option>Negativo</option><option>Positivo</option></select></div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-bottom:6px;">
+            <button class="btn btn-primary btn-sm" onclick="validarCompatibilidad()">Registrar pruebas</button>
+          </div>
+          <div class="divider" style="margin:16px 0;"></div>
+          <div class="card-title" style="margin-bottom:10px;">Pruebas registradas de la solicitud</div>
+          <table>
+            <thead><tr><th>Prueba</th><th>Muestra</th><th>Unidad</th><th>Resultado</th><th>Validado por</th><th>Estado</th></tr></thead>
+            <tbody id="pruebas-rows"></tbody>
+          </table>
+        </div>
+  </section>
+</div>
+
+  <script th:inline="javascript">
+    state.solicitudes = /*[[${solicitudes}]]*/ [];
+    state.pruebas = /*[[${pruebas}]]*/ [];
+    state.inventory = /*[[${inventario}]]*/ [];
+    sincronizarLocal('solicitudes', 'pruebas', 'inventory');
+    document.addEventListener('DOMContentLoaded', function() {
+      renderSolicitudes();
+    });
+  </script>
+</body>
+</html>

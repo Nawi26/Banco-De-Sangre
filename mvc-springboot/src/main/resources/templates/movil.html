@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(titulo=${info.titulo()})}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell(~{::section})}">
+  <section>
+        <div class="two-col" style="grid-template-columns:auto 1fr;">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen embed">
+              <div id="mv-push" class="phone-push"></div>
+              <!--/* Aqui adentro corre la MISMA aplicacion web, pedida al servidor
+                   con ?movil=1. Trae TODO el sistema: sus 12 pantallas, su menu
+                   (que en el celular se abre con el boton de tres rayas), su
+                   sesion y sus datos. No es una maqueta. */-->
+              <iframe id="mv-frame" class="phone-frame" title="BancoSangre HLEV en el celular"
+                      th:src="@{/dashboard(movil=1)}"></iframe>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Aplicación móvil para personal asistencial</div>
+            <div class="card-desc">Dentro del celular corre el mismo sistema web, en versión móvil: los mismos módulos, la misma sesión y los mismos datos</div></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--blue-700);"></div><div><div class="timeline-title">Consulta de disponibilidad</div><div class="timeline-meta">Todos los módulos del sistema, desde el menú del propio celular</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--red-700);"></div><div><div class="timeline-title">Notificaciones push</div><div class="timeline-meta">Las alertas del sistema aparecen sobre la pantalla del celular</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--green-700);"></div><div><div class="timeline-title">Registro de solicitudes</div><div class="timeline-meta">Una solicitud enviada desde el celular queda guardada y se ve luego en el panel web</div></div></div>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="margin-top:12px;" onclick="simularPushMovil()">Simular notificación push</button>
+          </div>
+        </div>
+  </section>
+</div>
+
+  <!--/* La app móvil no tiene datos propios: refleja los mismos datos reales
+       del panel web (aboGroups, alertas y solicitudes) que trae el
+       Controlador desde la base de datos. */-->
+  <script th:inline="javascript">
+    state.aboGroups = /*[[${aboGroups}]]*/ [];
+    state.alerts = /*[[${alertas}]]*/ [];
+    state.solicitudes = /*[[${solicitudes}]]*/ [];
+    sincronizarLocal('alerts', 'solicitudes');
+
+    /* Notificacion push: se dibuja flotando sobre la pantalla del celular,
+       tomando la ultima alerta real del sistema. */
+    function renderMovil(mostrarAviso) {
+      const box = document.getElementById('mv-push');
+      if (!box) return;
+      const ultima = state.alerts[0];
+      // Solo se dibuja cuando acaba de ocurrir algo; al abrir la pantalla no
+      // se tapa el contenido con una notificación vieja.
+      if (!mostrarAviso || !ultima) { box.innerHTML = ''; return; }
+      const [, titulo, detalle] = ultima;
+      box.innerHTML = `<div class="push-note">🔔 ${titulo}<div style="font-size:10.5px; color:var(--ink-600); margin-top:2px;">${detalle}</div></div>`;
+      // La notificacion se retira sola, como en un celular real.
+      clearTimeout(window.pushTimer);
+      window.pushTimer = setTimeout(() => { box.innerHTML = ''; }, 6000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderMovil();
+    });
+
+    /* Cuando la aplicacion que corre DENTRO del celular guarda algo (por
+       ejemplo, una solicitud enviada desde ahi), el navegador avisa a esta
+       pagina con el evento "storage": recargamos la "base de datos" local y
+       mostramos la novedad como notificacion push. */
+    window.addEventListener('storage', function(e) {
+      if (MODO_SERVIDOR) {
+        // Con base de datos, la novedad se vuelve a pedir al servidor
+        if (e.key !== 'bancosangre_evento') return;
+        recargarDelServidor({ alerts: 'alertas', solicitudes: 'solicitudes' }).then(() => renderMovil(true));
+        return;
+      }
+      if (e.key !== LOCAL_DB_KEY) return;
+      sincronizarLocal('alerts', 'solicitudes');
+      renderMovil(true);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BancoSangre HLEV — Pantallas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red-800:#7E1414; --red-700:#9E1B1B; --red-600:#B4291F; --red-50:#FBEAEA; --red-100:#F6D6D6;
+  --navy-900:#10152A; --navy-800:#171D38; --navy-700:#232B4D;
+  --ink-900:#12161F; --ink-700:#2B303B; --ink-600:#5B6472; --ink-400:#8B93A1; --ink-200:#C4C9D2;
+  --line:#E3E6EB; --line-soft:#EDEFF3; --bg:#F4F5F7; --surface:#FFFFFF;
+  --green-700:#1E7F3C; --green-50:#E9F6EC;
+  --amber-700:#A9760A; --amber-50:#FBF1DE;
+  --purple-700:#6941C6; --purple-50:#F1ECFC;
+  --slate-700:#475467; --slate-50:#EEF1F4;
+  --blue-700:#1849A9; --blue-50:#E9F0FB;
+  --char-700:#2A2E35; --char-50:#EAEBED;
+  --radius-sm:6px; --radius-md:10px; --radius-lg:16px;
+  --font-ui:'Inter',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  color-scheme: light;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-ui); background:var(--bg); color:var(--ink-900);
+  -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.45;
+}
+::selection{background:var(--red-100);}
+a{color:inherit;}
+button{font-family:inherit; cursor:pointer;}
+
+/* ---------- Layout shell ---------- */
+.app{display:flex; min-height:100vh;}
+.sidebar{
+  width:264px; min-width:264px; background:var(--navy-900); color:#fff;
+  display:flex; flex-direction:column; padding:22px 16px; position:sticky; top:0; height:100vh;
+}
+.brand{display:flex; align-items:center; gap:10px; padding:6px 8px 22px 8px;}
+.brand-mark{width:30px; height:30px; border-radius:8px; background:var(--red-700); position:relative; flex:none;}
+.brand-mark::after{content:"";position:absolute; inset:8px; border-radius:2px; background:#fff; opacity:.9;}
+.brand-name{font-weight:700; font-size:14.5px; letter-spacing:-0.01em;}
+.brand-sub{font-size:10.5px; color:#8891A8; margin-top:1px;}
+
+.nav{display:flex; flex-direction:column; gap:2px; margin-top:6px;}
+.nav-item{
+  display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px;
+  color:rgba(255,255,255,.68); background:none; border:none; text-align:left; width:100%;
+  font-size:13.5px; font-weight:500; transition:background .12s ease, color .12s ease;
+}
+.nav-item .dot{width:5px; height:5px; border-radius:50%; background:currentColor; opacity:.5; flex:none;}
+.nav-item:hover{background:rgba(255,255,255,.06); color:#fff;}
+.nav-item.active{background:var(--red-700); color:#fff; font-weight:600;}
+.nav-item.active .dot{opacity:1;}
+.nav-group-label{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#5C6584; padding:16px 12px 6px;}
+
+.sidebar-spacer{flex:1;}
+.user-card{background:rgba(255,255,255,.06); border-radius:10px; padding:11px 12px; margin-top:8px;}
+.user-name{font-size:12.5px; font-weight:600;}
+.user-role{font-size:11px; color:#9AA2BB; margin-top:1px;}
+.logout{margin-top:10px; font-size:11.5px; color:#9AA2BB; background:none; border:none; padding:0 4px; text-decoration:underline; text-underline-offset:2px;}
+
+.main{flex:1; min-width:0; display:flex; flex-direction:column;}
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:22px 40px 0 40px;
+}
+.topbar h1{font-size:22px; margin:0 0 3px 0; letter-spacing:-0.01em;}
+.topbar .subtitle{font-size:12.5px; color:var(--ink-600);}
+.topbar-right{display:flex; align-items:center; gap:10px;}
+
+.content{padding:22px 40px 48px 40px; display:flex; flex-direction:column; gap:20px;}
+
+/* ---------- Reusable bits ---------- */
+.pill{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:20px; font-size:11.5px; font-weight:600;}
+.pill.red{background:var(--red-50); color:var(--red-700);}
+.pill.green{background:var(--green-50); color:var(--green-700);}
+.pill.amber{background:var(--amber-50); color:var(--amber-700);}
+.pill.purple{background:var(--purple-50); color:var(--purple-700);}
+.pill.slate{background:var(--slate-50); color:var(--slate-700);}
+.pill.blue{background:var(--blue-50); color:var(--blue-700);}
+.pill.char{background:var(--char-50); color:var(--char-700);}
+.pill .dot{width:6px; height:6px; border-radius:50%; background:currentColor;}
+
+.btn{border-radius:8px; font-weight:600; font-size:13px; padding:10px 16px; border:1px solid transparent; display:inline-flex; align-items:center; gap:8px;}
+.btn-primary{background:var(--red-700); color:#fff;}
+.btn-primary:hover{background:var(--red-800);}
+.btn-ghost{background:#fff; color:var(--ink-700); border-color:var(--line);}
+.btn-ghost:hover{border-color:var(--ink-200);}
+.btn-sm{padding:6px 11px; font-size:12px; border-radius:7px;}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px;}
+.card-title-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; gap:12px;}
+.card-title{font-size:15px; font-weight:600;}
+.card-desc{font-size:12px; color:var(--ink-600); margin-top:2px;}
+
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.kpi{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md); padding:16px 18px;}
+.kpi .bar{width:26px; height:4px; border-radius:2px; margin-bottom:10px;}
+.kpi .label{font-size:12px; color:var(--ink-600); font-weight:500;}
+.kpi .value{font-size:25px; font-weight:700; margin:4px 0 3px 0; letter-spacing:-0.01em;}
+.kpi .hint{font-size:11px; color:var(--ink-400);}
+
+table{width:100%; border-collapse:collapse; font-size:13px;}
+thead th{
+  text-align:left; font-size:11px; font-weight:600; color:var(--ink-600); text-transform:none;
+  padding:0 12px 10px 12px; border-bottom:1px solid var(--line);
+}
+tbody td{padding:12px; border-bottom:1px solid var(--line-soft); vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:#FAFAFB;}
+.mono{font-family:var(--font-mono); font-size:12.5px; color:var(--ink-700);}
+.cell-strong{font-weight:600;}
+.cell-muted{color:var(--ink-600); font-size:12.5px;}
+
+.field{display:flex; flex-direction:column; gap:6px;}
+.field label{font-size:12.5px; font-weight:600; color:var(--ink-900);}
+.field .hint{font-size:11px; color:var(--ink-400); font-weight:400;}
+.input, select.input, textarea.input{
+  border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:13.5px;
+  font-family:var(--font-ui); background:#FCFCFD; color:var(--ink-900); width:100%;
+}
+.input::placeholder{color:var(--ink-400);}
+textarea.input{resize:vertical; min-height:64px;}
+.checkline{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-700);}
+.checkline input{accent-color:var(--red-700);}
+
+.tabs{display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:4px;}
+.tab{padding:10px 4px; margin-right:22px; font-size:13.5px; font-weight:600; color:var(--ink-400); border:none; background:none; border-bottom:2px solid transparent; position:relative; top:1px;}
+.tab.active{color:var(--red-700); border-bottom-color:var(--red-700);}
+
+.badge-rf{font-family:var(--font-mono); font-size:10.5px; font-weight:600; color:var(--ink-600); background:var(--slate-50); border-radius:5px; padding:2px 6px;}
+
+.view{display:none;}
+.view.active{display:flex; flex-direction:column; gap:20px;}
+
+.divider{height:1px; background:var(--line); margin:2px 0;}
+
+.progress-track{height:6px; border-radius:3px; background:var(--line-soft); overflow:hidden;}
+.progress-fill{height:100%; border-radius:3px;}
+
+.timeline{display:flex; flex-direction:column;}
+.timeline-item{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--line-soft);}
+.timeline-item:last-child{border-bottom:none;}
+.timeline-dot{width:9px; height:9px; border-radius:50%; margin-top:4px; flex:none;}
+.timeline-title{font-size:13px; font-weight:600;}
+.timeline-meta{font-size:11.5px; color:var(--ink-400); margin-top:2px;}
+
+.two-col{display:grid; grid-template-columns:1.5fr 1fr; gap:16px; align-items:start;}
+
+/* Login screen */
+.login-shell{display:flex; min-height:100vh; width:100%;}
+.login-left{width:44%; min-width:460px; background:linear-gradient(165deg,var(--red-700),var(--red-800)); color:#fff; padding:60px; display:flex; flex-direction:column; justify-content:center; gap:22px;}
+.login-badge{align-self:flex-start; padding:6px 14px; border-radius:20px; background:rgba(255,255,255,.15); font-size:11.5px; font-weight:600; letter-spacing:.02em;}
+.login-left h1{font-size:32px; line-height:1.2; margin:0; font-weight:700; letter-spacing:-0.01em;}
+.login-left p{font-size:14.5px; color:rgba(255,255,255,.85); line-height:1.6; margin:0; max-width:420px;}
+.login-stats{display:flex; gap:34px; margin-top:8px;}
+.login-stats .num{font-size:23px; font-weight:700;}
+.login-stats .lbl{font-size:10.5px; color:rgba(255,255,255,.7); margin-top:3px; line-height:1.3;}
+.login-right{flex:1; display:flex; align-items:center; justify-content:center; background:#fff; padding:40px;}
+.login-form{width:100%; max-width:400px; display:flex; flex-direction:column; gap:16px;}
+.login-form h2{font-size:24px; margin:0 0 2px 0;}
+.login-form .sub{font-size:13px; color:var(--ink-600); margin-bottom:6px;}
+.login-note{font-size:11px; color:var(--ink-400); text-align:center; margin-top:4px;}
+
+.audit-log-line{display:flex; gap:14px; padding:10px 0; border-bottom:1px solid var(--line-soft); font-size:12.5px;}
+.audit-log-line:last-child{border-bottom:none;}
+
+.scan-box{border:1.5px dashed var(--ink-200); border-radius:12px; padding:26px; text-align:center; background:var(--bg);}
+.scan-icon{width:44px; height:44px; margin:0 auto 10px; border-radius:10px; background:var(--navy-900); display:flex; align-items:center; justify-content:center;}
+
+.match-row{display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:8px; background:var(--green-50); border:1px solid #CFE9D5;}
+.match-row.mismatch{background:var(--red-50); border-color:var(--red-100);}
+
+/* Modal + Toast */
+.modal-overlay{position:fixed; inset:0; background:rgba(16,21,42,.5); display:none; align-items:center; justify-content:center; z-index:100; padding:24px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff; border-radius:16px; width:100%; max-width:520px; max-height:88vh; overflow-y:auto; padding:24px;}
+.modal-head{display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;}
+.modal-title{font-size:16px; font-weight:700;}
+.modal-close{background:none; border:none; font-size:18px; color:var(--ink-400); line-height:1; padding:4px;}
+.toast-wrap{position:fixed; bottom:24px; right:24px; z-index:200; display:flex; flex-direction:column; gap:8px; align-items:flex-end;}
+.toast{background:var(--navy-900); color:#fff; padding:12px 16px; border-radius:10px; font-size:13px; font-weight:500; box-shadow:0 8px 24px rgba(16,21,42,.25); max-width:320px; opacity:0; transform:translateY(6px); transition:opacity .18s ease, transform .18s ease;}
+.toast.show{opacity:1; transform:translateY(0);}
+.toast.err{background:var(--red-700);}
+.select-inline{border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-size:12.5px; font-family:var(--font-mono); background:#FCFCFD;}
+
+/* App móvil mockup */
+.phone{width:280px; height:560px; border-radius:36px; border:10px solid var(--navy-900); background:#fff; overflow:hidden; position:relative; box-shadow:0 20px 50px rgba(16,21,42,.25); flex:none;}
+.phone-notch{position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:22px; background:var(--navy-900); border-radius:0 0 14px 14px; z-index:2;}
+.phone-screen{padding:34px 16px 16px 16px; height:100%; overflow-y:auto; background:var(--bg);}
+.phone-topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+.phone-card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px;}
+.push-note{background:var(--navy-900); color:#fff; border-radius:10px; padding:10px 12px; font-size:11.5px; margin-bottom:8px;}
+
+/* Turnos grid */
+
+@media (max-width: 980px){
+  .grid-4{grid-template-columns:repeat(2,1fr);}
+  .two-col{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN VIEW ============ -->
+<div id="view-login" class="view active" style="display:flex;">
+  <div class="login-shell">
+    <div class="login-left">
+      <span class="login-badge">PRONAHEBAS · MINSA · DIGDOT</span>
+      <h1>Sistema Web de Gestión<br>de Banco de Sangre</h1>
+      <p>Hospital de Lima Este Vitarte — Servicio de Hemoterapia y Banco de Sangre Tipo II. Rotación de inventario bajo algoritmo FEFO y trazabilidad internacional ISBT 128.</p>
+    </div>
+    <div class="login-right">
+      <form class="login-form" onsubmit="event.preventDefault(); enterApp();">
+        <h2>Iniciar sesión <span class="badge-rf">RF-01</span></h2>
+        <div class="sub">Inicio de sesión seguro con DNI/correo, contraseña cifrada y validación de colegiatura profesional según el rol</div>
+        <div class="field">
+          <label>DNI o correo institucional</label>
+          <input class="input" placeholder="12345678 o usuario@hlev.gob.pe" value="jcangana@hlev.gob.pe">
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input class="input" type="password" placeholder="••••••••••" value="••••••••••">
+        </div>
+        <div class="field">
+          <label>Colegiatura profesional (CMP / CTP) <span class="hint">— opcional según rol</span></label>
+          <input class="input" placeholder="CMP 000000">
+        </div>
+        <div class="field">
+          <label>Rol (RBAC — RF-02)</label>
+          <select class="input" id="role-select">
+            <option>Jefe de Banco de Sangre</option>
+            <option>Médico Solicitante</option>
+            <option>Tecnólogo Médico</option>
+            <option>Administrador</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit" style="justify-content:center; padding:12px;">Ingresar de forma segura</button>
+        <div class="login-note">Acceso protegido con token JWT, cifrado AES-256/TLS 1.3 · Ley N° 29733 (RNF-01)</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div id="app-shell" class="app" style="display:none;">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-name">BancoSangre HLEV</div>
+        <div class="brand-sub">Tipo II · ISBT 128</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-item" data-view="dashboard"><span class="dot"></span>Dashboard</button>
+      <button class="nav-item" data-view="inventario"><span class="dot"></span>Inventario FEFO</button>
+      <button class="nav-item" data-view="donantes"><span class="dot"></span>Donantes y Serología</button>
+      <button class="nav-item" data-view="etiquetado"><span class="dot"></span>Etiquetado ISBT 128</button>
+      <button class="nav-item" data-view="solicitudes"><span class="dot"></span>Solicitudes clínicas</button>
+      <button class="nav-item" data-view="despacho"><span class="dot"></span>Despacho</button>
+      <button class="nav-item" data-view="interhospitalario"><span class="dot"></span>Red Interhospitalaria</button>
+      <button class="nav-item" data-view="movil"><span class="dot"></span>App Móvil</button>
+      <button class="nav-item" data-view="hemovigilancia"><span class="dot"></span>Hemovigilancia</button>
+      <button class="nav-item" data-view="reportes"><span class="dot"></span>Reportes</button>
+      <button class="nav-item" data-view="auditoria"><span class="dot"></span>Auditoría</button>
+      <button class="nav-item" data-view="administracion"><span class="dot"></span>Administración</button>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="user-card">
+      <div class="user-name" id="user-name-display">Cangana Salcedo, Jose Leonel</div>
+      <div class="user-role" id="user-role-display">Jefe de Banco de Sangre</div>
+    </div>
+    <button class="logout" onclick="exitApp()">← Cerrar sesión</button>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="topbar-title">Panel General</h1>
+        <div class="subtitle" id="topbar-sub">Servicio de Hemoterapia y Banco de Sangre · HLEV — Tipo II</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ DASHBOARD ============ -->
+      <section id="view-dashboard" class="view">
+        <div class="grid-4">
+          <div class="kpi"><div class="bar" style="background:var(--green-700)"></div><div class="label">Unidades disponibles</div><div class="value">1,248</div><div class="hint">+4.2% vs. semana previa</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--amber-700)"></div><div class="label">Próximas a vencer (≤72h)</div><div class="value">37</div><div class="hint">Priorizadas por FEFO — RF-09</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--blue-700)"></div><div class="label">Solicitudes activas</div><div class="value">12</div><div class="hint">UCI · Emergencia · SOP</div></div>
+          <div class="kpi"><div class="bar" style="background:var(--red-700)"></div><div class="label">Stock crítico (O−)</div><div class="value">6 un.</div><div class="hint">Bajo el mínimo de seguridad</div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">Stock de Concentrado de Hematíes por Grupo ABO/Rh</div>
+                <div class="card-desc">Actualización en tiempo real · orden de despacho FEFO (RF-09)</div>
+              </div>
+              <span class="pill purple"><span class="dot"></span>Orden FEFO activo</span>
+            </div>
+            <div id="abo-grid" class="grid-4" style="grid-template-columns:repeat(4,1fr); gap:10px;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">Alertas y notificaciones</div>
+                <div class="card-desc">RF-14 — vencimiento y quiebre de stock crítico</div>
+              </div>
+            </div>
+            <div class="timeline" id="alerts-list"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Cumplimiento normativo y proyección de demanda</div>
+              <div class="card-desc">Indicadores para fiscalización PRONAHEBAS y planificación de abastecimiento</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="kpi"><div class="bar" style="background:var(--green-700)"></div><div class="label">Cumplimiento normativo PRONAHEBAS <span class="badge-rf">RF-35</span></div><div class="value">96.8%</div><div class="hint">32 de 33 controles conformes este trimestre</div></div>
+            <div class="kpi"><div class="bar" style="background:var(--amber-700)"></div><div class="label">Proyección de desabastecimiento <span class="badge-rf">RF-37</span></div><div class="value" style="font-size:18px;">O− en 4 días</div><div class="hint">Según demanda histórica vs. stock actual</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Accesos rápidos</div>
+              <div class="card-desc">Módulos del sistema según los 50 requerimientos funcionales</div>
+            </div>
+          </div>
+          <div class="grid-4" id="quick-access"></div>
+        </div>
+      </section>
+
+      <!-- ============ INVENTARIO FEFO ============ -->
+      <section id="view-inventario" class="view">
+        <div class="card">
+          <div class="card-title-row">
+            <div>
+              <div class="card-title">Cámaras de refrigeración y congeladoras <span class="badge-rf">RF-09</span></div>
+              <div class="card-desc">Unidades ordenadas automáticamente por fecha de vencimiento (FEFO — Primero en Vencer, Primero en Salir)</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <input class="input btn-sm" style="width:180px;" id="inv-search" placeholder="Buscar DIN o grupo..." oninput="renderInventory()">
+              <select class="input btn-sm" style="width:auto;" id="inv-filter" onchange="renderInventory()">
+                <option value="">Todos los estados</option>
+                <option value="disponible">Disponible</option>
+                <option value="reservado">Reservado</option>
+                <option value="cuarentena">Cuarentena</option>
+                <option value="bloqueado">Bloqueado</option>
+                <option value="vencido">Vencido</option>
+                <option value="despachado">Despachado</option>
+                <option value="incinerado">Incinerado</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" onclick="toast('Exportando inventario a CSV…')">Exportar</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr>
+              <th>DIN (ISBT 128)</th><th>Hemocomponente</th><th>ABO/Rh</th><th>Cámara</th><th>Vence</th><th>Estado <span class="badge-rf">RF-10</span></th><th></th>
+            </tr></thead>
+            <tbody id="inventory-rows"></tbody>
+          </table>
+          <div class="cell-muted" id="inv-count" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Monitoreo de temperatura de cámaras <span class="badge-rf">RF-09</span></div>
+            <div class="card-desc">Integración con sensores — alerta ante desviación fuera de rango</div></div></div>
+            <div id="temp-grid" class="grid-4" style="grid-template-columns:repeat(3,1fr);"></div>
+          </div>
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Vida útil por hemocomponente</div><div class="card-desc">Referencia para el motor FEFO</div></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--red-700);"></div><div><div class="timeline-title">Plaquetas</div><div class="timeline-meta">5 días de vida útil</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--amber-700);"></div><div><div class="timeline-title">Glóbulos rojos (CH)</div><div class="timeline-meta">30 días de vida útil</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--blue-700);"></div><div><div class="timeline-title">Plasma Fresco Congelado</div><div class="timeline-meta">Hasta 1 año de vida útil</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div><div class="card-title">Fraccionamiento de hemocomponentes <span class="badge-rf">RF-06</span></div>
+            <div class="card-desc">Separación de la bolsa de sangre total, vinculada al DIN matriz</div></div>
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label>Bolsa de sangre total a fraccionar</label>
+            <select class="input mono" id="fract-din"></select>
+          </div>
+          <div class="grid-4" style="grid-template-columns:repeat(4,1fr); margin-bottom:14px;">
+            <div class="kpi" style="padding:12px;"><div class="label">Concentrado de Hematíes</div><div class="value" style="font-size:18px;">1 unidad</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Plasma Fresco Congelado</div><div class="value" style="font-size:18px;">1 unidad</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Crioprecipitados</div><div class="value" style="font-size:18px;">2 unidades</div></div>
+            <div class="kpi" style="padding:12px;"><div class="label">Concentrado Plaquetas</div><div class="value" style="font-size:18px;">1 unidad</div></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fraccionarUnidad()">Fraccionar y generar hemocomponentes</button>
+        </div>
+      </section>
+
+      <!-- ============ DONANTES Y SEROLOGÍA ============ -->
+      <section id="view-donantes" class="view">
+        <div class="tabs">
+          <button class="tab active" data-tab="donantes:ficha">Ficha clínica del donante</button>
+          <button class="tab" data-tab="donantes:diferimiento">Diferimiento</button>
+          <button class="tab" data-tab="donantes:serologia">Tamizaje serológico</button>
+          <button class="tab" data-tab="donantes:campanas">Campañas</button>
+        </div>
+
+        <div data-tabpanel="donantes:ficha" class="card">
+          <div class="card-title-row"><div><div class="card-title">Registro de ficha clínica integral <span class="badge-rf">RF-03</span></div>
+          <div class="card-desc">Datos demográficos, biométricos, tamizaje epidemiológico y antecedentes de viaje</div></div></div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Nombres y apellidos</label><input class="input" id="don-nombre" placeholder="Ej. María Fernanda Quispe Rojas"></div>
+            <div class="field"><label>DNI</label><input class="input" id="don-dni" placeholder="45678912"></div>
+            <div class="field"><label>Fecha de nacimiento</label><input class="input" id="don-fecnac" placeholder="dd/mm/aaaa"></div>
+            <div class="field"><label>Peso (kg)</label><input class="input" id="don-peso" type="number" placeholder="62" oninput="evaluarAptitud()"></div>
+            <div class="field"><label>Hemoglobina (g/dL)</label><input class="input" id="don-hb" type="number" step="0.1" placeholder="13.4" oninput="evaluarAptitud()"></div>
+            <div class="field"><label>Grupo sanguíneo declarado</label><input class="input" id="don-abo" placeholder="Se confirmará en laboratorio"></div>
+            <div class="field">
+              <label>Tipo de donación <span class="badge-rf">RF-22</span></label>
+              <select class="input" id="don-tipo">
+                <option value="voluntaria">Voluntaria</option>
+                <option value="reposicion">Reposición</option>
+                <option value="autologa">Autóloga</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Campaña de captación vinculada <span class="hint">— si aplica</span></label>
+              <select class="input" id="don-campana">
+                <option value="">— Ninguna (donación directa) —</option>
+                <option value="utp">Dona Vida UTP 2026-II</option>
+                <option value="ate">Empresas Solidarias ATE</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:14px;">
+            <label>Antecedentes de viaje y tamizaje epidemiológico</label>
+            <textarea class="input" id="don-antecedentes" placeholder="Zonas endémicas visitadas en los últimos 12 meses, conductas de riesgo, medicación reciente..." oninput="evaluarAptitud()"></textarea>
+          </div>
+          <div class="checkline" style="margin-bottom:14px;">
+            <input type="checkbox" id="don-consentimiento">
+            <label for="don-consentimiento" style="font-weight:400;">El donante firmó digitalmente el consentimiento informado previo a la extracción <span class="badge-rf">RF-32</span></label>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="pill green" id="aptitud-pill"><span class="dot"></span>Aptitud automática: APTO (criterios PRONAHEBAS)</span>
+            <button class="btn btn-primary btn-sm" onclick="registrarDonante()">Registrar donante</button>
+          </div>
+        </div>
+
+        <div data-tabpanel="donantes:diferimiento" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Diferimiento temporal o permanente <span class="badge-rf">RF-04</span></div>
+          <div class="card-desc">Basado en el cuestionario de triaje clínico y causales normativas del MINSA</div></div></div>
+          <table>
+            <thead><tr><th>Donante</th><th>Motivo</th><th>Tipo</th><th>Vigente hasta</th><th>Estado</th></tr></thead>
+            <tbody id="diferimiento-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="donantes:serologia" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Tamizaje serológico — 7 marcadores infecciosos <span class="badge-rf">RF-07</span></div>
+          <div class="card-desc">Doble digitación ciega o interfaz LIS · bloqueo automático ante reactividad (RF-08)</div></div></div>
+          <div class="field" style="max-width:340px; margin-bottom:14px;">
+            <label>Unidad a tamizar</label>
+            <select class="input mono" id="serologia-din" onchange="renderSerologia()"></select>
+          </div>
+          <table>
+            <thead><tr><th>Marcador</th><th>Digitación 1</th><th>Digitación 2</th><th>Estado</th></tr></thead>
+            <tbody id="serologia-rows"></tbody>
+          </table>
+          <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+            <button class="btn btn-primary btn-sm" onclick="guardarSerologia()">Guardar resultados</button>
+          </div>
+          <div id="serologia-alert"></div>
+        </div>
+
+        <div data-tabpanel="donantes:campanas" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Campañas externas de captación <span class="badge-rf">RF-30</span></div>
+          <div class="card-desc">Universidades, empresas e instituciones — metas y resultados</div></div></div>
+          <table>
+            <thead><tr><th>Campaña</th><th>Institución</th><th>Meta</th><th>Captados</th><th>Avance</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Dona Vida UTP 2026-II</td><td class="cell-muted">Universidad Tecnológica del Perú</td><td class="mono">150</td><td class="mono">98</td><td style="width:160px;"><div class="progress-track"><div class="progress-fill" style="width:65%; background:var(--green-700);"></div></div></td></tr>
+              <tr><td class="cell-strong">Empresas Solidarias ATE</td><td class="cell-muted">Consorcio industrial ATE-Vitarte</td><td class="mono">80</td><td class="mono">34</td><td style="width:160px;"><div class="progress-track"><div class="progress-fill" style="width:42%; background:var(--amber-700);"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ ETIQUETADO ISBT 128 ============ -->
+      <section id="view-etiquetado" class="view">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Generación de etiqueta ISBT 128 <span class="badge-rf">RF-05</span></div>
+            <div class="card-desc">Identificación de Donación (DIN), código de producto, grupo ABO/Rh y vencimiento</div></div></div>
+            <div class="grid-2" style="margin-bottom:14px;">
+              <div class="field"><label>DIN (verificación módulo 37-2)</label><input class="input mono" id="et-din" value="=W1237250171238" readonly></div>
+              <div class="field"><label>Código de producto (E-code)</label><input class="input mono" id="et-code" value="E0387V00" readonly></div>
+              <div class="field"><label>Grupo ABO/Rh</label>
+                <select class="input mono" id="et-abo" onchange="updateEtiquetaPreview()">
+                  <option>O NEG</option><option>O POS</option><option>A NEG</option><option>A POS</option>
+                  <option>B NEG</option><option>B POS</option><option>AB NEG</option><option>AB POS</option>
+                </select>
+              </div>
+              <div class="field"><label>Fecha / hora de colecta</label><input class="input mono" id="et-colecta" value="12/09/2026 08:14" readonly></div>
+              <div class="field"><label>Fecha de vencimiento</label><input class="input mono" id="et-vence" value="11/10/2026" readonly></div>
+              <div class="field"><label>Hemocomponente</label>
+                <select class="input mono" id="et-producto" onchange="updateEtiquetaPreview()">
+                  <option value="E0387V00|Concentrado de Hematíes">Concentrado de Hematíes</option>
+                  <option value="E0217V00|Plasma Fresco Congelado">Plasma Fresco Congelado</option>
+                  <option value="E0453V00|Concentrado de Plaquetas">Concentrado de Plaquetas</option>
+                  <option value="E0301V00|Crioprecipitado">Crioprecipitado</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="generarNuevoDIN()">Generar nuevo DIN</button>
+              <button class="btn btn-ghost btn-sm" onclick="imprimirEtiqueta()">Imprimir etiqueta</button>
+              <button class="btn btn-ghost btn-sm" onclick="leerCodigo()">Leer código (escáner)</button>
+              <button class="btn btn-ghost btn-sm" onclick="generarCertificado()">Certificado de calidad (QR) <span class="badge-rf">RF-34</span></button>
+            </div>
+          </div>
+
+          <div class="card" style="display:flex; flex-direction:column; align-items:center; gap:14px; justify-content:center;">
+            <div style="font-size:12px; color:var(--ink-600); font-weight:600;">VISTA PREVIA DE ETIQUETA</div>
+            <div style="width:100%; max-width:280px; border:1.5px solid var(--ink-900); border-radius:4px; padding:14px; font-family:var(--font-mono);" id="label-preview">
+              <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid var(--ink-900); padding-bottom:6px; margin-bottom:6px;">
+                <span>HLEV · BANCO DE SANGRE</span><span>ISBT 128</span>
+              </div>
+              <div style="height:34px; background:repeating-linear-gradient(90deg,#12161F 0 2px, transparent 2px 4px, #12161F 4px 6px, transparent 6px 9px); margin-bottom:6px;"></div>
+              <div style="font-size:11px; letter-spacing:.03em; margin-bottom:8px;" id="label-din-text">=W1237250171238</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; font-size:10.5px;">
+                <div><div style="color:var(--ink-400);">PRODUCTO</div><div style="font-weight:700;" id="label-code">E0387V00</div></div>
+                <div><div style="color:var(--ink-400);">GRUPO</div><div style="font-weight:700; color:var(--red-700);" id="label-abo">O NEG</div></div>
+                <div><div style="color:var(--ink-400);">COLECTA</div><div style="font-weight:700;" id="label-colecta">12/09/26</div></div>
+                <div><div style="color:var(--ink-400);">VENCE</div><div style="font-weight:700;" id="label-vence">11/10/26</div></div>
+              </div>
+              <div style="margin-top:10px; height:22px; background:repeating-linear-gradient(90deg,#12161F 0 1px, transparent 1px 3px);"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SOLICITUDES CLÍNICAS ============ -->
+      <section id="view-solicitudes" class="view">
+        <div class="tabs">
+          <button class="tab active" data-tab="sol:nueva">Nueva solicitud</button>
+          <button class="tab" data-tab="sol:compat">Compatibilidad inmunohematológica</button>
+        </div>
+
+        <div data-tabpanel="sol:nueva" class="card">
+          <div class="card-title-row"><div><div class="card-title">Solicitud transfusional virtual <span class="badge-rf">RF-11</span></div>
+          <div class="card-desc">UCI · Emergencia · Centro Quirúrgico · Gineco-Obstetricia</div></div>
+          <button class="btn btn-ghost btn-sm" onclick="importarHIS()">Importar orden desde HIS/SIS</button>
+          </div>
+          <div class="field" style="max-width:280px; margin-bottom:14px;">
+            <label>Tipo de solicitud</label>
+            <select class="input" id="sol-tipo" onchange="toggleTipoSolicitud()">
+              <option value="transfusional">Solicitud transfusional</option>
+              <option value="reserva">Reserva para cirugía programada (RF-23)</option>
+            </select>
+          </div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="field"><label>Paciente</label><input class="input" id="sol-paciente" placeholder="Nombres y apellidos del receptor"></div>
+            <div class="field"><label>Historia clínica</label><input class="input mono" id="sol-hc" placeholder="HC-2026-00000"></div>
+            <div class="field"><label>Servicio solicitante</label>
+              <select class="input" id="sol-servicio"><option>Emergencia</option><option>UCI</option><option>Centro Quirúrgico</option><option>Gineco-Obstetricia</option></select>
+            </div>
+            <div class="field"><label>Diagnóstico (CIE-10)</label><input class="input mono" id="sol-cie10" placeholder="Ej. O72.1 — Hemorragia posparto"></div>
+            <div class="field"><label>Hemocomponente y cantidad</label><input class="input" id="sol-componente" placeholder="2 unidades — Concentrado de Hematíes"></div>
+            <div class="field"><label>Prioridad clínica</label>
+              <select class="input" id="sol-prioridad"><option>Urgente (&lt;15 min)</option><option>Programada</option><option>Diferible</option></select>
+            </div>
+          </div>
+          <div class="field" id="sol-reserva-field" style="display:none; max-width:280px; margin-bottom:14px;">
+            <label>Fecha límite de la reserva</label>
+            <input class="input" id="sol-reserva-fecha" placeholder="dd/mm/aaaa — liberación automática al vencer">
+          </div>
+          <div style="display:flex; justify-content:flex-end;"><button class="btn btn-primary btn-sm" onclick="enviarSolicitud()">Enviar solicitud</button></div>
+
+          <div class="divider" style="margin:20px 0;"></div>
+          <div class="card-title" style="margin-bottom:10px;">Solicitudes activas</div>
+          <table>
+            <thead><tr><th>Paciente</th><th>Servicio</th><th>CIE-10</th><th>Prioridad</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="solicitudes-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="sol:compat" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Pruebas de compatibilidad cruzada pre-transfusional <span class="badge-rf">RF-12</span></div>
+          <div class="card-desc">Prueba mayor, prueba menor y rastreo de anticuerpos irregulares (RAI)</div></div></div>
+          <div class="field" style="max-width:340px; margin-bottom:14px;">
+            <label>Solicitud a validar</label>
+            <select class="input" id="compat-solicitud"></select>
+          </div>
+          <table>
+            <thead><tr><th>Prueba</th><th>Muestra</th><th>Resultado</th><th>Validado por</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Prueba mayor</td><td class="mono">S-88213</td><td class="mono">Sin aglutinación</td><td class="cell-muted">T.M. Palomino, J.</td><td><span class="pill green"><span class="dot"></span>Compatible</span></td></tr>
+              <tr><td class="cell-strong">Prueba menor</td><td class="mono">S-88213</td><td class="mono">Sin aglutinación</td><td class="cell-muted">T.M. Palomino, J.</td><td><span class="pill green"><span class="dot"></span>Compatible</span></td></tr>
+              <tr><td class="cell-strong">Rastreo de anticuerpos (RAI)</td><td class="mono">S-88213</td><td class="mono">Negativo</td><td class="cell-muted">T.M. Palomino, J.</td><td><span class="pill green"><span class="dot"></span>Negativo</span></td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+            <button class="btn btn-primary btn-sm" onclick="validarCompatibilidad()">Marcar solicitud como compatible</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DESPACHO ============ -->
+      <section id="view-despacho" class="view">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Doble verificación electrónica <span class="badge-rf">RF-13</span></div>
+            <div class="card-desc">Escaneo de hemocomponente vs. pulsera identificadora del receptor</div></div></div>
+            <div class="scan-box" style="margin-bottom:14px; cursor:pointer;" onclick="escanearHemocomponente()">
+              <div class="scan-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:2px;">Escanear código del hemocomponente</div>
+              <div style="font-size:12px; color:var(--ink-600);">DIN escaneado: <span class="mono" id="scan-din">—</span></div>
+            </div>
+            <div class="scan-box" style="cursor:pointer;" onclick="escanearPulsera()">
+              <div class="scan-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="font-weight:600; font-size:13.5px; margin-bottom:2px;">Escanear pulsera del receptor</div>
+              <div style="font-size:12px; color:var(--ink-600);">ID paciente: <span class="mono" id="scan-hc">—</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Resultado de verificación</div></div></div>
+            <div style="display:flex; flex-direction:column; gap:10px;" id="verif-rows">
+              <div class="cell-muted" style="font-size:12.5px;">Escanea ambos códigos para ejecutar la doble verificación electrónica (RF-13).</div>
+            </div>
+            <div class="divider" style="margin:16px 0;"></div>
+            <div class="checkline" style="margin-bottom:14px;">
+              <input type="checkbox" id="despacho-firma" onchange="evaluarVerificacion()">
+              <label for="despacho-firma" style="font-weight:400;">Firma electrónica del responsable validada <span class="badge-rf">RF-29</span></label>
+            </div>
+            <button class="btn btn-primary" id="despacho-btn" style="width:100%; justify-content:center; opacity:.5;" disabled onclick="autorizarDespacho()">Autorizar y registrar entrega</button>
+            <div style="text-align:center; font-size:11px; color:var(--ink-400); margin-top:8px;">Toda entrega queda registrada en el log de auditoría (RF-17)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ RED INTERHOSPITALARIA ============ -->
+      <section id="view-interhospitalario" class="view">
+        <div class="tabs">
+          <button class="tab active" data-tab="red:panel">Panel de red</button>
+          <button class="tab" data-tab="red:solicitudes">Solicitudes de intercambio</button>
+          <button class="tab" data-tab="red:convenios">Convenios</button>
+        </div>
+
+        <div data-tabpanel="red:panel" class="card">
+          <div class="card-title-row"><div><div class="card-title">Visibilidad de stock en la red de establecimientos <span class="badge-rf">RF-19</span></div>
+          <div class="card-desc">Disponibilidad por grupo ABO/Rh en establecimientos integrados de la red pública</div></div></div>
+          <table>
+            <thead><tr><th>Establecimiento</th><th>O+</th><th>O−</th><th>A+</th><th>A−</th><th>B+</th><th>B−</th><th>AB+</th><th>AB−</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">HLEV (sede local)</td><td class="mono">312</td><td class="mono" style="color:var(--red-700); font-weight:700;">6</td><td class="mono">264</td><td class="mono">41</td><td class="mono">198</td><td class="mono">22</td><td class="mono">88</td><td class="mono" style="color:var(--red-700); font-weight:700;">9</td></tr>
+              <tr><td class="cell-strong">Hospital Vitarte II</td><td class="mono">180</td><td class="mono">14</td><td class="mono">120</td><td class="mono">18</td><td class="mono">95</td><td class="mono">11</td><td class="mono">40</td><td class="mono">6</td></tr>
+              <tr><td class="cell-strong">Hospital de la Solidaridad ATE</td><td class="mono">95</td><td class="mono">4</td><td class="mono">70</td><td class="mono">9</td><td class="mono">51</td><td class="mono">3</td><td class="mono">22</td><td class="mono">2</td></tr>
+              <tr><td class="cell-strong">PRONAHEBAS Central</td><td class="mono">610</td><td class="mono">48</td><td class="mono">420</td><td class="mono">70</td><td class="mono">310</td><td class="mono">40</td><td class="mono">150</td><td class="mono">28</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="red:solicitudes" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Solicitudes de intercambio interhospitalario <span class="badge-rf">RF-18</span></div>
+          <div class="card-desc">Envío, respuesta y devolución de unidades entre establecimientos (RF-33)</div></div>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalIntercambio()">+ Nueva solicitud de intercambio</button>
+          </div>
+          <table>
+            <thead><tr><th>Establecimiento</th><th>Hemocomponente</th><th>Cantidad</th><th>Dirección</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="intercambio-rows"></tbody>
+          </table>
+        </div>
+
+        <div data-tabpanel="red:convenios" class="card" style="display:none;">
+          <div class="card-title-row"><div><div class="card-title">Convenios interinstitucionales vigentes <span class="badge-rf">RF-36</span></div></div></div>
+          <table>
+            <thead><tr><th>Establecimiento</th><th>Tipo de convenio</th><th>Vigente hasta</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">Hospital Vitarte II</td><td class="cell-muted">Intercambio recíproco de hemocomponentes</td><td class="mono">31/12/2026</td><td><span class="pill green"><span class="dot"></span>Vigente</span></td></tr>
+              <tr><td class="cell-strong">Hospital de la Solidaridad ATE</td><td class="cell-muted">Apoyo mutuo ante desabastecimiento crítico</td><td class="mono">15/06/2027</td><td><span class="pill green"><span class="dot"></span>Vigente</span></td></tr>
+              <tr><td class="cell-strong">PRONAHEBAS Central</td><td class="cell-muted">Convenio marco de red nacional de bancos de sangre</td><td class="mono">—</td><td><span class="pill blue"><span class="dot"></span>Indefinido</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ APP MÓVIL ============ -->
+      <section id="view-movil" class="view">
+        <div class="two-col" style="grid-template-columns:auto 1fr;">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-topbar">
+                <strong style="font-size:13px;">BancoSangre HLEV</strong>
+                <span style="font-size:16px;">☰</span>
+              </div>
+              <div class="push-note">🔔 Stock crítico: O− bajo el mínimo de seguridad (6 un.)</div>
+              <div class="push-note">🔔 Solicitud SOL-2026-0341 respondida: Compatible</div>
+              <div class="phone-card">
+                <div class="cell-muted" style="margin-bottom:6px;">Consulta rápida de stock</div>
+                <div style="display:flex; justify-content:space-between; font-weight:700; font-size:15px;"><span>O NEG</span><span style="color:var(--red-700);">6 un.</span></div>
+              </div>
+              <div class="phone-card">
+                <div class="cell-muted" style="margin-bottom:8px;">Nueva solicitud transfusional</div>
+                <div class="field" style="margin-bottom:8px;"><input class="input" style="font-size:12px; padding:8px;" placeholder="Paciente"></div>
+                <div class="field" style="margin-bottom:8px;"><input class="input" style="font-size:12px; padding:8px;" placeholder="CIE-10"></div>
+                <button class="btn btn-primary btn-sm" style="width:100%; justify-content:center;" onclick="simularPushMovil()">Enviar</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title-row"><div><div class="card-title">Aplicación móvil para personal asistencial <span class="badge-rf">RF-20 · RF-21</span></div>
+            <div class="card-desc">Consulta de stock y registro de solicitudes desde dispositivos móviles, con notificaciones push</div></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--blue-700);"></div><div><div class="timeline-title">Consulta de disponibilidad</div><div class="timeline-meta">Stock por grupo ABO/Rh en tiempo real, igual que en el panel web</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--red-700);"></div><div><div class="timeline-title">Notificaciones push</div><div class="timeline-meta">Quiebres de stock, vencimientos próximos y respuestas a solicitudes interhospitalarias</div></div></div>
+              <div class="timeline-item"><div class="timeline-dot" style="background:var(--green-700);"></div><div><div class="timeline-title">Registro de solicitudes</div><div class="timeline-meta">Mismo flujo que RF-11, optimizado para uso desde cabecera del paciente</div></div></div>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="margin-top:12px;" onclick="simularPushMovil()">Simular notificación push</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ HEMOVIGILANCIA ============ -->
+      <section id="view-hemovigilancia" class="view">
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Eventos e incidentes adversos transfusionales <span class="badge-rf">RF-15</span></div>
+          <div class="card-desc">Inmediatos o tardíos — trazabilidad completa hacia la donación origen</div></div>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalHemovigilancia()">+ Registrar evento</button>
+          </div>
+          <table>
+            <thead><tr><th>Fecha</th><th>Paciente</th><th>Reacción</th><th>DIN origen</th><th>Severidad</th><th>Estado</th></tr></thead>
+            <tbody id="hemovigilancia-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ REPORTES ============ -->
+      <section id="view-reportes" class="view">
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Reportes oficiales <span class="badge-rf">RF-16</span></div>
+          <div class="card-desc">Consolidados operacionales, estadísticos y epidemiológicos para fiscalización</div></div></div>
+          <div class="grid-4" id="reports-grid"></div>
+        </div>
+      </section>
+
+      <!-- ============ AUDITORÍA ============ -->
+      <section id="view-auditoria" class="view">
+        <div class="card">
+          <div class="card-title-row"><div><div class="card-title">Registro de auditoría inmutable <span class="badge-rf">RF-17</span></div>
+          <div class="card-desc">Fecha, hora exacta, terminal IP y usuario responsable de cada acción crítica</div></div></div>
+          <table>
+            <thead><tr><th>Fecha / hora</th><th>Usuario</th><th>Acción</th><th>Recurso</th><th>IP terminal</th></tr></thead>
+            <tbody id="audit-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ ADMINISTRACIÓN ============ -->
+      <section id="view-administracion" class="view">
+
+        <div data-tabpanel="admin:usuarios" class="card">
+          <div class="card-title-row"><div><div class="card-title">Gestión de usuarios y roles <span class="badge-rf">RF-26</span></div>
+          <div class="card-desc">Crear, editar, desactivar y reasignar roles de las cuentas registradas</div></div>
+          <button class="btn btn-primary btn-sm" onclick="toast('Formulario de nuevo usuario (simulado)')">+ Nuevo usuario</button>
+          </div>
+          <table>
+            <thead><tr><th>Usuario</th><th>Rol</th><th>Último acceso</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="usuarios-rows"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal genérico -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+<!-- Toasts -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+/* =========================================================
+   ESTADO CENTRAL DE LA APLICACIÓN
+   Todas las acciones mutan este objeto y disparan re-render +
+   un asiento en el log de auditoría (RF-17), simulando el
+   comportamiento de un sistema transaccional real.
+========================================================= */
+const state = {
+  currentUser: "Cangana Salcedo, Jose Leonel",
+  currentRole: "Jefe de Banco de Sangre",
+
+  aboGroups: [
+    ["O+", 312, 800, false], ["O-", 6, 40, true], ["A+", 264, 700, false], ["A-", 41, 150, false],
+    ["B+", 198, 600, false], ["B-", 22, 100, false], ["AB+", 88, 300, false], ["AB-", 9, 60, true],
+  ],
+
+  alerts: [
+    ["red", "3 unidades O− vencen en menos de 24h", "Priorizar despacho FEFO — Cámara 2"],
+    ["amber", "Stock de AB− bajo el mínimo de seguridad", "9 unidades disponibles, mínimo 20"],
+    ["blue", "Solicitud urgente pendiente — Emergencia", "2 un. O− · CIE-10 S72.0 · hace 6 min"],
+    ["purple", "12 unidades en cuarentena serológica", "Resultados esperados de LIS"],
+  ],
+
+  // { din, producto, abo, camara, exp, status }
+  inventory: [
+    {din:"W1237250171238",producto:"Concentrado de Hematíes",abo:"O NEG",camara:"Cámara 2 · Refrig.",exp:"11/10/2026",status:"disponible"},
+    {din:"W1237250171012",producto:"Concentrado de Hematíes",abo:"O POS",camara:"Cámara 1 · Refrig.",exp:"28/09/2026",status:"reservado"},
+    {din:"W1237250169887",producto:"Plasma Fresco Congelado",abo:"A POS",camara:"Congelador 1",exp:"09/2027",status:"disponible"},
+    {din:"W1237250165530",producto:"Concentrado de Plaquetas",abo:"B NEG",camara:"Cámara 3 · Agitador",exp:"16/09/2026",status:"cuarentena"},
+    {din:"W1237250169901",producto:"Concentrado de Hematíes",abo:"AB NEG",camara:"Cámara 2 · Refrig.",exp:"15/09/2026",status:"bloqueado"},
+    {din:"W1237250158820",producto:"Crioprecipitado",abo:"O POS",camara:"Congelador 2",exp:"04/2027",status:"disponible"},
+    {din:"W1237250149310",producto:"Concentrado de Hematíes",abo:"A NEG",camara:"Cámara 1 · Refrig.",exp:"01/09/2026",status:"vencido"},
+    {din:"W1237250171400",producto:"Concentrado de Hematíes",abo:"B POS",camara:"Cámara 2 · Refrig.",exp:"20/09/2026",status:"despachado"},
+  ],
+
+  diferimientos: [
+    ["Ramírez Soto, Carlos","Viaje a zona endémica de malaria","amber","Temporal","12/12/2026"],
+    ["Fernández Luna, Ana","Hemoglobina bajo el mínimo (11.2 g/dL)","amber","Temporal","30/10/2026"],
+    ["Vega Mamani, Jorge","Antecedente de conducta de riesgo declarada","red","Permanente","—"],
+  ],
+
+  solicitudes: [],
+  hemovigilancia: [
+    {fecha:"10/09/2026",paciente:"Torres Huamán, L.",reaccion:"Reacción febril no hemolítica",din:"W1237250171012",severidad:"amber:Leve",estado:"green:Resuelto"},
+    {fecha:"03/09/2026",paciente:"Quiroz Vera, D.",reaccion:"Reacción alérgica (urticaria)",din:"W1237250169887",severidad:"amber:Leve",estado:"green:Resuelto"},
+    {fecha:"27/08/2026",paciente:"Salazar Ponce, R.",reaccion:"Sospecha de reacción hemolítica",din:"W1237250165530",severidad:"red:Grave",estado:"amber:En investigación"},
+  ],
+
+  auditLog: [
+    ["15/09/2026 09:41:02","Jaimes Daza, J. (Jefe BS)","Autorizó despacho de unidad","DIN W1237250171238","10.20.4.18"],
+    ["15/09/2026 09:12:47","Palomino Camarena, J. (T.M.)","Validó prueba de compatibilidad","Solicitud SOL-2026-0341","10.20.4.09"],
+    ["15/09/2026 08:55:10","Cangana Salcedo, J. (T.M.)","Generó etiqueta ISBT 128","DIN W1237250171238","10.20.4.09"],
+    ["14/09/2026 22:03:38","Sistema (automático)","Bloqueó unidad por reactividad serológica","DIN W1237250169901","—"],
+    ["14/09/2026 18:20:15","Camones Chávez, A. (Backend)","Ejecutó reordenamiento FEFO","Cámara 2","10.20.4.03"],
+  ],
+
+  despachoScan: { din:null, hc:null },
+  reqCounter: 340,
+};
+
+const statusMeta = {
+  disponible:["green","Disponible"], reservado:["amber","Reservado"], cuarentena:["purple","Cuarentena"],
+  bloqueado:["red","Bloqueado"], vencido:["slate","Vencido"], despachado:["blue","Despachado"], incinerado:["char","Incinerado"],
+};
+const serologyMarkers = ["VIH 1/2","Hepatitis B (HBsAg)","Hepatitis C","Sífilis (VDRL/RPR)","Chagas","HTLV I/II"];
+
+/* ---------------- Utilidades ---------------- */
+function pill(colorClass, label){ return `<span class="pill ${colorClass}"><span class="dot"></span>${label}</span>`; }
+function nowStr(){
+  const d = new Date();
+  const p = n => String(n).padStart(2,'0');
+  return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+function randomIp(){ return `10.20.4.${Math.floor(Math.random()*250)+2}`; }
+
+function logAudit(action, resource){
+  state.auditLog.unshift([nowStr(), `${state.currentUser} (${state.currentRole})`, action, resource, randomIp()]);
+  if(document.getElementById('view-auditoria').classList.contains('active')) renderAudit();
+}
+
+function toast(message, isError){
+  const wrap = document.getElementById('toast-wrap');
+  const el = document.createElement('div');
+  el.className = 'toast' + (isError ? ' err' : '');
+  el.textContent = message;
+  wrap.appendChild(el);
+  requestAnimationFrame(()=> el.classList.add('show'));
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(), 250); }, 3200);
+}
+
+function openModal(html){
+  document.getElementById('modal-box').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
+document.getElementById('modal-overlay').addEventListener('click', e=>{ if(e.target.id==='modal-overlay') closeModal(); });
+
+/* Suma de verificación ISBT 128 (módulo 37-2, simplificada para la versión original) */
+function computeChecksum37(digits){
+  const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let sum = 0;
+  for(let i=0;i<digits.length;i++){ sum += (alphabet.indexOf(digits[i])+1) * (i+1); }
+  return alphabet[sum % 37];
+}
+function generarDIN(){
+  const base = "1237250" + String(Math.floor(100000 + Math.random()*899999));
+  const check = computeChecksum37(base);
+  return "W" + base + check;
+}
+
+/* ---------------- Render: Dashboard ---------------- */
+function renderAbo(){
+  document.getElementById('abo-grid').innerHTML = state.aboGroups.map(([grp,units,cap,critical])=>{
+    const pct = Math.max(6, Math.min(100, (units/cap)*100));
+    return `<div style="padding:12px 14px; border-radius:10px; background:${critical?'var(--red-50)':'var(--bg)'};">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <span style="font-weight:700; font-size:16px;">${grp}</span>
+        <span style="font-weight:600; font-size:14px; color:${critical?'var(--red-700)':'var(--ink-900)'};">${units}</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%; background:${critical?'var(--red-700)':'var(--green-700)'};"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderAlerts(){
+  document.getElementById('alerts-list').innerHTML = state.alerts.map(([color,title,meta])=>{
+    const dotColor = {red:'var(--red-700)',amber:'var(--amber-700)',blue:'var(--blue-700)',purple:'var(--purple-700)'}[color];
+    return `<div class="timeline-item"><div class="timeline-dot" style="background:${dotColor};"></div>
+      <div><div class="timeline-title">${title}</div><div class="timeline-meta">${meta}</div></div></div>`;
+  }).join('');
+}
+
+function pushAlert(color, title, meta){
+  state.alerts.unshift([color, title, meta]);
+  state.alerts = state.alerts.slice(0, 6);
+  renderAlerts();
+}
+
+const quickAccessData = [
+  ["Registrar donante","RF-03 · RF-04","donantes"], ["Etiquetar unidad ISBT 128","RF-05","etiquetado"],
+  ["Nueva solicitud clínica","RF-11 · RF-12","solicitudes"], ["Despacho con doble verificación","RF-13","despacho"],
+];
+function renderQuickAccess(){
+  document.getElementById('quick-access').innerHTML = quickAccessData.map(([title,rf,view])=>{
+    return `<button class="card" style="cursor:pointer; text-align:left; padding:16px; border-radius:12px;" onclick="showView('${view}')">
+      <div class="badge-rf" style="margin-bottom:10px; display:inline-block;">${rf}</div>
+      <div style="font-weight:600; font-size:13.5px;">${title}</div>
+    </button>`;
+  }).join('');
+}
+
+/* ---------------- Render + acciones: Inventario (RF-09, RF-10) ---------------- */
+function renderInventory(){
+  const q = (document.getElementById('inv-search')?.value || '').trim().toLowerCase();
+  const filter = document.getElementById('inv-filter')?.value || '';
+  const rows = state.inventory
+    .filter(u => !filter || u.status === filter)
+    .filter(u => !q || u.din.toLowerCase().includes(q) || u.abo.toLowerCase().includes(q));
+
+  document.getElementById('inventory-rows').innerHTML = rows.map(u=>{
+    const [color,label] = statusMeta[u.status];
+    return `<tr>
+      <td class="mono">${u.din}</td>
+      <td class="cell-strong">${u.producto}</td>
+      <td class="mono">${u.abo}</td>
+      <td class="cell-muted">${u.camara}</td>
+      <td class="mono">${u.exp}</td>
+      <td>${pill(color,label)}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="verUnidad('${u.din}')">Ver</button></td>
+    </tr>`;
+  }).join('');
+  const countEl = document.getElementById('inv-count');
+  if(countEl) countEl.textContent = `${rows.length} de ${state.inventory.length} unidades mostradas · ordenadas por FEFO`;
+
+  // refresh selects que dependen del inventario
+  fillFractSelect(); fillSerologiaSelect(); fillDespachoContext();
+}
+
+function verUnidad(din){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  const [color,label] = statusMeta[u.status];
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Unidad ${u.din}</div><div class="card-desc">${u.producto} · ${u.abo}</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+      <div class="match-row"><span>Cámara</span><strong>${u.camara}</strong></div>
+      <div class="match-row"><span>Vencimiento</span><strong>${u.exp}</strong></div>
+      <div class="match-row"><span>Estado actual</span>${pill(color,label)}</div>
+    </div>
+    <div class="divider" style="margin:16px 0;"></div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-ghost btn-sm" onclick="cambiarEstadoUnidad('${u.din}','reservado')">Reservar</button>
+      <button class="btn btn-ghost btn-sm" onclick="cambiarEstadoUnidad('${u.din}','disponible')">Liberar a disponible</button>
+      <button class="btn btn-ghost btn-sm" onclick="cambiarEstadoUnidad('${u.din}','bloqueado')">Bloquear (RF-08)</button>
+      <button class="btn btn-ghost btn-sm" onclick="descartarUnidad('${u.din}')">Descartar (RF-27)</button>
+      <button class="btn btn-ghost btn-sm" onclick="verTrazabilidad('${u.din}')">Ver trazabilidad (RF-28)</button>
+    </div>
+  `);
+}
+
+function descartarUnidad(din){
+  const motivo = prompt('Motivo del descarte (caducidad, rotura, contaminación):', 'Caducidad');
+  if(motivo === null) return;
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  u.status = 'incinerado';
+  logAudit(`Descartó unidad — motivo: ${motivo} (RF-28, con evidencia fotográfica adjunta)`, `DIN ${din}`);
+  toast(`Unidad ${din} descartada e incinerada`, true);
+  closeModal();
+  renderInventory();
+}
+
+function verTrazabilidad(din){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Trazabilidad completa</div><div class="card-desc">DIN ${din} — ciclo de vida (RF-29)</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--green-700);"></div><div><div class="timeline-title">Donación registrada</div><div class="timeline-meta">Ficha clínica del donante validada — RF-03</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--purple-700);"></div><div><div class="timeline-title">Tamizaje serológico</div><div class="timeline-meta">7 marcadores procesados — RF-07</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--blue-700);"></div><div><div class="timeline-title">Etiquetado ISBT 128</div><div class="timeline-meta">DIN generado con verificación módulo 37-2 — RF-05</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--amber-700);"></div><div><div class="timeline-title">Ingreso a inventario FEFO</div><div class="timeline-meta">${u.camara} — RF-09</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot" style="background:var(--red-700);"></div><div><div class="timeline-title">Estado actual: ${statusMeta[u.status][1]}</div><div class="timeline-meta">Vence ${u.exp}</div></div></div>
+    </div>
+  `);
+}
+
+function cambiarEstadoUnidad(din, nuevoEstado){
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  u.status = nuevoEstado;
+  logAudit(`Cambió estado de unidad a "${statusMeta[nuevoEstado][1]}" (RF-10)`, `DIN ${din}`);
+  toast(`Unidad ${din} → ${statusMeta[nuevoEstado][1]}`);
+  closeModal();
+  renderInventory();
+}
+
+/* Fraccionamiento (RF-06) */
+function fillFractSelect(){
+  const sel = document.getElementById('fract-din');
+  if(!sel) return;
+  const current = sel.value;
+  sel.innerHTML = state.inventory.filter(u=>u.status==='disponible' || u.status==='cuarentena')
+    .map(u=>`<option value="${u.din}">${u.din} · ${u.abo}</option>`).join('') || '<option value="">Sin unidades disponibles</option>';
+  if(current) sel.value = current;
+}
+function fraccionarUnidad(){
+  const din = document.getElementById('fract-din').value;
+  if(!din){ toast('No hay unidad seleccionada para fraccionar', true); return; }
+  const matriz = state.inventory.find(u=>u.din===din);
+  const children = [
+    {suffix:"CH", producto:"Concentrado de Hematíes"},
+    {suffix:"PFC", producto:"Plasma Fresco Congelado"},
+    {suffix:"CRIO1", producto:"Crioprecipitado"},
+    {suffix:"CP", producto:"Concentrado de Plaquetas"},
+  ];
+  children.forEach(c=>{
+    state.inventory.push({
+      din: din + "-" + c.suffix, producto: c.producto, abo: matriz.abo,
+      camara: matriz.camara, exp: matriz.exp, status: "cuarentena",
+    });
+  });
+  logAudit(`Fraccionó bolsa de sangre total en 4 hemocomponentes (RF-06)`, `DIN matriz ${din}`);
+  toast(`Se generaron 4 hemocomponentes a partir de ${din}`);
+  renderInventory();
+}
+
+/* ---------------- Donantes (RF-03, RF-04) ---------------- */
+function evaluarAptitud(){
+  const peso = parseFloat(document.getElementById('don-peso').value);
+  const hb = parseFloat(document.getElementById('don-hb').value);
+  const antecedentes = document.getElementById('don-antecedentes').value.toLowerCase();
+  const pill = document.getElementById('aptitud-pill');
+
+  let motivo = null;
+  if(!isNaN(peso) && peso < 50) motivo = `Peso bajo el mínimo PRONAHEBAS (${peso} kg < 50 kg)`;
+  else if(!isNaN(hb) && hb < 12.5) motivo = `Hemoglobina bajo el mínimo (${hb} g/dL < 12.5 g/dL)`;
+  else if(antecedentes.includes('viaje') || antecedentes.includes('malaria') || antecedentes.includes('riesgo')) motivo = `Antecedente epidemiológico declarado`;
+
+  if(motivo){
+    pill.className = 'pill amber'; pill.innerHTML = `<span class="dot"></span>Aptitud automática: DIFERIDO — ${motivo}`;
+  } else {
+    pill.className = 'pill green'; pill.innerHTML = `<span class="dot"></span>Aptitud automática: APTO (criterios PRONAHEBAS)`;
+  }
+  return motivo;
+}
+
+function registrarDonante(){
+  const nombre = document.getElementById('don-nombre').value.trim() || 'Donante sin nombre registrado';
+  if(!document.getElementById('don-consentimiento').checked){
+    toast('Falta registrar el consentimiento informado firmado (RF-36)', true);
+    return;
+  }
+  const motivo = evaluarAptitud();
+  if(motivo){
+    state.diferimientos.unshift([nombre, motivo, 'amber', 'Temporal', '—']);
+    renderDiferimientos();
+    logAudit('Registró donante — diferido automáticamente (RF-04)', nombre);
+    toast(`${nombre} quedó diferido: ${motivo}`, true);
+  } else {
+    logAudit('Registró ficha clínica de donante — APTO (RF-03)', nombre);
+    toast(`${nombre} registrado como APTO`);
+  }
+}
+
+function renderDiferimientos(){
+  document.getElementById('diferimiento-rows').innerHTML = state.diferimientos.map(([nombre,motivo,color,tipo,vigencia])=>{
+    const tipoColor = tipo==='Permanente' ? 'red' : 'amber';
+    const estado = tipo==='Permanente' ? pill('red','Excluido') : pill('amber','Diferido');
+    return `<tr><td class="cell-strong">${nombre}</td><td class="cell-muted">${motivo}</td><td>${pill(tipoColor,tipo)}</td><td class="mono">${vigencia}</td><td>${estado}</td></tr>`;
+  }).join('');
+}
+
+/* ---------------- Serología (RF-07, RF-08) ---------------- */
+function fillSerologiaSelect(){
+  const sel = document.getElementById('serologia-din');
+  if(!sel) return;
+  const current = sel.value;
+  sel.innerHTML = state.inventory.filter(u=>u.status==='cuarentena')
+    .map(u=>`<option value="${u.din}">${u.din} · ${u.producto}</option>`).join('') || '<option value="">Sin unidades en cuarentena</option>';
+  if(current && [...sel.options].some(o=>o.value===current)) sel.value = current;
+  renderSerologia();
+}
+function renderSerologia(){
+  const din = document.getElementById('serologia-din')?.value;
+  const body = document.getElementById('serologia-rows');
+  if(!body) return;
+  if(!din){ body.innerHTML = `<tr><td colspan="4" class="cell-muted">No hay unidades pendientes de tamizaje.</td></tr>`; return; }
+  body.innerHTML = serologyMarkers.map((m,i)=>`
+    <tr>
+      <td class="cell-strong">${m}</td>
+      <td><select class="select-inline" id="sero-1-${i}"><option>No reactivo</option><option>Reactivo</option><option>Indeterminado</option></select></td>
+      <td><select class="select-inline" id="sero-2-${i}"><option>No reactivo</option><option>Reactivo</option><option>Indeterminado</option></select></td>
+      <td id="sero-estado-${i}">${pill('green','Pendiente')}</td>
+    </tr>`).join('');
+  document.getElementById('serologia-alert').innerHTML = '';
+}
+function guardarSerologia(){
+  const din = document.getElementById('serologia-din')?.value;
+  if(!din){ toast('Selecciona una unidad para registrar el tamizaje', true); return; }
+  let reactivo = false, marcadorReactivo = '';
+  serologyMarkers.forEach((m,i)=>{
+    const v1 = document.getElementById(`sero-1-${i}`).value;
+    const v2 = document.getElementById(`sero-2-${i}`).value;
+    const estadoCell = document.getElementById(`sero-estado-${i}`);
+    if(v1 === 'Reactivo' || v2 === 'Reactivo' || v1==='Indeterminado' || v2==='Indeterminado'){
+      reactivo = true; marcadorReactivo = m;
+      estadoCell.innerHTML = pill('red', v1==='Indeterminado'||v2==='Indeterminado' ? 'Indeterminado' : 'Bloqueo automático');
+    } else {
+      estadoCell.innerHTML = pill('green','Conforme');
+    }
+  });
+
+  const unidad = state.inventory.find(u=>u.din===din);
+  if(reactivo && unidad){
+    unidad.status = 'bloqueado';
+    logAudit(`Bloqueó unidad automáticamente por reactividad a ${marcadorReactivo} (RF-08)`, `DIN ${din}`);
+    document.getElementById('serologia-alert').innerHTML = `
+      <div style="margin-top:14px; padding:12px 14px; background:var(--red-50); border-radius:10px; font-size:12.5px; color:var(--red-700);">
+        <strong>RF-08 · Bloqueo irreversible:</strong> la unidad DIN ${din} fue bloqueada de forma automática e inmediata por reactividad a ${marcadorReactivo}. No puede distribuirse ni despacharse.
+      </div>`;
+    pushAlert('red', `Unidad bloqueada por reactividad serológica`, `DIN ${din} · marcador: ${marcadorReactivo}`);
+    toast(`Unidad ${din} bloqueada automáticamente (${marcadorReactivo})`, true);
+  } else if(unidad){
+    unidad.status = 'disponible';
+    logAudit('Registró tamizaje serológico conforme — unidad liberada (RF-07)', `DIN ${din}`);
+    toast(`Unidad ${din} conforme — liberada a inventario disponible`);
+    document.getElementById('serologia-alert').innerHTML = '';
+  }
+  renderInventory();
+  fillSerologiaSelect();
+}
+
+/* ---------------- Etiquetado ISBT 128 (RF-05) ---------------- */
+function updateEtiquetaPreview(){
+  const abo = document.getElementById('et-abo').value;
+  const [code, nombre] = document.getElementById('et-producto').value.split('|');
+  document.getElementById('et-code').value = code;
+  document.getElementById('label-abo').textContent = abo;
+  document.getElementById('label-code').textContent = code;
+}
+function generarNuevoDIN(){
+  const din = generarDIN();
+  const now = new Date();
+  const p = n=>String(n).padStart(2,'0');
+  const colecta = `${p(now.getDate())}/${p(now.getMonth()+1)}/${now.getFullYear()} ${p(now.getHours())}:${p(now.getMinutes())}`;
+  const vence = new Date(now.getTime() + 30*24*3600*1000);
+  const venceStr = `${p(vence.getDate())}/${p(vence.getMonth()+1)}/${vence.getFullYear()}`;
+
+  document.getElementById('et-din').value = "=" + din;
+  document.getElementById('et-colecta').value = colecta;
+  document.getElementById('et-vence').value = venceStr;
+  document.getElementById('label-din-text').textContent = "=" + din;
+  document.getElementById('label-colecta').textContent = `${p(now.getDate())}/${p(now.getMonth()+1)}/${String(now.getFullYear()).slice(2)}`;
+  document.getElementById('label-vence').textContent = `${p(vence.getDate())}/${p(vence.getMonth()+1)}/${String(vence.getFullYear()).slice(2)}`;
+  updateEtiquetaPreview();
+
+  const abo = document.getElementById('et-abo').value;
+  const [code, nombre] = document.getElementById('et-producto').value.split('|');
+  state.inventory.unshift({din, producto: nombre, abo, camara:"Recepción · Sin asignar", exp: venceStr, status:"cuarentena"});
+  logAudit('Generó nuevo DIN con verificación módulo 37-2 (RF-05)', `DIN ${din}`);
+  toast(`Nuevo DIN generado: ${din}`);
+  renderInventory();
+}
+function imprimirEtiqueta(){
+  logAudit('Imprimió etiqueta ISBT 128', document.getElementById('et-din').value);
+  toast('Enviando etiqueta a la impresora térmica…');
+}
+function leerCodigo(){
+  toast('Escáner listo — apunte al código de barras 2D');
+}
+function generarCertificado(){
+  const din = document.getElementById('et-din').value;
+  logAudit('Generó certificado de calidad con código QR de verificación (RF-34)', din);
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Certificado de calidad</div><div class="card-desc">${din}</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:10px 0;">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <rect width="140" height="140" fill="#fff" stroke="#12161F" stroke-width="2"/>
+        ${Array.from({length:9}).map((_,r)=>Array.from({length:9}).map((_,c)=>((r*7+c*13)%3===0)?`<rect x="${8+c*14}" y="${8+r*14}" width="12" height="12" fill="#12161F"/>`:'').join('')).join('')}
+      </svg>
+      <div class="cell-muted" style="text-align:center;">Escanee para verificar la autenticidad del hemocomponente ante PRONAHEBAS/DIGDOT</div>
+    </div>
+  `);
+  toast('Certificado de calidad generado con código QR');
+}
+
+/* ---------------- Solicitudes (RF-11, RF-12) ---------------- */
+function toggleTipoSolicitud(){
+  const esReserva = document.getElementById('sol-tipo').value === 'reserva';
+  document.getElementById('sol-reserva-field').style.display = esReserva ? '' : 'none';
+}
+function importarHIS(){
+  document.getElementById('sol-paciente').value = 'Effio Bravo, Marcos';
+  document.getElementById('sol-hc').value = `HC-2026-${Math.floor(Math.random()*90000+10000)}`;
+  document.getElementById('sol-cie10').value = 'K92.2 — Hemorragia digestiva alta';
+  document.getElementById('sol-componente').value = '2 unidades — Concentrado de Hematíes';
+  toast('Orden importada automáticamente desde el HIS/SIS hospitalario (RF-31)');
+}
+function enviarSolicitud(){
+  const paciente = document.getElementById('sol-paciente').value.trim();
+  if(!paciente){ toast('Ingresa el nombre del paciente', true); return; }
+  const tipo = document.getElementById('sol-tipo').value;
+  const req = {
+    id: 'SOL-2026-' + (state.reqCounter++),
+    paciente,
+    hc: document.getElementById('sol-hc').value.trim() || `HC-2026-${Math.floor(Math.random()*90000+10000)}`,
+    servicio: document.getElementById('sol-servicio').value,
+    cie10: document.getElementById('sol-cie10').value.trim() || '—',
+    componente: document.getElementById('sol-componente').value.trim() || '1 unidad',
+    prioridad: document.getElementById('sol-prioridad').value,
+    tipo, reservaFecha: tipo==='reserva' ? (document.getElementById('sol-reserva-fecha').value.trim() || 'Sin fecha límite') : null,
+    estado: 'pendiente',
+  };
+  state.solicitudes.unshift(req);
+  logAudit(tipo==='reserva' ? `Registró reserva quirúrgica programada (RF-24)` : `Registró solicitud transfusional (RF-11)`, `${req.id} · ${req.servicio}`);
+  toast(`Solicitud ${req.id} enviada al Banco de Sangre`);
+  pushAlert('blue', `Nueva solicitud — ${req.servicio}`, `${req.componente} · ${req.cie10} · ${paciente}`);
+  document.getElementById('sol-paciente').value=''; document.getElementById('sol-hc').value='';
+  document.getElementById('sol-cie10').value=''; document.getElementById('sol-componente').value='';
+  renderSolicitudes();
+}
+function renderSolicitudes(){
+  const body = document.getElementById('solicitudes-rows');
+  if(!body) return;
+  body.innerHTML = state.solicitudes.length ? state.solicitudes.map(r=>{
+    const prColor = r.prioridad.startsWith('Urgente') ? 'red' : r.prioridad==='Programada' ? 'blue' : 'slate';
+    const estadoPill = r.estado==='pendiente' ? pill('amber','Pendiente') : pill('green','Compatible');
+    const tipoTag = r.tipo==='reserva' ? `<div class="cell-muted">Reserva hasta ${r.reservaFecha}</div>` : '';
+    return `<tr>
+      <td class="cell-strong">${r.paciente}${tipoTag}</td><td class="cell-muted">${r.servicio}</td><td class="mono">${r.cie10}</td>
+      <td>${pill(prColor, r.prioridad)}</td><td>${estadoPill}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showView('solicitudes'); switchTab('sol','sol:compat')">Validar</button></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="6" class="cell-muted">Aún no se registran solicitudes en esta sesión.</td></tr>`;
+  fillCompatSelect();
+}
+function fillCompatSelect(){
+  const sel = document.getElementById('compat-solicitud');
+  if(!sel) return;
+  const pendientes = state.solicitudes.filter(r=>r.estado==='pendiente');
+  sel.innerHTML = pendientes.length ? pendientes.map(r=>`<option value="${r.id}">${r.id} · ${r.paciente}</option>`).join('')
+    : '<option value="">No hay solicitudes pendientes</option>';
+}
+function validarCompatibilidad(){
+  const id = document.getElementById('compat-solicitud').value;
+  const req = state.solicitudes.find(r=>r.id===id);
+  if(!req){ toast('No hay solicitud seleccionada', true); return; }
+  req.estado = 'compatible';
+  logAudit('Validó compatibilidad cruzada — mayor, menor y RAI (RF-12)', req.id);
+  toast(`Solicitud ${req.id} marcada como compatible`);
+  renderSolicitudes();
+}
+function switchTab(group, tabKey){
+  const tabBtn = [...document.querySelectorAll('.tab')].find(t=>t.dataset.tab===tabKey);
+  if(tabBtn) tabBtn.click();
+}
+
+/* ---------------- Despacho (RF-13) ---------------- */
+function fillDespachoContext(){ /* placeholder para futura sincronización con solicitudes */ }
+function escanearHemocomponente(){
+  const candidatos = state.inventory.filter(u=>u.status==='disponible' || u.status==='reservado');
+  if(!candidatos.length){ toast('No hay unidades disponibles para despacho', true); return; }
+  const u = candidatos[0];
+  state.despachoScan.din = u.din;
+  document.getElementById('scan-din').textContent = "=" + u.din;
+  toast(`Hemocomponente escaneado: ${u.din}`);
+  evaluarVerificacion();
+}
+function escanearPulsera(){
+  const req = state.solicitudes[0];
+  const hc = req ? req.hc : `HC-2026-${Math.floor(Math.random()*90000+10000)}`;
+  state.despachoScan.hc = hc;
+  state.despachoScan.paciente = req ? req.paciente : 'Paciente sin solicitud vinculada';
+  document.getElementById('scan-hc').textContent = hc;
+  toast(`Pulsera escaneada: ${hc}`);
+  evaluarVerificacion();
+}
+function evaluarVerificacion(){
+  const { din, hc } = state.despachoScan;
+  const box = document.getElementById('verif-rows');
+  const btn = document.getElementById('despacho-btn');
+  if(!din || !hc){
+    box.innerHTML = `<div class="cell-muted" style="font-size:12.5px;">Escanea ambos códigos para ejecutar la doble verificación electrónica (RF-13).</div>`;
+    btn.disabled = true; btn.style.opacity = .5;
+    return;
+  }
+  const u = state.inventory.find(x=>x.din===din);
+  const bloqueada = u.status === 'bloqueado' || u.status === 'vencido';
+  box.innerHTML = `
+    <div class="match-row ${bloqueada?'mismatch':''}"><span>Estado de la unidad</span><strong>${statusMeta[u.status][1]}</strong></div>
+    <div class="match-row"><span>Grupo ABO/Rh</span><strong>${u.abo}</strong></div>
+    <div class="match-row"><span>N° de historia clínica</span><strong>${hc}</strong></div>
+    <div class="match-row"><span>Vigencia de la unidad</span><strong>${u.exp}</strong></div>
+  `;
+  if(bloqueada){
+    btn.disabled = true; btn.style.opacity = .5;
+    toast(`La unidad ${din} está ${statusMeta[u.status][1].toLowerCase()} y no puede despacharse`, true);
+    return;
+  }
+  const firmaOk = document.getElementById('despacho-firma')?.checked;
+  btn.disabled = !firmaOk; btn.style.opacity = firmaOk ? 1 : .5;
+}
+function autorizarDespacho(){
+  const { din, hc, paciente } = state.despachoScan;
+  const u = state.inventory.find(x=>x.din===din);
+  if(!u) return;
+  u.status = 'despachado';
+  logAudit(`Autorizó despacho tras doble verificación electrónica y firma electrónica (RF-13, RF-30)`, `DIN ${din} → ${hc}`);
+  toast(`Entrega registrada: ${din} → ${paciente || hc}`);
+  state.despachoScan = { din:null, hc:null };
+  document.getElementById('scan-din').textContent = '—';
+  document.getElementById('scan-hc').textContent = '—';
+  document.getElementById('despacho-firma').checked = false;
+  renderInventory();
+  evaluarVerificacion();
+}
+
+/* ---------------- Hemovigilancia (RF-15) ---------------- */
+function renderHemovigilancia(){
+  document.getElementById('hemovigilancia-rows').innerHTML = state.hemovigilancia.map(e=>{
+    const [sColor,sLabel] = e.severidad.split(':');
+    const [eColor,eLabel] = e.estado.split(':');
+    return `<tr><td class="mono">${e.fecha}</td><td class="cell-strong">${e.paciente}</td><td class="cell-muted">${e.reaccion}</td>
+      <td class="mono">${e.din}</td><td>${pill(sColor,sLabel)}</td><td>${pill(eColor,eLabel)}</td></tr>`;
+  }).join('');
+}
+function abrirModalHemovigilancia(){
+  const dinOptions = state.inventory.filter(u=>u.status==='despachado').map(u=>`<option value="${u.din}">${u.din}</option>`).join('') || '<option value="">Sin unidades despachadas</option>';
+  openModal(`
+    <div class="modal-head">
+      <div><div class="modal-title">Registrar evento de hemovigilancia</div><div class="card-desc">RF-15 — trazabilidad hacia la donación origen</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="field"><label>Paciente</label><input class="input" id="hv-paciente" placeholder="Nombres y apellidos"></div>
+      <div class="field"><label>DIN origen</label><select class="input mono" id="hv-din">${dinOptions}</select></div>
+      <div class="field"><label>Reacción observada</label><input class="input" id="hv-reaccion" placeholder="Ej. Reacción febril no hemolítica"></div>
+      <div class="field"><label>Severidad</label>
+        <select class="input" id="hv-severidad"><option value="amber:Leve">Leve</option><option value="red:Grave">Grave</option></select>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="guardarEventoHemovigilancia()">Registrar evento</button>
+    </div>
+  `);
+}
+function guardarEventoHemovigilancia(){
+  const paciente = document.getElementById('hv-paciente').value.trim();
+  if(!paciente){ toast('Ingresa el nombre del paciente', true); return; }
+  const evento = {
+    fecha: nowStr().split(' ')[0], paciente,
+    din: document.getElementById('hv-din').value || '—',
+    reaccion: document.getElementById('hv-reaccion').value.trim() || 'Reacción no especificada',
+    severidad: document.getElementById('hv-severidad').value,
+    estado: 'amber:En investigación',
+  };
+  state.hemovigilancia.unshift(evento);
+  logAudit('Registró evento adverso transfusional (RF-15)', `DIN ${evento.din} · ${paciente}`);
+  toast('Evento de hemovigilancia registrado');
+  closeModal();
+  renderHemovigilancia();
+}
+
+/* ---------------- Reportes (RF-16) ---------------- */
+const reportsData = [
+  ["Reporte operacional mensual","Movimientos de inventario, captación y despacho","PRONAHEBAS"],
+  ["Reporte epidemiológico","Prevalencia de marcadores serológicos reactivos","DIGDOT"],
+  ["Indicadores de mermas y caducidad","Unidades vencidas / incineradas bajo FEFO","MINSA"],
+  ["Auditoría de hemovigilancia","Eventos adversos transfusionales del periodo","PRONAHEBAS"],
+  ["Reporte normativo automático","Generación periódica programada para MINSA (RF-31)","PRONAHEBAS"],
+  ["Dataset anonimizado de investigación","Exportación con fines epidemiológicos, sin datos identificables (RF-38)","MINSA"],
+];
+function renderReports(){
+  document.getElementById('reports-grid').innerHTML = reportsData.map(([title,desc,org],i)=>{
+    return `<div class="kpi" style="display:flex; flex-direction:column; gap:8px;">
+      <span class="badge-rf" style="align-self:flex-start;">${org}</span>
+      <div style="font-weight:600; font-size:13.5px;">${title}</div>
+      <div class="hint" style="line-height:1.4;">${desc}</div>
+      <div style="display:flex; gap:6px; margin-top:4px;">
+        <button class="btn btn-ghost btn-sm" onclick="generarReporte('${title.replace(/'/g,"")}','PDF')">PDF</button>
+        <button class="btn btn-ghost btn-sm" onclick="generarReporte('${title.replace(/'/g,"")}','Excel')">Excel</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function generarReporte(title, formato){
+  logAudit(`Generó reporte oficial "${title}" en formato ${formato} (RF-16, RF-25)`, title);
+  toast(`Generando "${title}" (${formato})…`);
+  if(formato === 'PDF') setTimeout(()=> window.print(), 400);
+}
+
+/* ---------------- Auditoría (RF-17) ---------------- */
+function renderAudit(){
+  document.getElementById('audit-rows').innerHTML = state.auditLog.slice(0,50).map(([ts,user,action,resource,ip])=>{
+    return `<tr><td class="mono">${ts}</td><td class="cell-strong">${user}</td><td class="cell-muted">${action}</td><td class="mono">${resource}</td><td class="mono">${ip}</td></tr>`;
+  }).join('');
+}
+
+/* ---------------- Navegación ---------------- */
+const viewTitles = {
+  dashboard:["Panel General","Servicio de Hemoterapia y Banco de Sangre · HLEV — Tipo II"],
+  inventario:["Inventario FEFO","Control de hemocomponentes bajo el algoritmo Primero en Vencer, Primero en Salir"],
+  donantes:["Donantes y Serología","Ficha clínica, diferimiento y tamizaje de marcadores infecciosos"],
+  etiquetado:["Etiquetado ISBT 128","Codificación internacional de hemocomponentes"],
+  solicitudes:["Solicitudes clínicas","Registro y validación de solicitudes transfusionales"],
+  despacho:["Despacho asistencial","Doble verificación electrónica antes de la entrega"],
+  interhospitalario:["Red Interhospitalaria","Intercambio, visibilidad de stock y convenios entre establecimientos"],
+  movil:["Aplicación móvil","Consulta de stock y solicitudes desde dispositivos móviles"],
+  hemovigilancia:["Hemovigilancia","Eventos adversos transfusionales y trazabilidad"],
+  reportes:["Reportes","Consolidados oficiales para PRONAHEBAS, DIGDOT y MINSA"],
+  auditoria:["Auditoría del sistema","Bitácora inmutable de acciones críticas"],
+  administracion:["Administración","Gestión de usuarios y roles del sistema (RF-26)"],
+};
+
+/* ---------------- Control de acceso basado en roles — RBAC (RF-02) ----------------
+   Cada rol solo ve/navega a las vistas que le competen según el documento oficial:
+   - Médico Solicitante: registra solicitudes transfusionales y usa la app móvil (RF-11, RF-20).
+   - Tecnólogo Médico: opera el núcleo técnico del banco de sangre — donantes, tamizaje,
+     etiquetado ISBT 128, inventario, solicitudes y hemovigilancia (RF-03 a RF-15).
+   - Jefe de Banco de Sangre: hereda todo lo del Tecnólogo Médico y además autoriza despacho,
+     coordina la red interhospitalaria y accede a reportes y auditoría (RF-13, RF-16 a RF-19).
+   - Administrador: gestiona cuentas/roles y supervisa la auditoría del sistema (RF-17, RF-26).
+------------------------------------------------------------------------------------ */
+const ROLE_VIEWS = {
+  "Médico Solicitante": ["dashboard","solicitudes","movil"],
+  "Tecnólogo Médico": ["dashboard","inventario","donantes","etiquetado","solicitudes","hemovigilancia"],
+  "Jefe de Banco de Sangre": ["dashboard","inventario","donantes","etiquetado","solicitudes","hemovigilancia","despacho","interhospitalario","movil","reportes","auditoria"],
+  "Administrador": ["dashboard","auditoria","administracion"],
+};
+
+function vistasPermitidas(role){
+  return ROLE_VIEWS[role] || Object.keys(viewTitles);
+}
+
+function applyRoleVisibility(role){
+  const permitidas = vistasPermitidas(role);
+  document.querySelectorAll('.nav-item[data-view]').forEach(btn=>{
+    const permitido = permitidas.includes(btn.dataset.view);
+    btn.style.display = permitido ? '' : 'none';
+  });
+}
+
+const viewRenderers = {
+  dashboard: ()=>{ renderAbo(); renderAlerts(); renderQuickAccess(); },
+  inventario: ()=>{ renderInventory(); renderTemps(); },
+  donantes: ()=>{ renderDiferimientos(); fillSerologiaSelect(); },
+  etiquetado: ()=> updateEtiquetaPreview(),
+  solicitudes: ()=> renderSolicitudes(),
+  despacho: ()=> evaluarVerificacion(),
+  interhospitalario: ()=> renderIntercambios(),
+  hemovigilancia: ()=> renderHemovigilancia(),
+  reportes: ()=> renderReports(),
+  auditoria: ()=> renderAudit(),
+  administracion: ()=>{ renderUsuarios(); },
+};
+
+/* ---------------- RF-23 Monitoreo de temperatura ---------------- */
+state.temps = [
+  {camara:"Cámara 1 · Refrigeración", rango:"2°C – 6°C", actual:4.1, ok:true},
+  {camara:"Cámara 2 · Refrigeración", rango:"2°C – 6°C", actual:6.8, ok:false},
+  {camara:"Congelador 1", rango:"-30°C a -18°C", actual:-24.3, ok:true},
+];
+function renderTemps(){
+  const el = document.getElementById('temp-grid');
+  if(!el) return;
+  el.innerHTML = state.temps.map(t=>`
+    <div style="padding:12px 14px; border-radius:10px; background:${t.ok?'var(--bg)':'var(--red-50)'};">
+      <div class="cell-muted" style="margin-bottom:4px;">${t.camara}</div>
+      <div style="font-weight:700; font-size:20px; color:${t.ok?'var(--ink-900)':'var(--red-700)'};">${t.actual}°C</div>
+      <div class="cell-muted" style="margin-top:4px;">Rango: ${t.rango}</div>
+      ${t.ok ? '' : `<div style="margin-top:6px;">${pill('red','Fuera de rango')}</div>`}
+    </div>`).join('');
+}
+
+/* ---------------- RF-18/19/40/45 Red interhospitalaria ---------------- */
+state.intercambios = [
+  {establecimiento:"Hospital Vitarte II", producto:"Concentrado de Hematíes O−", cantidad:"4 un.", direccion:"Saliente", estado:"amber:Pendiente"},
+  {establecimiento:"PRONAHEBAS Central", producto:"Plasma Fresco Congelado", cantidad:"10 un.", direccion:"Entrante", estado:"green:Aceptada"},
+];
+function renderIntercambios(){
+  const body = document.getElementById('intercambio-rows');
+  if(!body) return;
+  body.innerHTML = state.intercambios.map((x,i)=>{
+    const [c,l] = x.estado.split(':');
+    return `<tr><td class="cell-strong">${x.establecimiento}</td><td class="cell-muted">${x.producto}</td><td class="mono">${x.cantidad}</td>
+      <td>${pill(x.direccion==='Saliente'?'blue':'purple', x.direccion)}</td><td>${pill(c,l)}</td>
+      <td>${x.estado.startsWith('amber')?`<button class="btn btn-ghost btn-sm" onclick="responderIntercambio(${i})">Responder</button>`:`<button class="btn btn-ghost btn-sm" onclick="devolverIntercambio(${i})">Registrar devolución</button>`}</td></tr>`;
+  }).join('');
+}
+function abrirModalIntercambio(){
+  openModal(`
+    <div class="modal-head"><div><div class="modal-title">Nueva solicitud de intercambio</div><div class="card-desc">RF-18</div></div>
+    <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="field"><label>Establecimiento destino</label>
+        <select class="input" id="ix-est"><option>Hospital Vitarte II</option><option>Hospital de la Solidaridad ATE</option><option>PRONAHEBAS Central</option></select>
+      </div>
+      <div class="field"><label>Hemocomponente y cantidad</label><input class="input" id="ix-comp" placeholder="Ej. 4 unidades — Concentrado de Hematíes O−"></div>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="guardarIntercambio()">Enviar solicitud</button>
+    </div>`);
+}
+function guardarIntercambio(){
+  const est = document.getElementById('ix-est').value;
+  const comp = document.getElementById('ix-comp').value.trim() || '1 unidad';
+  state.intercambios.unshift({establecimiento:est, producto:comp, cantidad:'', direccion:'Saliente', estado:'amber:Pendiente'});
+  logAudit('Envió solicitud de intercambio interhospitalario (RF-18)', est);
+  toast(`Solicitud enviada a ${est}`);
+  closeModal();
+  renderIntercambios();
+}
+function responderIntercambio(i){
+  state.intercambios[i].estado = 'green:Aceptada';
+  logAudit('Registró respuesta a solicitud de intercambio', state.intercambios[i].establecimiento);
+  toast('Intercambio aceptado');
+  renderIntercambios();
+}
+function devolverIntercambio(i){
+  logAudit('Registró devolución de unidades prestadas (RF-38)', state.intercambios[i].establecimiento);
+  toast('Devolución registrada — inventario de origen actualizado');
+  state.intercambios.splice(i,1);
+  renderIntercambios();
+}
+
+/* ---------------- RF-20/21 App móvil ---------------- */
+function simularPushMovil(){
+  pushAlert('blue', 'Notificación push enviada', 'Personal asistencial notificado desde app móvil (RF-21)');
+  logAudit('Envió notificación push a la aplicación móvil (RF-21)', 'App móvil');
+  toast('Notificación push simulada enviada al personal');
+}
+
+
+/* ---------------- Administración: Usuarios (RF-26) ---------------- */
+state.usuarios = [
+  {nombre:"Cangana Salcedo, José Leonel", rol:"Jefe de Banco de Sangre", ultimo:"Hoy 09:12", activo:true},
+  {nombre:"Palomino Camarena, José", rol:"Tecnólogo Médico", ultimo:"Hoy 08:55", activo:true},
+  {nombre:"Jaimes Daza, Julibeth", rol:"Administrador", ultimo:"Ayer 17:40", activo:true},
+  {nombre:"Batallanos Ibarra, Daniel", rol:"Médico Solicitante", ultimo:"12/09/2026", activo:false},
+  {nombre:"Camones Chávez, Antony David", rol:"Administrador", ultimo:"Hoy 10:20", activo:true},
+  {nombre:"Yangali Saravia, Jesús Alberto", rol:"Administrador", ultimo:"Hoy 07:30", activo:true},
+];
+function renderUsuarios(){
+  const body = document.getElementById('usuarios-rows');
+  if(!body) return;
+  body.innerHTML = state.usuarios.map((u,i)=>`
+    <tr><td class="cell-strong">${u.nombre}</td><td class="cell-muted">${u.rol}</td><td class="mono">${u.ultimo}</td>
+    <td>${u.activo?pill('green','Activo'):pill('slate','Desactivado')}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="toggleUsuario(${i})">${u.activo?'Desactivar':'Reactivar'}</button></td></tr>`).join('');
+}
+function toggleUsuario(i){
+  state.usuarios[i].activo = !state.usuarios[i].activo;
+  logAudit(`${state.usuarios[i].activo?'Reactivó':'Desactivó'} cuenta de usuario (RF-27)`, state.usuarios[i].nombre);
+  toast(`${state.usuarios[i].nombre} ${state.usuarios[i].activo?'reactivado':'desactivado'}`);
+  renderUsuarios();
+}
+
+function showView(view){
+  if(state.currentRole && !vistasPermitidas(state.currentRole).includes(view)){
+    toast(`Tu rol (${state.currentRole}) no tiene acceso a esta vista`);
+    view = 'dashboard';
+  }
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===view));
+  document.querySelectorAll('#app-shell .view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  const [title, sub] = viewTitles[view];
+  document.getElementById('topbar-title').textContent = title;
+  document.getElementById('topbar-sub').textContent = sub;
+  if(viewRenderers[view]) viewRenderers[view]();
+  window.scrollTo(0,0);
+}
+
+document.querySelectorAll('.nav-item').forEach(btn=>{
+  btn.addEventListener('click', ()=>showView(btn.dataset.view));
+});
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    const [group, name] = tab.dataset.tab.split(':');
+    document.querySelectorAll(`.tab`).forEach(t=>{
+      if(t.dataset.tab.startsWith(group+':')) t.classList.toggle('active', t===tab);
+    });
+    document.querySelectorAll(`[data-tabpanel^="${group}:"]`).forEach(p=>{
+      p.style.display = (p.dataset.tabpanel===tab.dataset.tab) ? '' : 'none';
+    });
+    if(tab.dataset.tab === 'sol:compat') fillCompatSelect();
+  });
+});
+
+function enterApp(){
+  const role = document.getElementById('role-select').value;
+  state.currentRole = role;
+  document.getElementById('user-role-display').textContent = role;
+  applyRoleVisibility(role);
+  document.getElementById('view-login').style.display = 'none';
+  document.getElementById('app-shell').style.display = 'flex';
+  showView('dashboard');
+}
+function exitApp(){
+  document.getElementById('app-shell').style.display = 'none';
+  document.getElementById('view-login').style.display = 'flex';
+}
+
+/* Render inicial */
+renderAbo(); renderAlerts(); renderQuickAccess(); renderInventory(); renderDiferimientos();
+renderSolicitudes(); renderHemovigilancia(); renderReports(); renderAudit();
+renderTemps(); renderIntercambios(); renderUsuarios();
+</script>
+</body>
+</html>
